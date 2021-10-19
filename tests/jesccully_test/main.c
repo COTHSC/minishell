@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 11:05:40 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/18 18:05:00 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/19 13:19:31 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,25 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <limits.h>
-#include "./libft/libft.h"
+#include "../../libs/libft/libft.h"
+
+
+ char    **ft_better_split(char const *s, char c);
 
 
 int main(int argc, char **argv)
 {
-    char buf[PATH_MAX];
-    char *line_from_terminal;
-    char *prompt;
+    int i;
+    char **str_tab;
 
-    while (1)
+    i = 0;
+    str_tab = ft_better_split("one \"with a sentence in it\"andsomethingrightafter \" and another full sentence with            spaces\"  ' and another with single quotes'  \"and now single quotes within double quotes '   ere ' \"  'and finale double quotes within single quotes\"hi hi\" ' sentence", ' ');
+    str_tab = ft_better_split("echo -n\"hello world\"             ' and another sentence' ' and one last one' ", ' ');
+    while (str_tab[i])
     {
-        getcwd(buf, sizeof(buf));
-        prompt = ft_strjoin(buf, "$ ");
-        line_from_terminal = readline(prompt);
-        
-        if (ft_strncmp(line_from_terminal, "cd", 3))
-            chdir("/Users/jescully/Documents");
-
-        add_history(line_from_terminal);
-        free(line_from_terminal);
+        printf("str[%d] : %s\n", i, str_tab[i]);
+        i++;
     }
-
-    clear_history();
-
+    printf("str[%d] : %s\n", i, str_tab[i]);
     return 0;
 }
