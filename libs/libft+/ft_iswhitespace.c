@@ -6,11 +6,13 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:40:48 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/19 14:41:42 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/19 14:50:24 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int ft_iswhitespace(char c)
 {
+	CECI EST UNE MERDE
 
+		AHAAHAHAHAHA
 }
