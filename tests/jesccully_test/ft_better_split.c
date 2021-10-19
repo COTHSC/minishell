@@ -11,13 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../libs/libft/libft.h"
-
-static int	ft_ischar(char o, char c)
-{
-	if (o == c)
-		return (1);
-	return (0);
-}
+#include "../../libs/libft+/libftp.h"
 
 int isquote(char c)
 {
@@ -29,7 +23,7 @@ int isquote(char c)
 		return (0);
 }
 
-static int	ft_countthewords(char const *s, char c)
+static int	ft_countthewords(char const *s)
 {
 	int		i;
 	int		cw;
@@ -46,14 +40,14 @@ static int	ft_countthewords(char const *s, char c)
 			if (isquote(s[++i]) == quotes)
 				quotes = 0;
 		}
-		if (s[i] == c && s[i + 1] != c)
+		if (ft_iswhitespace(s[i]) && !ft_iswhitespace(s[i + 1]))
 			cw++;
 	}
 	if (i == 0)
 		return (0);
-	if (s[0] != c)
+	if (!ft_iswhitespace(s[0]))
 		cw++;
-	if (s[i - 1] == c)
+	if (ft_iswhitespace(s[i - 1]))
 		cw--;
 	return (cw);
 }
@@ -72,9 +66,9 @@ static int	ftwtw(int len, char **strs, int row, const char *s)
 	return (row);
 }
 
-int fill_word(char const *s, int lead, char c)
+int fill_word(char const *s, int lead)
 {
-	while (!ft_ischar(s[lead], c) && s[lead])
+	while (!ft_iswhitespace(s[lead]) && s[lead])
 	{
 		int quote = 0;
 		{
@@ -103,7 +97,7 @@ int go_through_quote(char const *s, int lead, int *quote)
 	return (lead);
 }
 
-char	**ft_better_split(char const *s, char c)
+char	**ft_better_split(char const *s)
 {
 	char	**strs;
 	int		lead;
@@ -114,17 +108,17 @@ char	**ft_better_split(char const *s, char c)
 	row = 0;
 	lead = 0;
 	quote = 0;
-	strs = (char **)ft_calloc((ft_countthewords(s, c) + 1), sizeof(char *));
+	strs = (char **)ft_calloc((ft_countthewords(s) + 1), sizeof(char *));
 	if (!strs)
 		return (NULL);
-	while (row < ft_countthewords(s, c))
+	while (row < ft_countthewords(s))
 	{
-		while (ft_ischar(s[lead], c) && !quote)
+		while (ft_iswhitespace(s[lead]) && !quote)
 			lead++;
 		quote = isquote(s[lead]);
 		follow = lead;
 		lead = go_through_quote(s, lead, &quote);
-		lead = fill_word(s, lead, c);
+		lead = fill_word(s, lead);
 		strs[row] = (char *)malloc(sizeof(char) * ((lead - follow + 1)));
 		if (!strs)
 			return (NULL);
