@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 11:05:40 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/19 15:34:18 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/20 15:10:33 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "../../libs/libft/libft.h"
 
 
+char *find_dollars(char *s);
 char    **ft_better_split(char const *s);
 
 
@@ -30,8 +31,6 @@ int main(int argc, char **argv)
     char **str_tab;
 
     i = 0;
-    str_tab = ft_better_split("one \"with a sentence in it\"andsomethingrightafter \" and another full sentence with            spaces\"  ' and another with single quotes'  \"and now single quotes within double quotes '   ere ' \"  'and finale double quotes within single quotes\"hi hi\" ' sentence");
-    str_tab = ft_better_split("echo -n\"hello world\"             ' and another sentence' ' and one last one' ");
     while (str_tab[i])
     {
         printf("str[%d] : %s\n", i, str_tab[i]);
