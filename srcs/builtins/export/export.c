@@ -6,122 +6,72 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/10/19 19:28:59 by calle            ###   ########.fr       */
+/*   Updated: 2021/10/20 18:49:54 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../libs/libft/libft.h"
+#include "../../../libs/libft+/libftp.h"
 #include <stdio.h>
 
-//char **stradd(char **str_tab, char *new_str)
-//{
-//	char	**temp;
-//	int		str_tab_len;
-//	int		str_new_str;
-//
-//	temp = malloc(
-//}
-
-char	**max_strlen(const char *s1, const char *s2)
+char	**double_quoting_env_value(char **src)
 {
-	int len1;
-	int len2;
-
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	if (len1 >= len2)
-		return (len1 - len2);
-	else
-		return (len2 - len1);
-}
-
-int	is_not_in_str_list(char **str_list, char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str_list[i])
-	{
-		if (!ft_strncmp(str_list[i], str, max_strlen(str_list[i], str)));
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int		strlen_list(const char **str_list)
-{
-	int	i;
-
-	i = 0;
-	while (str_list[i])
-		i++;
-	return (i);
-}
-
-char	**calloc_str_list(int size)
-{
-	int	i;
-	char **str_list;
-
-	i = 0;
-	while (i < size)
-	{
-		str_list = (char *)ft_calloc(1, sizeof(char));	
-		i++;
-	}
-	return (str_list);
-}
-
-char **sort_str_list(char **str_list)
-{
-	char	**temp;
 	int		i;
-	int		head;
-	int		max;
-	int		smallest;
+	char	*equal_pos;
+	char	**dest;
+	int		dist;
 
-	head = 0
-	temp = calloc_str_list(strlen_list(str_list));
-	while (str_list[head])
+	i = 0;
+	dest = calloc_str_list(strlen_list(src));
+	if (!dest)
+		return (NULL);
+	while (src[i])
 	{
-		i = head;
-		while (str_list[i])
+		equal_pos = ft_strchr(src[i], '=');
+		if (equal_pos)
 		{
-			max = max_strlen(temp[head], str_list[i]);
-			if (ft_strncmp(temp[head], str_list[i], max) > 0)	
-			{
-				if (is_not_in_str_list(temp, str_list[i]))
-				{
-					free(temp[head]);
-					temp[head] = ft_strdup(str_list[i])
-				}
-			}
-			i++;
+			dest[i] = malloc(sizeof(char) * (ft_strlen(src[i]) + 3));
+			dist = equal_pos - src[i];
+			ft_strlcpy(dest[i], src[i], dist + 2);
+			dest[i][dist + 1] = '"';
+			ft_strlcpy(&dest[i][dist + 2], &src[i][dist + 1], ft_strlen(&src[i][dist]));
+			dest[i][ft_strlen(src[i]) + 1] = '"';
+			dest[i][ft_strlen(src[i]) + 2] = 0;
 		}
-		temp[head] = ft_strdup(str_list[smallest]
-		head++;
+		i++;
 	}
-	return (temp);
+	return (dest);
+}
+
+int	display_entire_env_vars(char **env)
+{
+	char	**temp1;
+	char	**temp2;
+
+	temp1 = sort_str_list(env);
+	temp2 = double_quoting_env_value(temp1);
+	print_str_list(temp2, "declare -x ");
+	if (temp1)
+		free_str_list(temp1, strlen_list(temp1));
+	if (temp2)
+		free_str_list(temp2, strlen_list(temp2));
+	return (EXIT_SUCCESS);
+}
+
+int	p_option_called(char *first_arg)
+{
+	if (ft_strncmp(first_arg, "-p", max_strlen(first_arg, "-p")) == 0)
+		return (1);
+	else
+		return (0);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	char *temp;
 	int	i;
 
-	if (argc != 2)
-		return (EXIT_FAILURE);
-	temp = getenv(argv[1]);
-	if (!temp)
-		return (EXIT_FAILURE);
-	i = -1;
-	while (temp[++i])
-	{
-		printf("before: %c\n", temp[i]);
-		temp[i] = '0';
-		printf("after: %c\n", temp[i]);
-	}
-	printf("recall: %s\n", getenv(argv[1]));
-	return (EXIT_SUCCESS);
+	if (argc == 1 || (argc == 2 && p_option_called(argv[1])))
+		return (display_entire_env_vars(env));
+	else
+		return (EXIT_SUCCESS);
 }
