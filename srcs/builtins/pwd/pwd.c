@@ -1,15 +1,14 @@
-#include <unistd.h>
- #include <limits.h>
- #include "../../../libs/libft/libft.h"
- #include <errno.h>
- #include <stdlib.h>
-#include <stdio.h>
+#include "../builtins.h"
 
-int main(int argc, char **argv, char **env)
+int ft_pwd(int argc, char **argv, char **env)
 {
     char buf[PATH_MAX];
 
-    if (!getcwd(buf, sizeof(buf)))
+	(void)argv;
+	(void)env;
+    if (argc != 1)
+        return (-1);
+    else if (!getcwd(buf, sizeof(buf)))
     {
         ft_putstr_fd("minishell: pwd: ", 1);
         perror(NULL);

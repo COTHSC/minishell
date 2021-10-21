@@ -6,13 +6,11 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/10/20 18:55:10 by calle            ###   ########.fr       */
+/*   Updated: 2021/10/21 17:36:59 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../libs/libft/libft.h"
-#include "../../../libs/libft+/libftp.h"
-#include <stdio.h>
+#include "../builtins.h"
 
 char	**double_quoting_env_value(char **src)
 {
@@ -66,10 +64,8 @@ int	p_option_called(char *first_arg)
 		return (0);
 }
 
-int	main(int argc, char **argv, char **env)
+int ft_export(int argc, char **argv, char **env)
 {
-	int	i;
-
 	if (argc == 1 || (argc == 2 && p_option_called(argv[1])))
 		return (display_entire_env_vars(env));
 	else

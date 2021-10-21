@@ -1,32 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 18:17:44 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/21 12:21:19 by jescully         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../builtins.h"
 
-#include <sys/types.h>
-#include <dirent.h>
-#include <stdio.h> 
-#include <stdio.h>
- #include <stdlib.h>
- #include <errno.h>
- #include "../../../libs/libft/libft.h" 
-#include <limits.h>
-
-int main(int argc, char **argv)
+int ft_cd(int argc, char **argv, char **env)
 {
     const char *req_path;
     DIR *dir_pointer;
     int argcount;
-    //char buf[PATH_MAX];
     
     argcount = argc;
+	(void)argc;
+	(void)env;
     req_path = argv[1];
     if(!(dir_pointer = opendir(req_path)))
     {
@@ -39,8 +21,6 @@ int main(int argc, char **argv)
     else
     {
         closedir(dir_pointer);
-    //    getcwd(buf, sizeof(buf));
-    //    printf("this is pwd %s\n", buf);
         if(chdir(req_path)== -1)
         {
             ft_putstr_fd("minishell: cd: ", 1);
@@ -49,8 +29,6 @@ int main(int argc, char **argv)
             perror(NULL);
             return (EXIT_FAILURE);
         }
-    //    getcwd(buf, sizeof(buf));
-    //    printf("this is pwd %s\n", buf);
     }
     return (0);
 }
