@@ -9,28 +9,28 @@ char    *get_var_name(char *s, int *i)
 {
     char *var_name;
 
-    while (!ft_iswhitespace(s[*i]) && s[*i] && s[*i] != '$')
+    while (!ft_iswhitespace(s[*i]) && s[*i] && s[*i] != '$' && !isquote(s[*i]))
         (*i)++;
-    var_name = ft_calloc(*i, sizeof(char));
+    var_name = ft_calloc(*i + 1, sizeof(char));
     if (!var_name)
         return (0);
     ft_strlcpy(var_name, s, *i + 1);
     return (var_name);
 }
 
-char    *get_var_value(char *var_name, int *i, int *offset)
+char    *get_var_value(char *var_name, int *offset)
 {
     char *var_value;
     
     if (getenv(var_name) != getenv("notreal"))
     {
         var_value = ft_strdup(getenv(var_name)); 
-        *offset = ft_strlen(var_value) - *i;
+        *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else
     {
         var_value = NULL;
-        *offset = *i * -1;
+        *offset = ft_strlen(var_name) * -1;
     }
     return (var_value);
 }
@@ -52,8 +52,8 @@ char     *expand_and_replace(char *s, char *var_value, char *var_name, int offse
     }
     else
     {
-        newstr = ft_calloc(ft_strlen(s) + offset, sizeof(char));
-        while (d <= offset + ft_strlen(s))
+        newstr = ft_calloc(ft_strlen(s) + offset + 1, sizeof(char));
+        while (d <= offset + ft_strlen(var_name))
         {
             newstr[d] = var_value[d];
             d++;
@@ -73,7 +73,7 @@ char *expand_vars(char *s)
 
     i = 0;
     var_name = get_var_name(s, &i);
-    var_value = get_var_value(s, &i, &offset);
+    var_value = get_var_value(var_name, &offset);
     newstr = expand_and_replace(s, var_value, var_name, offset, i); 
     if (var_value)
         free(var_value);

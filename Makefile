@@ -3,6 +3,7 @@ NAME = minishell
 SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/parsing/expand_vars.c  \
 	   ./srcs/parsing/main.c  \
+	   ./srcs/parsing/remove_quotes.c  \
 	   ./srcs/execution/execute.c  \
 
 OBJS = $(SRCS:.c=.o)
