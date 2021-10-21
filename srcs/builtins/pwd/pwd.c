@@ -9,9 +9,7 @@ int main(int argc, char **argv, char **env)
 {
     char buf[PATH_MAX];
 
-    if (argc != 1)
-        return (-1);
-    else if (!getcwd(buf, sizeof(buf)))
+    if (!getcwd(buf, sizeof(buf)))
     {
         ft_putstr_fd("minishell: pwd: ", 1);
         perror(NULL);

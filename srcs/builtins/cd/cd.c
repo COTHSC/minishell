@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 18:17:44 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/19 19:10:34 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/21 12:21:19 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
  #include "../../../libs/libft/libft.h" 
 #include <limits.h>
 
-int main(int argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     const char *req_path;
     DIR *dir_pointer;
+    int argcount;
     //char buf[PATH_MAX];
-
+    
+    argcount = argc;
     req_path = argv[1];
     if(!(dir_pointer = opendir(req_path)))
     {
