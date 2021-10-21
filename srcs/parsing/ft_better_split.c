@@ -45,9 +45,9 @@ static int	ft_countthewords(char const *s)
 	}
 	if (i == 0)
 		return (0);
-	if (ft_iswhitespace(s[0]))
+	if (!ft_iswhitespace(s[0]))
 		cw++;
-	if (!ft_iswhitespace(s[i - 1]))
+	if (ft_iswhitespace(s[i - 1]))
 		cw--;
 	return (cw);
 }

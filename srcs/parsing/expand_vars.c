@@ -3,15 +3,7 @@
  #include <stdio.h> 
  
 
-int isquote(char c)
-{
-    if (c == '\'')
-        return (1);
-    else if (c == '"')
-        return (2);
-    else
-        return (0);
-}
+int isquote(char c);
 
 char    *get_var_name(char *s, int *i)
 {
@@ -45,7 +37,7 @@ char    *get_var_value(char *var_name, int *i, int *offset)
 
 char     *expand_and_replace(char *s, char *var_value, char *var_name, int offset, int i)
 {
-    int d;
+    unsigned long int d;
     char *newstr;
 
     d = 0;
@@ -116,11 +108,11 @@ char *find_dollars(char *s)
     }
     return (s);
 }
-
+/*
 int main(int argc, char **argv, char **env)
 {
     char *news;
     news = find_dollars(ft_strdup(argv[1]));
     printf("this is the $TEST new s: %s\n", news);
     return (0);
-}
+}*/

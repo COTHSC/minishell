@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 11:05:40 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/20 15:10:33 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/21 12:40:49 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,45 @@
 #include <sys/stat.h>
 #include <limits.h>
 #include "../../libs/libft/libft.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
-
-char *find_dollars(char *s);
 char    **ft_better_split(char const *s);
+void    execute(char **command_block, char **env);
+char *find_dollars(char *s);
 
-
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
     int i;
+    int pid1;
     char **str_tab;
+    char buf[PATH_MAX];
+    char *line_from_terminal;
+    char *prompt;
 
+    i = argc;
+    printf("%s started, fasten your seabelts\n", argv[0]);
     i = 0;
-    while (str_tab[i])
+    while (1)
     {
-        printf("str[%d] : %s\n", i, str_tab[i]);
-        i++;
+
+        getcwd(buf, sizeof(buf));
+        prompt = ft_strjoin(buf, "$ ");
+        line_from_terminal = readline(prompt);
+        add_history(line_from_terminal);
+        line_from_terminal = find_dollars(line_from_terminal);
+        str_tab = ft_better_split(line_from_terminal);
+
+        pid1 = fork();
+
+        if (pid1 == 0)
+        {
+            execute(str_tab, env);
+        }
+        wait(NULL);
+
+        free(line_from_terminal);
     }
-    printf("str[%d] : %s\n", i, str_tab[i]);
+
     return 0;
 }
