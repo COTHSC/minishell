@@ -6,25 +6,20 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 18:17:44 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/19 19:10:34 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/21 17:11:25 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h>
-#include <dirent.h>
-#include <stdio.h> 
-#include <stdio.h>
- #include <stdlib.h>
- #include <errno.h>
- #include "../../../libs/libft/libft.h" 
-#include <limits.h>
+#include "../builtins.h"
 
-int main(int argc, char **argv, char **env)
+int ft_cd(int argc, char **argv, char **env)
 {
     const char *req_path;
     DIR *dir_pointer;
     //char buf[PATH_MAX];
 
+	(void)argc;
+	(void)env;
     req_path = argv[1];
     if(!(dir_pointer = opendir(req_path)))
     {

@@ -1,0 +1,1 @@
+clang -g export.c -L./../../../libs/libft -lft -L./../../../libs/libft+ -lftp
