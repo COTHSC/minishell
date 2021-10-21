@@ -6,17 +6,24 @@
 #    By: jescully <jescully@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 09:50:54 by jescully          #+#    #+#              #
-#    Updated: 2021/10/19 14:45:55 by calle            ###   ########.fr        #
+#    Updated: 2021/10/20 18:43:51 by calle            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft+.a
+NAME = libftp.a
 
 CC = clang
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = ft_iswhitespace.c
+SRC = ft_iswhitespace.c \
+	  max_strlen.c \
+	  free_str_list.c \
+	  calloc_str_list.c \
+	  is_not_in_str_list.c \
+	  print_str_list.c \
+	  sort_str_list.c \
+	  strlen_list.c
 
 OBJ = $(SRC:.c=.o)
 
