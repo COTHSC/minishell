@@ -6,11 +6,36 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/10/25 12:23:25 by calle            ###   ########.fr       */
+/*   Updated: 2021/10/25 19:30:14 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../builtins.h"
+#include "builtins.h"
+
+void	*free_and_return_str_list(char **str_list, int nbr_str_alloc)
+{
+	free_str_list(str_list, nbr_str_alloc);
+	return (NULL);
+}
+
+char	**str_list_dup(char **src_list)
+{
+	char **str_dup;
+	int	i;
+
+	i = 0;
+	str_dup = calloc_str_list(strlen_list(src_list));
+	if (!str_dup)
+		return (NULL);
+	while (src_list[i])
+	{
+		str_dup[i] = ft_strdup(src_list[i]);
+		if (!str_dup[i])
+			return (free_and_return_str_list(str_dup, i));
+		i++;
+	}
+	return (str_dup);
+}
 
 char	**double_quoting_env_value(char **src)
 {
@@ -69,8 +94,6 @@ int	is_option(char *first_arg)
 	return (*first_arg == '-');
 }
 
-void func ( void (*f)(int) );
-
 char **str_add(char **str_list, char *str_to_add)
 {
 	int	i;
@@ -84,51 +107,60 @@ char **str_add(char **str_list, char *str_to_add)
 	{
 		str_list_dup[i] = ft_strdup(str_list[i]);
 		if (!str_list_dup[i])
-		{
-			free_str_list(str_list, i);
-			return (NULL);
-		}
+			return (free_and_return_str_list(str_list_dup, i));
 		i++;
 	}
 	str_list_dup[i] = ft_strdup(str_to_add);
 	if (!str_list_dup[i])
-	{
-		free_str_list(str_list, i);
-		return (NULL);
-	}
+		return (free_and_return_str_list(str_list_dup, i));
 	return (str_list_dup);
 }
 
-int	add_vars_to_env(char **argv, char **env) 
+char	**str_list_join(char **s1, char **s2)
 {
-	char **temp;
-	int	i;
-	
-	i = 1;
-	while (argv[i])
+	char	**ret_list;
+	int		i;
+	int		len1;
+	int		len2;
+
+	len1 = strlen_list(s1);
+	len2 = strlen_list(s2);
+	ret_list = calloc_str_list(len1 + len2);
+	i = 0;
+	while(ret_list && i < len1)
 	{
-		temp = str_add(env, argv[i]);
-		if (!temp)
-			return (EXIT_FAILURE);
-		env = temp;
-		//free(temp);
+		ret_list[i] = ft_strdup(s1[i]);
+		if (!ret_list[i])
+			return (free_and_return_str_list(ret_list, i));
 		i++;
 	}
-	//printf("index: %d -- argv[index] = %s\n", i, argv[i]);
-	//print_str_list(env, NULL);
-	return (EXIT_FAILURE);
+	i = 0;
+	while(ret_list && i < len2)
+	{
+		ret_list[len1 + i] = ft_strdup(s2[i]);
+		if (!ret_list[len1 + i])
+			return (free_and_return_str_list(ret_list, len1 + i));
+		i++;
+	}
+	return (ret_list);
 }
 
-int ft_export(int argc, char **argv, char **env)
+int ft_export(int argc, char **argv, char ***env)
 {
+	char	**tmp;
+
 	if (argc == 1 || (argc == 2 && p_option_called(argv[1])))
-		return (display_entire_env_vars(env));
+		return (display_entire_env_vars(*env));
 	if (argc == 2 && is_option(argv[1]) && !p_option_called(argv[1]))	
 		return (EXIT_FAILURE);
 	else
 	{
-		add_vars_to_env(argv, env);
-		print_str_list(env, NULL);
+		tmp = str_list_join(*env, argv);
+		if (!tmp)
+			return (EXIT_FAILURE);
+		free_str_list(env, strlen_list(*env));
+		*env = str_list_dup(tmp);
+		free(tmp);
 		return (0);
 	}
 }

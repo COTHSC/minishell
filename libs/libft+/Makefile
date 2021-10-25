@@ -6,7 +6,7 @@
 #    By: jescully <jescully@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 09:50:54 by jescully          #+#    #+#              #
-#    Updated: 2021/10/20 18:43:51 by calle            ###   ########.fr        #
+#    Updated: 2021/10/25 19:24:56 by calle            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,15 @@ SRC = ft_iswhitespace.c \
 	  is_not_in_str_list.c \
 	  print_str_list.c \
 	  sort_str_list.c \
-	  strlen_list.c
+	  strlen_list.c \
+	  str_add.c \
+	  str_list_join.c \
+	  str_list_dup.c \
+	  free_list_and_return_null.c
 
 OBJ = $(SRC:.c=.o)
+
+OBJD = $(SRC:.c=.o)
 
 all: $(NAME)
 
