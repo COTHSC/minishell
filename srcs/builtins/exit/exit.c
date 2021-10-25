@@ -6,6 +6,7 @@ int ft_exit(int argc, char **argv, char **env)
 	(void)argv;
 	(void)env;
 
-	printf("\n exit builtin.\n");
+    printf("exit \n");
+    exit(0);
 	return (EXIT_SUCCESS);
 }

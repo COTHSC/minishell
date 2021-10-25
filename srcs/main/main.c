@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 11:05:40 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/21 17:03:14 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/25 17:34:28 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,15 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <limits.h>
-#include "../../libs/libft/libft.h"
+#include "../../includes/minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
-char    **ft_better_split(char const *s);
-void    execute(char **command_block, char **env);
-char *find_dollars(char *s);
-char *remove_quotes(char *s);
+
 int main(int argc, char **argv, char **env)
 {
     int i;
-    int pid1;
+   // int pid1;
     char **str_tab;
     char buf[PATH_MAX];
     char *line_from_terminal;
@@ -55,16 +52,8 @@ int main(int argc, char **argv, char **env)
             str_tab[i] = temp;
             i++;
         }
-
-
-        pid1 = fork();
-
-        if (pid1 == 0)
-        {
-            execute(str_tab, env);
-        }
+        execute(str_tab, env);
         wait(NULL);
-
         free(line_from_terminal);
     }
 

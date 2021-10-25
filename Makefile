@@ -2,9 +2,13 @@ NAME = minishell
 
 SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/parsing/expand_vars.c  \
-	   ./srcs/parsing/main.c  \
+	   ./srcs/main/main.c  \
 	   ./srcs/parsing/remove_quotes.c  \
 	   ./srcs/execution/execute.c  \
+	   ./srcs/builtins/builtin_selector_test.c  \
+	   ./srcs/builtins/pwd/pwd.c  \
+	   ./srcs/builtins/cd/cd.c  \
+	   ./srcs/builtins/exit/exit.c  \
 
 OBJS = $(SRCS:.c=.o)
 
