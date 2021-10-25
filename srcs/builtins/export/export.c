@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/10/21 17:36:59 by calle            ###   ########.fr       */
+/*   Updated: 2021/10/25 12:23:25 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,71 @@ int	p_option_called(char *first_arg)
 		return (0);
 }
 
+int	is_option(char *first_arg)
+{
+	return (*first_arg == '-');
+}
+
+void func ( void (*f)(int) );
+
+char **str_add(char **str_list, char *str_to_add)
+{
+	int	i;
+	char **str_list_dup;
+	int	list_size;
+
+	i = 0;
+	list_size = strlen_list(str_list);
+	str_list_dup = calloc_str_list(list_size + 1);
+	while (i < list_size)
+	{
+		str_list_dup[i] = ft_strdup(str_list[i]);
+		if (!str_list_dup[i])
+		{
+			free_str_list(str_list, i);
+			return (NULL);
+		}
+		i++;
+	}
+	str_list_dup[i] = ft_strdup(str_to_add);
+	if (!str_list_dup[i])
+	{
+		free_str_list(str_list, i);
+		return (NULL);
+	}
+	return (str_list_dup);
+}
+
+int	add_vars_to_env(char **argv, char **env) 
+{
+	char **temp;
+	int	i;
+	
+	i = 1;
+	while (argv[i])
+	{
+		temp = str_add(env, argv[i]);
+		if (!temp)
+			return (EXIT_FAILURE);
+		env = temp;
+		//free(temp);
+		i++;
+	}
+	//printf("index: %d -- argv[index] = %s\n", i, argv[i]);
+	//print_str_list(env, NULL);
+	return (EXIT_FAILURE);
+}
+
 int ft_export(int argc, char **argv, char **env)
 {
 	if (argc == 1 || (argc == 2 && p_option_called(argv[1])))
 		return (display_entire_env_vars(env));
+	if (argc == 2 && is_option(argv[1]) && !p_option_called(argv[1]))	
+		return (EXIT_FAILURE);
 	else
-		return (EXIT_SUCCESS);
+	{
+		add_vars_to_env(argv, env);
+		print_str_list(env, NULL);
+		return (0);
+	}
 }
