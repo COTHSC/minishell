@@ -6,11 +6,11 @@
 #    By: jescully <jescully@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 09:50:54 by jescully          #+#    #+#              #
-#    Updated: 2021/10/25 19:24:56 by calle            ###   ########.fr        #
+#    Updated: 2021/10/25 19:43:22 by jescully         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftp.a
+NAME = libft+.a
 
 CC = clang
 
