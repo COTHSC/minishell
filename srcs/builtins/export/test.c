@@ -1,14 +1,17 @@
-#include "../builtins.h"
-int ft_export(int argc, char **argv, char **env);
+#include "builtins.h"
+char	**str_list_dup(char **src_list);
 
 int main(int argc, char **argv, char **env)
 {
+	char	**dup_env;
+
 	if (argc == 1)
 		return (EXIT_FAILURE);
 	else
 	{
-		ft_export(argc, argv, env);
-		//print_str_list(env, NULL);
+		dup_env = str_list_dup(env);
+		ft_export(argc, argv, &dup_env);
+		print_str_list(dup_env, NULL);
 	}
 	return (EXIT_SUCCESS);
 }
