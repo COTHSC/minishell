@@ -19,13 +19,18 @@ char    *get_var_name(char *s, int *i)
     return (var_name);
 }
 
-char    *get_var_value(char *var_name, int *offset)
+char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
     
     if (getenv(var_name) != getenv("notreal"))
     {
         var_value = ft_strdup(getenv(var_name)); 
+        *offset = ft_strlen(var_value) - ft_strlen(var_name);
+    }
+    else if (!ft_strncmp(var_name, "?", 2))
+    {
+        var_value = ft_itoa(status);
         *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else
@@ -64,7 +69,7 @@ char     *expand_and_replace(char *s, char *var_value, char *var_name, int offse
     return (newstr);
 }
 
-char *expand_vars(char *s)
+char *expand_vars(char *s, int status)
 {
     int i;
     char *var_name;
@@ -74,7 +79,7 @@ char *expand_vars(char *s)
 
     i = 0;
     var_name = get_var_name(s, &i);
-    var_value = get_var_value(var_name, &offset);
+    var_value = get_var_value(var_name, &offset, status);
     newstr = expand_and_replace(s, var_value, var_name, offset, i); 
     if (var_value)
         free(var_value);
@@ -82,7 +87,7 @@ char *expand_vars(char *s)
     return (newstr);
 }
 
-char *find_dollars(char *s)
+char *find_dollars(char *s, int status)
 {
     int i;
     char *newend;
@@ -99,7 +104,7 @@ char *find_dollars(char *s)
         }
         if (s[i] == '$')
         {
-            newend = expand_vars(&s[i + 1]);
+            newend = expand_vars(&s[i + 1], status);
             s[i] = 0;
             news = ft_strjoin(s, newend);
             free(newend);

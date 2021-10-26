@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 11:05:40 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/25 17:34:28 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/26 17:11:23 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,24 @@
 int main(int argc, char **argv, char **env)
 {
     int i;
-   // int pid1;
     char **str_tab;
     char buf[PATH_MAX];
     char *line_from_terminal;
     char *prompt;
     char *temp;
+    int es;
 
-    i = argc;
     printf("%s started, fasten your seabelts\n", argv[0]);
-
+    es = 0;
+    (void)argc;
     while (1)
     {
         i = 0;
-
         getcwd(buf, sizeof(buf));
         prompt = ft_strjoin(buf, "$ ");
         line_from_terminal = readline(prompt);
         add_history(line_from_terminal);
-        line_from_terminal = find_dollars(line_from_terminal);
+        line_from_terminal = find_dollars(line_from_terminal, es);
         str_tab = ft_better_split(line_from_terminal);
         while (str_tab[i])
         {
@@ -52,10 +51,8 @@ int main(int argc, char **argv, char **env)
             str_tab[i] = temp;
             i++;
         }
-        execute(str_tab, env);
-        wait(NULL);
+        es = execute(str_tab, env);
         free(line_from_terminal);
     }
-
     return 0;
 }

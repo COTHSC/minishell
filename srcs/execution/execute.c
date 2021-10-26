@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 15:47:29 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/25 18:50:03 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/26 17:32:37 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include "../../includes/minishell.h"
 
- int select_builtin_test(int index, int argc, char **argv, char **env);
+ int select_builtin_test(int index, int argc, char **argv, char ***env);
 char    *try_paths(char **paths, char *command)
 {
     int     d;
@@ -52,10 +52,10 @@ char    *try_paths(char **paths, char *command)
 int builtin_finder(char *name)
 {
     int i;
-    static char *builtin_lookup[3] = {"cd", "pwd", "exit"};
+    static char *builtin_lookup[4] = {"cd", "pwd", "exit", "export"};
 
     i = 0;
-    while (i < 3)
+    while (i < 4)
     {
         if (ft_strncmp(name, builtin_lookup[i], ft_strlen(name)) == 0)
             return (i);
@@ -78,14 +78,26 @@ char    *get_path(char **command_block)
     if (!path)
     {
         d = 0;
+        ft_putstr_fd("minishell: ", 2);
         ft_putstr_fd(command_block[0], 2);
         while (command_block[d])
             free(command_block[d++]);
         free(command_block);
+
         ft_putstr_fd(": command not found\n", 2);
-        exit(0);
+        exit(127);
     }
     return (path);
+}
+
+int		strlen_list(char **str_list)
+{
+	int	i;
+
+	i = 0;
+	while (str_list[i])
+		i++;
+	return (i);
 }
 
 int    execute(char **command_block, char **env)
@@ -93,26 +105,30 @@ int    execute(char **command_block, char **env)
     int     d;
     int     pid1;
     char    *path;
+    int status;
 
     d = 0;
-    if (builtin_finder(command_block[0]) != -1)
-       return (select_builtin_test(builtin_finder(command_block[0]), 1 , command_block, env));
+    if (command_block[0] && builtin_finder(command_block[0]) != -1)
+       return (select_builtin_test(builtin_finder(command_block[0]), strlen_list(command_block), command_block, &env));
     else
     {
         pid1 = fork();
         if (pid1 == 0)
         {
             path = get_path(command_block);
-            if (execve(path, command_block, env) == -1)
+            if ((execve(path, command_block, env)) == -1)
             {         
                 free(path);
                 while (command_block[d])
                     free(command_block[d++]);
                 free(command_block);
-                exit(0);
+                exit(EXIT_FAILURE);
             }
             free (path);
         }
+        waitpid(-1, &status, 0);
+        if ( WIFEXITED(status) ) 
+             return (WEXITSTATUS(status));
     }
-    return (1);
+    return (0);
 }
