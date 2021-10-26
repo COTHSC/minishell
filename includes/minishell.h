@@ -6,18 +6,18 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:46:59 by calle             #+#    #+#             */
-/*   Updated: 2021/10/26 16:01:22 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/26 19:21:27 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTP_H
-# define LIBFTP_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 # include "../libs/libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
-#include "../libs/libft+/libftp.h"
-#include "../srcs/builtins/builtins.h"
-#include <stdio.h>
+# include "../libs/libft+/libftp.h"
+# include "../srcs/builtins/builtins.h"
+# include <stdio.h>
 
 
 /* Functions used to expand environmental variables */

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 15:47:29 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/26 17:32:37 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/26 19:15:02 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include <fcntl.h>
 # include "../../includes/minishell.h"
 
- int select_builtin_test(int index, int argc, char **argv, char ***env);
+int select_builtin_test(int index, int argc, char **argv, char ***env);
+
 char    *try_paths(char **paths, char *command)
 {
     int     d;
@@ -52,10 +53,10 @@ char    *try_paths(char **paths, char *command)
 int builtin_finder(char *name)
 {
     int i;
-    static char *builtin_lookup[4] = {"cd", "pwd", "exit", "export"};
+    static char *builtin_lookup[7] = {"cd", "pwd", "exit", "export", "env", "unset", "echo"};
 
     i = 0;
-    while (i < 4)
+    while (i < 7)
     {
         if (ft_strncmp(name, builtin_lookup[i], ft_strlen(name)) == 0)
             return (i);
@@ -125,6 +126,9 @@ int    execute(char **command_block, char **env)
                 exit(EXIT_FAILURE);
             }
             free (path);
+            while (command_block[d])
+                free(command_block[d++]);
+            free(command_block);
         }
         waitpid(-1, &status, 0);
         if ( WIFEXITED(status) ) 

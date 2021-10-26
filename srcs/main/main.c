@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 11:05:40 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/26 17:11:23 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/26 19:15:32 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ int main(int argc, char **argv, char **env)
     char *prompt;
     char *temp;
     int es;
+    char **env2;
 
+    env2 = str_list_dup(env);
     printf("%s started, fasten your seabelts\n", argv[0]);
     es = 0;
     (void)argc;
@@ -51,7 +53,7 @@ int main(int argc, char **argv, char **env)
             str_tab[i] = temp;
             i++;
         }
-        es = execute(str_tab, env);
+        es = execute(str_tab, env2);
         free(line_from_terminal);
     }
     return 0;
