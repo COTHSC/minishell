@@ -1,4 +1,4 @@
-#include "builtins.h"
+#include "../builtins.h"
 
 int		count_match_till_char(char **str_list, char *str_to_match, int c)
 {
@@ -11,27 +11,31 @@ int		count_match_till_char(char **str_list, char *str_to_match, int c)
 	while (str_list[i])
 	{
 		c_pos = ft_strchr(str_list[i], c) - str_list[i];
-		if (ft_strnstr(str_list[i], str_to_match, c_pos) - str_list[i] == 0)	
+		if (ft_strchr(str_list[i], '=') - str_list[i] == (long)ft_strlen(str_to_match)	
+			&& (ft_strnstr(str_list[i], str_to_match, c_pos) - str_list[i] == 0))
 			nbr_of_match++;
 		i++;
 	}
 	return (nbr_of_match);
 }
 
-char	**str_delete(char **str_list, char *str_to_delete, int nb_to_del)
+char	**str_delete(char **str_list, char *str_to_del, int nb_to_del)
 {
 	int	i;
 	int j;
 	char **tmp;
+	int	c_pos;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	tmp = calloc_str_list(strlen_list(str_list) - nb_to_del);
 	if (!tmp)
 		return (NULL);
-	while (str_list[i])
+	while (str_list[++i])
 	{
-		if (ft_strnstr(str_list[i], str_to_delete, ft_strchr(str_list[i], '=') - str_list[i]) == 0)	
+		c_pos = ft_strchr(str_list[i], c_pos) - str_list[i];
+		if (ft_strchr(str_list[i], '=') - str_list[i] == (long)ft_strlen(str_to_del)	
+			&& ft_strnstr(str_list[i], str_to_del, c_pos) - str_list[i] == 0)
 			j--;
 		else
 		{
@@ -39,7 +43,6 @@ char	**str_delete(char **str_list, char *str_to_delete, int nb_to_del)
 			if (!tmp[j])
 				return (free_list_and_return_null(tmp, j));
 		}
-		i++;
 		j++;
 	}
 	return (tmp);
@@ -80,5 +83,4 @@ int ft_unset(int argc, char **argv, char ***env)
 		return (EXIT_SUCCESS);
 	else
 		return (delete_element_from_env(env, argv));
-	return (EXIT_SUCCESS);
 }
