@@ -1,6 +1,7 @@
 NAME = env 
 
-SRCS = env.c
+SRCS = env.c\
+	   main.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -16,12 +17,12 @@ CFLAGS = -Wall -Wextra -Werror
 
 GFLAG = -g3 -fsanitize=address
 
-INCLUDES= -I includes/
+LIBS = -L./../../../libs/libft -lft -L./../../../libs/libft+ -lft+
 
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) $(LIBS) -o $(NAME) $(OBJS)
 
 %.o: %.c
 	$(CC) -o $@ -c $^ $(CFLAGS) $(INCLUDES)
