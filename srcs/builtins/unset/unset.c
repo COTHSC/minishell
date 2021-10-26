@@ -4,12 +4,14 @@ int		count_match_till_char(char **str_list, char *str_to_match, int c)
 {
 	int	nbr_of_match;
 	int	i;
+	int	c_pos;
 
 	i = 0;
 	nbr_of_match = 0;
 	while (str_list[i])
 	{
-		if (ft_strncmp(str_list[i], str_to_match, ft_strchr(str_list[i], c) - str_list[i]) == 0)	
+		c_pos = ft_strchr(str_list[i], c) - str_list[i];
+		if (ft_strnstr(str_list[i], str_to_match, c_pos) - str_list[i] == 0)	
 			nbr_of_match++;
 		i++;
 	}
@@ -29,7 +31,7 @@ char	**str_delete(char **str_list, char *str_to_delete, int nb_to_del)
 		return (NULL);
 	while (str_list[i])
 	{
-		if (ft_strncmp(str_list[i], str_to_delete, ft_strchr(str_list[i], '=') - str_list[i]) == 0)	
+		if (ft_strnstr(str_list[i], str_to_delete, ft_strchr(str_list[i], '=') - str_list[i]) == 0)	
 			j--;
 		else
 		{
