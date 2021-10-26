@@ -1,3 +1,0 @@
-when test1 is an env variable
-passing 'unset test11' will unset test1 though it should not
-adjust strncmp
