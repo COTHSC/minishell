@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:46:59 by calle             #+#    #+#             */
-/*   Updated: 2021/10/25 16:17:00 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/26 16:01:22 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 /* Functions used to expand environmental variables */
 
-char *find_dollars(char *s);
+char *find_dollars(char *s, int status);
 
 /* Functions used to treat and remove quotes from arguments */
 
@@ -39,8 +39,8 @@ int    execute(char **command_block, char **env);
 
 /* OUR builtins */
 
-int select_builtin(int index, int argc, char **argv, char **env);
-int ft_pwd(int argc, char **argv, char **env);
+int select_builtin(int index, int argc, char **argv, char ***env);
+int ft_pwd(int argc, char **argv, char ***env);
 
 
 #endif

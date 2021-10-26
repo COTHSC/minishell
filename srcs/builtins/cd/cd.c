@@ -1,6 +1,6 @@
 #include "../builtins.h"
 
-int ft_cd(int argc, char **argv, char **env)
+int ft_cd(int argc, char **argv, char ***env)
 {
     const char *req_path;
     DIR *dir_pointer;

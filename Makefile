@@ -9,6 +9,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/builtins/pwd/pwd.c  \
 	   ./srcs/builtins/cd/cd.c  \
 	   ./srcs/builtins/exit/exit.c  \
+	   ./srcs/builtins/export/export.c  \
 
 OBJS = $(SRCS:.c=.o)
 
