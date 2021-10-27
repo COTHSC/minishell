@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:46:59 by calle             #+#    #+#             */
-/*   Updated: 2021/10/27 13:59:28 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/27 16:31:36 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ char    **ft_better_split(char const *s);
 
 int    execute(char **command_block, char ***env);
 
+char **env2;
 /* OUR builtins */
 
 int select_builtin(int index, int argc, char **argv, char ***env);
 int ft_pwd(int argc, char **argv, char ***env);
 
-
+char    *getenv2(char **env, char *name);
 char    *get_path(char **command_block);
 int builtin_finder(char *name);
 void    free_command_block(char **command_block);

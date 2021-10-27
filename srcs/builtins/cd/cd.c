@@ -8,7 +8,7 @@ int ft_cd(int argc, char **argv, char ***env)
 	(void)env;
     req_path = argv[1];
     if (argc == 1)
-        req_path = getenv("HOME");
+        req_path = getenv2(*env, "HOME");
     if(!(dir_pointer = opendir(req_path)))
     {
         ft_putstr_fd("minishell: cd: ", 1);

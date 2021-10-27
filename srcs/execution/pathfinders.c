@@ -60,7 +60,7 @@ char    *get_path(char **command_block)
     if (access(command_block[0], F_OK) == 0)
         return (command_block[0]);
     d = 0;
-    paths = ft_split(getenv("PATH"), ':');
+    paths = ft_split(getenv2(env2,"PATH"), ':');
     path = try_paths(paths, command_block[0]);
     if (!path)
     {
