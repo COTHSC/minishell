@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/10/26 14:47:11 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/27 14:10:14 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,12 +155,12 @@ int ft_export(int argc, char **argv, char ***env)
 		return (EXIT_FAILURE);
 	else
 	{
-		tmp = str_list_join(*env, argv);
+		tmp = str_list_join(*env, argv + 1);
 		if (!tmp)
 			return (EXIT_FAILURE);
 		free_str_list(*env, strlen_list(*env));
 		*env = str_list_dup(tmp);
-		free(tmp);
+		free_str_list(tmp, strlen_list(tmp));
 		return (0);
 	}
 }
