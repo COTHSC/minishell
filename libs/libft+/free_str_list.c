@@ -10,4 +10,5 @@ void	free_str_list(char **str_list, int	size_to_free)
 		free(str_list[i]);
 		i++;
 	}
+	free(str_list);
 }
