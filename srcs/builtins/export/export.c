@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/10/27 14:51:28 by calle            ###   ########.fr       */
+/*   Updated: 2021/10/27 15:05:59 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char	**double_quoting_env_value(char **src)
 		}
 		i++;
 	}
+	free_str_list(src, strlen_list(src));
 	return (dest);
 }
 
