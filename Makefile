@@ -5,6 +5,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/main/main.c  \
 	   ./srcs/parsing/remove_quotes.c  \
 	   ./srcs/execution/execute.c  \
+	   ./srcs/execution/pathfinders.c  \
 	   ./srcs/builtins/builtin_selector_test.c  \
 	   ./srcs/builtins/pwd/pwd.c  \
 	   ./srcs/builtins/cd/cd.c  \

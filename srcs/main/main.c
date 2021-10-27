@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 11:05:40 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/26 19:15:32 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/27 13:29:18 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,39 +22,47 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-
-int main(int argc, char **argv, char **env)
+void    remove_quotes_list(char **str_list)
 {
     int i;
-    char **str_tab;
-    char buf[PATH_MAX];
-    char *line_from_terminal;
-    char *prompt;
     char *temp;
-    int es;
-    char **env2;
 
-    env2 = str_list_dup(env);
-    printf("%s started, fasten your seabelts\n", argv[0]);
+    i = 0;
+    while (str_list[i])
+    {
+        temp =  remove_quotes(str_list[i]);
+        str_list[i] = temp;
+        i++;
+    }
+
+}
+
+void    readline_loop(char **env)
+{
+    char **str_tab;
+    char *line_from_terminal;
+    int es;
+
     es = 0;
-    (void)argc;
     while (1)
     {
-        i = 0;
-        getcwd(buf, sizeof(buf));
-        prompt = ft_strjoin(buf, "$ ");
-        line_from_terminal = readline(prompt);
+        line_from_terminal = readline("minishell >  ");
         add_history(line_from_terminal);
         line_from_terminal = find_dollars(line_from_terminal, es);
         str_tab = ft_better_split(line_from_terminal);
-        while (str_tab[i])
-        {
-            temp =  remove_quotes(str_tab[i]);
-            str_tab[i] = temp;
-            i++;
-        }
-        es = execute(str_tab, env2);
+        remove_quotes_list(str_tab);
+        es = execute(str_tab, &env);
         free(line_from_terminal);
     }
+}
+
+int main(int argc, char **argv, char **env)
+{
+    char **env2;
+
+    (void)argc;
+    (void)argv;
+    env2 = str_list_dup(env);
+    readline_loop(env2);
     return 0;
 }

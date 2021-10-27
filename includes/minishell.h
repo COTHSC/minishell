@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:46:59 by calle             #+#    #+#             */
-/*   Updated: 2021/10/26 19:21:27 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/27 13:59:28 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,16 @@ char    **ft_better_split(char const *s);
 
 /* Functions related to the execution of a child program */
 
-int    execute(char **command_block, char **env);
+int    execute(char **command_block, char ***env);
 
 /* OUR builtins */
 
 int select_builtin(int index, int argc, char **argv, char ***env);
 int ft_pwd(int argc, char **argv, char ***env);
 
+
+char    *get_path(char **command_block);
+int builtin_finder(char *name);
+void    free_command_block(char **command_block);
 
 #endif
