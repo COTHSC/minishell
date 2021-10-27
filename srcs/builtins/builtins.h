@@ -2,6 +2,7 @@
 # define BUILTINS_H
 #include "../../libs/libft/libft.h"
 #include "../../libs/libft+/libftp.h"
+#include "../../includes/minishell.h"
 # include <errno.h>
 # include <dirent.h>
 # include <limits.h>

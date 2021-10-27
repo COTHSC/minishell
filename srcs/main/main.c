@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/18 11:05:40 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/27 14:28:42 by calle            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -22,47 +10,47 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void    remove_quotes_list(char **str_list)
+void    remove_quotes_list(char **command_block)
 {
     int i;
     char *temp;
 
     i = 0;
-    while (str_list[i])
+    while (command_block[i])
     {
-        temp =  remove_quotes(str_list[i]);
-        str_list[i] = temp;
+        temp =  remove_quotes(command_block[i]);
+        command_block[i] = temp;
         i++;
     }
 
 }
 
-void    readline_loop(char **env)
+void    readline_loop(char ***env)
 {
-    char **str_tab;
+    char **command_block;
     char *line_from_terminal;
     int es;
 
     es = 0;
     while (1)
     {
-        line_from_terminal = readline("minishell >  ");
+        line_from_terminal = readline(" >  ");
         add_history(line_from_terminal);
         line_from_terminal = find_dollars(line_from_terminal, es);
-        str_tab = ft_better_split(line_from_terminal);
-        remove_quotes_list(str_tab);
-        es = execute(str_tab, &env);
+        command_block = ft_better_split(line_from_terminal);
+        remove_quotes_list(command_block);
+        es = execute(command_block, env);
         free(line_from_terminal);
+        free_command_block(command_block);
     }
 }
 
 int main(int argc, char **argv, char **env)
 {
-    char **env2;
-
     (void)argc;
     (void)argv;
     env2 = str_list_dup(env);
-    readline_loop(env2);
+    readline_loop(&env2);
+    free_str_list(env2, strlen_list(env2));
     return 0;
 }

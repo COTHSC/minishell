@@ -22,10 +22,10 @@ char    *get_var_name(char *s, int *i)
 char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
-    
-    if (getenv(var_name) != getenv("notreal"))
+   
+    if (getenv2(env2, var_name) != getenv("notreal"))
     {
-        var_value = ft_strdup(getenv(var_name)); 
+        var_value = ft_strdup(getenv2(env2, var_name)); 
         *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else if (!ft_strncmp(var_name, "?", 2))

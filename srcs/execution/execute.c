@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 15:47:29 by jescully          #+#    #+#             */
-/*   Updated: 2021/10/27 16:52:29 by calle            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -37,10 +25,7 @@ int     execute_builtin(char **command_block, char ***env)
 
     ret = -1;
     if (command_block[0] && builtin_finder(command_block[0]) != -1)
-    {
         ret = select_builtin_test(builtin_finder(command_block[0]), strlen_list(command_block), command_block, env);
-        free_command_block(command_block);
-    }
     return (ret);
 }
 
