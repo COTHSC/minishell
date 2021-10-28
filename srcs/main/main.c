@@ -54,8 +54,6 @@ int main(int argc, char **argv, char **env)
 
     env2 = str_list_dup(env);
     init_env(env2);
-    ft_exported_vars(env2);
-   // readline_loop(&env2);
     char **command_block;
      char *line_from_terminal;
      int es;
