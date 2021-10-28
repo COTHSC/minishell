@@ -54,8 +54,12 @@ debug_unsanitary :
 
 clean :
 	rm -f $(OBJS)
+	$(MAKE) -C ./libs/libft/ clean
+	$(MAKE) -C ./libs/libft+/ clean
 
 fclean:	clean
 	rm -f $(NAME)
+	$(MAKE) -C ./libs/libft/ fclean
+	$(MAKE) -C ./libs/libft+/ fclean
 
 re: fclean all
