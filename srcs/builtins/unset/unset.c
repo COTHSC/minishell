@@ -2,16 +2,22 @@
 
 int	is_matching_till_char(char *str_to_compare, char *str_to_match, int c)
 {
-	int	c_pos;
+	int		c_pos;
+	char	*c_addr;
+	int		max_len;
 
-	c_pos = ft_strchr(str_to_compare, c) - str_to_compare;
+	c_addr = ft_strchr(str_to_compare, c);
+	max_len = max_strlen(str_to_compare, str_to_match);
+	if (!c_addr && ft_strncmp(str_to_compare, str_to_match, max_len) == 0)
+		return (1);
+	c_pos = c_addr - str_to_compare;
 	if (c_pos == (long)ft_strlen(str_to_match)	
 		&& (ft_strnstr(str_to_compare, str_to_match, c_pos) - str_to_compare == 0))
 		return (1);
 	return (0);
 }
 
-int		count_match_till_char(char **str_list, char *str_to_match, int c)
+int	count_match_till_char(char **str_list, char *str_to_match, int c)
 {
 	int	nbr_of_match;
 	int	i;
@@ -27,7 +33,6 @@ int		count_match_till_char(char **str_list, char *str_to_match, int c)
 	return (nbr_of_match);
 }
 
-
 char	**str_delete(char **str_list, char *str_to_del, int nb_to_del)
 {
 	int	i;
@@ -41,7 +46,7 @@ char	**str_delete(char **str_list, char *str_to_del, int nb_to_del)
 		return (NULL);
 	while (str_list[++i])
 	{
-		if (is_matching_till_char(str_list[i], str_to_del, '='))	
+		if (is_matching_till_char(str_list[i], str_to_del, '='))
 			j--;
 		else
 		{
