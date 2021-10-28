@@ -6,7 +6,7 @@
 #    By: jescully <jescully@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 09:50:54 by jescully          #+#    #+#              #
-#    Updated: 2020/12/05 21:23:18 by jean             ###   ########.fr        #
+#    Updated: 2021/10/28 15:12:54 by jescully         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,9 @@ NAME = libft.a
 CC = clang
 
 CFLAGS = -Wall -Wextra -Werror
+
+DFLAGS = -Wall -Wextra -Werror -g
+FFLAGS = -fsanitize=address
 
 SRC = ft_atoi.c \
 	ft_memchr.c \
@@ -58,6 +61,17 @@ BONSRC = ft_lstsize.c \
       ft_lstadd_back.c \
 
 OBJBON = $(BONSRC:.c=.o)
+
+debug_lldb :
+	$(CC) $(DFLAGS) -c $(SRC)
+	ar rc  $(NAME) $? $(OBJ)
+	ranlib $(NAME)
+
+debug :
+	$(CC) $(DFLAGS) $(FFLAGS) -c $(SRC)
+	ar rc  $(NAME) $? $(OBJ)
+	ranlib $(NAME)
+
 
 OBJ = $(SRC:.c=.o)
 
