@@ -47,10 +47,31 @@ void    readline_loop(char ***env)
 
 int main(int argc, char **argv, char **env)
 {
+    char **env2;
+
     (void)argc;
     (void)argv;
+
     env2 = str_list_dup(env);
-    readline_loop(&env2);
+    init_env(env2);
+    ft_exported_vars(env2);
+   // readline_loop(&env2);
+    char **command_block;
+     char *line_from_terminal;
+     int es;
+
+     es = 0;
+     while (1)
+     {
+         line_from_terminal = readline(" >  ");
+         add_history(line_from_terminal);
+         line_from_terminal = find_dollars(line_from_terminal, es);
+         command_block = ft_better_split(line_from_terminal);
+         remove_quotes_list(command_block);
+         es = execute(command_block, &env2);
+         free(line_from_terminal);
+         free_command_block(command_block);
+     }
     free_str_list(env2, strlen_list(env2));
     return 0;
 }
