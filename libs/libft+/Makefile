@@ -8,7 +8,9 @@ UNAME_S := $(shell uname -s)
         CC= clang
     endif
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror 
+DFLAGS = -Wall -Wextra -Werror -g
+FFLAGS = -fsanitize=address
 
 SRC = ft_iswhitespace.c \
 	  max_strlen.c \
@@ -23,21 +25,23 @@ SRC = ft_iswhitespace.c \
 	  str_list_dup.c \
 	  free_list_and_return_null.c
 
-OBJ = $(SRC:.c=.o)
-
-OBJD = $(SRC:.c=.o)
+OBJ  = $(SRC:.c=.o)
 
 all: $(NAME)
+
+debug_lldb : 
+	$(CC) $(DFLAGS) -c $(SRC)
+	ar rc  $(NAME) $? $(OBJ)
+	ranlib $(NAME)
+
+debug : 
+	$(CC) $(DFLAGS) $(FFLAGS) -c $(SRC)
+	ar rc  $(NAME) $? $(OBJ)
+	ranlib $(NAME)
 
 $(NAME): $(OBJ)
 	ar rc $(NAME) $? $(OBJ)
 	ranlib $(NAME)
-
-debug :
-	$(CC) $(CFLAGS) $(GFLAG) -o $(NAME) $(SRC)
-	
-debug_lldb :
-	$(CC) $(CFLAGS) -g -o $(NAME) $(SRC)
 
 so: $(OBJ)
 	$(CC) -shared -o libft.so $(OBJ)
