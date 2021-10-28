@@ -1,13 +1,15 @@
 #include "../builtins.h"
 
-char	**delete_var(char **var_list, char *var_to_del, int nb_to_del)
+char	**delete_var(char **var_list, char *var_to_del)
 {
 	int	i;
 	int j;
 	char **tmp;
+	int	nb_to_del;
 
 	i = -1;
 	j = 0;
+	nb_to_del = 1;
 	tmp = calloc_str_list(strlen_list(var_list) - nb_to_del);
 	if (!tmp)
 		return (NULL);
@@ -30,15 +32,13 @@ int	delete_element_from_env(char ***env, char **argv)
 {
 	int	i;
 	char **tmp;
-	int	count_matches;
 
 	i = 1;
 	while (argv[i])
 	{
-		count_matches = count_match_in_var_list(*env, argv[i]); 
-		if (count_matches)
+		if (match_in_var_list(*env, argv[i]))
 		{
-			tmp = delete_var(*env, argv[i], count_matches);
+			tmp = delete_var(*env, argv[i]);
 			if (!tmp)
 				return (EXIT_FAILURE);
 			free_str_list(*env, strlen_list(*env));

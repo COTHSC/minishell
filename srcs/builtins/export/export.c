@@ -1,27 +1,4 @@
-<<<<<<< HEAD
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/10/28 13:34:15 by jescully         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-=======
->>>>>>> c62df0b12f9e297682528a2df8880380ab85b7cb
 #include "../builtins.h"
-
-int	is_export_var(char *var)
-{
-	if (ft_strchr(var, 'x') - var == 0)
-		return (1);
-	else
-		return (0);
-}
 
 void	*free_and_return_str_list(char **str_list, int nbr_str_alloc)
 {
@@ -86,22 +63,92 @@ int	is_option(char *first_arg)
 	return (*first_arg == '-');
 }
 
-int ft_export(int argc, char **argv, char ***env)
+int	var_already_exist(char **var_list, char *var)
+{
+	if (match_in_var_list(var_list, var))
+		return (1);
+	else
+		return (0);
+}
+
+int	var_has_value(char **var_list, char *var)
+{
+	if (extract_value(match_in_var_list(var_list, var)))
+		return (1);
+	else
+		return (0);
+}
+
+int	var_is_exported(char *var)
+{
+	return (var[0] == 'x');
+}
+
+void	change_flag(char **var, char flag)
+{
+	*var[0] = flag;
+}
+
+char	*extract_value(char *var)
+{
+	char	sep;
+
+	sep = '=';
+	return (ft_strchr(var, sep));
+}
+
+char	*change_var_value(char **var, char *new_value)
+{
+	
+	
+}
+
+int	add_var_to_env(char ***env, char *var_to_add)
 {
 	char	**tmp;
+	char	*flagged_var_to_add;
 
+	flagged_var_to_add = ft_str_join("x", var_to_add);
+	tmp = str_add(*env, flagged_var_to_add);
+	free(flagged_var_to_add);
+	if (!tmp)
+		return (EXIT_FAILURE);
+	free_str_list(*env, strlen_list(*env));
+	*env = str_list_dup(tmp);
+	free_str_list(tmp, strlen_list(tmp));
+	return (EXIT_SUCCESS);
+}
+
+int	do_export(char **new_vars, char ***env)
+{
+	int		i;
+	char	**var_to_change;
+
+	i = 1;
+	while (new_vars[i])
+	{
+		if (var_already_exist(&*env[1], &new_vars[i][1]) && !var_has_value(new_vars[i]))
+		{
+			var_to_change = match_in_var_list(*env, new_vars[i]);
+			if (!var_is_exported(*var_to_change))
+				change_flag(var_to_change, 'x');
+		}
+		else if (var_already_exist(&*env[1], &new_vars[i][1]) && var_has_value(new_vars[i]))
+		{
+			//replace all var=name in the env list with a x flag
+		}
+		else
+			add_var_to_env(env, new_vars[i]);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int ft_export(int argc, char **argv, char ***env)
+{
 	if (argc == 1 || (argc == 2 && p_option_called(argv[1])))
 		return (display_entire_env_vars(*env));
 	if (argc == 2 && is_option(argv[1]) && !p_option_called(argv[1]))	
 		return (EXIT_FAILURE);
-	else
-	{
-		tmp = str_list_join(*env, &argv[1]);
-		if (!tmp)
-			return (EXIT_FAILURE);
-		free_str_list(*env, strlen_list(*env));
-		*env = str_list_dup(tmp);
-		free_str_list(tmp, strlen_list(tmp));
-		return (0);
-	}
+	else if
+		return (do_export(argv, env));
 }

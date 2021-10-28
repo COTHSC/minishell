@@ -19,7 +19,7 @@ int	var_is_matching(char *var_to_compare, char *var_to_match)
 	return (0);
 }
 
-int	count_match_in_var_list(char **var_list, char *var_to_match)
+char	**match_in_var_list(char **var_list, char *var_to_match)
 {
 	int	nbr_of_match;
 	int	i;
@@ -31,8 +31,29 @@ int	count_match_in_var_list(char **var_list, char *var_to_match)
 	while (var_list[i])
 	{
 		if (var_is_matching(var_list[i], var_to_match))
-			nbr_of_match++;
+			return (&var_list[i]);
 		i++;
 	}
-	return (nbr_of_match);
+	return (NULL);
+}
+
+char	*extract_value(char *var)
+{
+	char	sep;
+
+	sep = '=';
+	return (ft_strchr(var, sep));
+}
+
+int	var_has_value(char **var_list, char *var)
+{
+	if (extract_value(match_in_var_list(var_list, var)))
+		return (1);
+	else
+		return (0);
+}
+
+int	var_is_exported(char *var)
+{
+	return (var[0] == 'x');
 }
