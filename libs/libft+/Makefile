@@ -1,18 +1,12 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jescully <jescully@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/11/18 09:50:54 by jescully          #+#    #+#              #
-#    Updated: 2021/10/28 15:13:10 by jescully         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = libft+.a
 
-CC = clang
+UNAME_S := $(shell uname -s)
+   ifeq ($(UNAME_S),Linux)
+        CC=clang-9
+    endif
+    ifeq ($(UNAME_S),Darwin)
+        CC= clang
+    endif
 
 CFLAGS = -Wall -Wextra -Werror 
 DFLAGS = -Wall -Wextra -Werror -g

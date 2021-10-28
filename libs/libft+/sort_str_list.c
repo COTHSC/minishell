@@ -1,6 +1,6 @@
 #include "./libftp.h"
 
-static void	dup_unique_to_str_list(char **dest, char **src, int dest_pos)
+static void	fill_dest_with_unique(char **dest, char **src, int dest_pos)
 {
 	int	i;
 
@@ -8,10 +8,7 @@ static void	dup_unique_to_str_list(char **dest, char **src, int dest_pos)
 	while (!dest[dest_pos])
 	{
 		if (is_not_in_str_list(dest, src[i]))
-		{
 			dest[dest_pos] = ft_strdup(src[i]);
-			i = 0;
-		}
 		i++;
 	}
 }
@@ -29,7 +26,7 @@ char	**sort_str_list(char **list)
 		i = 0;
 		while (list[i])
 		{
-			dup_unique_to_str_list(t, list, j);
+			fill_dest_with_unique(t, list, j);
 			if (t[j]
 				&& ft_strncmp(t[j], list[i], max_strlen(t[j], list[i])) > 0
 				&& is_not_in_str_list(t, list[i]))
