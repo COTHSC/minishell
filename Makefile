@@ -43,13 +43,13 @@ $(NAME) : $(OBJS)
 	$(CC) -o $@ -c $^ $(CFLAGS) $(INCLUDES)
 
 debug :
-	$(MAKE) -C ./libs/libft/
-	$(MAKE) -C ./libs/libft+/
+	$(MAKE) -C ./libs/libft/ debug
+	$(MAKE) -C ./libs/libft+/ debug
 	$(CC) $(CFLAGS) $(GFLAG) -o $(NAME) $(SRCS) ./libs/libft/libft.a ./libs/libft+/libft+.a -lreadline
 
-debug_unsanitary :
-	$(MAKE) -C ./libs/libft/
-	$(MAKE) -C ./libs/libft+/
+debug_lldb :
+	$(MAKE) -C ./libs/libft/ debug_lldb
+	$(MAKE) -C ./libs/libft+/ debug_lldb
 	$(CC) $(CFLAGS) -g -o $(NAME) $(SRCS) ./libs/libft/libft.a ./libs/libft+/libft+.a -lreadline
 
 clean :
