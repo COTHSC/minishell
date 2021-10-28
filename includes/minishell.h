@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:46:59 by calle             #+#    #+#             */
-/*   Updated: 2021/10/28 16:27:44 by jescully         ###   ########.fr       */
+/*   Updated: 2021/10/28 17:32:05 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ char    *getenv2(char **env, char *name);
 char    *get_path(char **command_block);
 int builtin_finder(char *name);
 void    free_command_block(char **command_block);
-int init_env(char **env2);
+int init_env(char ***env2);
 char **ft_exported_vars(char **env, char select);
 #endif

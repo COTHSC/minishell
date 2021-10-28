@@ -16,6 +16,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/builtins/echo/echo.c  \
 	   ./srcs/utils/our_get_env.c  \
 	   ./srcs/utils/init_env.c  \
+	   ./srcs/utils/get_exported_vars.c  \
 
 OBJS = $(SRCS:.c=.o)
 

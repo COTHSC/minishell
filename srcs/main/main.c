@@ -9,7 +9,7 @@
 #include "../../includes/minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
-
+ void    set_to_null(char ***env2, char *var);
 void    remove_quotes_list(char **command_block)
 {
     int i;
@@ -45,6 +45,19 @@ void    readline_loop(char ***env)
     }
 }
 
+char **create_basic()
+{
+    char **env4;
+
+    env4 = (char **)malloc(3 * sizeof(char*));
+    env4[0] = ft_strdup("PWD=");
+    env4[1] = ft_strdup("OLDPWD=");
+    env4[2] = ft_strdup("SHLVL=");
+    
+    return (env4);
+
+}
+
 int main(int argc, char **argv, char **env)
 {
     char **env2;
@@ -52,8 +65,12 @@ int main(int argc, char **argv, char **env)
     (void)argc;
     (void)argv;
 
-    env2 = str_list_dup(env);
-    init_env(env2);
+    if (!env[0])
+        env2 = create_basic();
+    else
+        env2 = str_list_dup(env);
+
+    init_env(&env2);
     char **command_block;
      char *line_from_terminal;
      int es;
