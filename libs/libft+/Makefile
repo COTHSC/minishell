@@ -1,18 +1,12 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jescully <jescully@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/11/18 09:50:54 by jescully          #+#    #+#              #
-#    Updated: 2021/10/25 19:43:22 by jescully         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = libft+.a
 
-CC = clang
+UNAME_S := $(shell uname -s)
+   ifeq ($(UNAME_S),Linux)
+        CC=clang-9
+    endif
+    ifeq ($(UNAME_S),Darwin)
+        CC= clang
+    endif
 
 CFLAGS = -Wall -Wextra -Werror
 
@@ -38,6 +32,12 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	ar rc $(NAME) $? $(OBJ)
 	ranlib $(NAME)
+
+debug :
+	$(CC) $(CFLAGS) $(GFLAG) -o $(NAME) $(SRC)
+	
+debug_lldb :
+	$(CC) $(CFLAGS) -g -o $(NAME) $(SRC)
 
 so: $(OBJ)
 	$(CC) -shared -o libft.so $(OBJ)
