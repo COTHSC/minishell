@@ -34,17 +34,20 @@ int execute_binary(char **command_block, char ***env)
     int     pid1;
     char    *path;
     int status;
+    char **clean_env;
 
     pid1 = fork();
     if (pid1 == 0)
     {
         path = get_path(command_block);
-        if ((execve(path, command_block, *env)) == -1)
-        {         
+        clean_env = ft_exported_vars(*env, 'x');
+        if ((execve(path, command_block, clean_env)) == -1)
+        { 
             free(path);
             free_command_block(command_block);
             exit(EXIT_FAILURE);
         }
+        free(clean_env);
         free (path);
         free_command_block(command_block);
     }
