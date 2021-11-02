@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:46:59 by calle             #+#    #+#             */
-/*   Updated: 2021/10/28 17:32:05 by jescully         ###   ########.fr       */
+/*   Updated: 2021/11/02 14:27:27 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include "../srcs/builtins/builtins.h"
 # include <stdio.h>
 
+
+char **g_env;
 
 /* Functions used to expand environmental variables */
 
@@ -35,18 +37,18 @@ char    **ft_better_split(char const *s);
 
 /* Functions related to the execution of a child program */
 
-int    execute(char **command_block, char ***env);
+int    execute(char **command_block);
 
 //char **env2;
 /* OUR builtins */
 
-int select_builtin(int index, int argc, char **argv, char ***env);
-int ft_pwd(int argc, char **argv, char ***env);
+int select_builtin(int index, int argc, char **argv);
+int ft_pwd(int argc, char **argv);
 
-char    *getenv2(char **env, char *name);
+char    *getenv2(char *name);
 char    *get_path(char **command_block);
-int builtin_finder(char *name);
+int		builtin_finder(char *name);
 void    free_command_block(char **command_block);
-int init_env(char ***env2);
-char **ft_exported_vars(char **env, char select);
+int init_env(void);
+char **ft_exported_vars(char select);
 #endif
