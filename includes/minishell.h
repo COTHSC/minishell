@@ -31,7 +31,6 @@ int    execute(char **command_block);
 /* OUR builtins */
 
 int select_builtin(int index, int argc, char **argv);
-int ft_pwd(int argc, char **argv);
 
 char    *getenv2(char *name);
 char    *get_path(char **command_block);
