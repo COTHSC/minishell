@@ -1,4 +1,4 @@
-#include "builtins.h"
+#include "../builtins/builtins.h"
 
 int	var_is_matching(char *var_to_compare, char *var_to_match)
 {
@@ -42,12 +42,12 @@ char	*extract_value(char *var)
 	char	sep;
 
 	sep = '=';
-	return (ft_strchr(var, sep));
+	return (ft_strchr(var, sep) + 1);
 }
 
 int	var_has_value(char **var_list, char *var)
 {
-	if (extract_value(match_in_var_list(var_list, var)))
+	if (extract_value(*match_in_var_list(var_list, var)))
 		return (1);
 	else
 		return (0);

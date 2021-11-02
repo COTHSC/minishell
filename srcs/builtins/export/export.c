@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/11/02 16:11:45 by calle            ###   ########.fr       */
+/*   Updated: 2021/11/02 16:33:30 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,30 +83,9 @@ int	var_already_exist(char **var_list, char *var)
 		return (0);
 }
 
-int	var_has_value(char **var_list, char *var)
-{
-	if (extract_value(match_in_var_list(var_list, var)))
-		return (1);
-	else
-		return (0);
-}
-
-int	var_is_exported(char *var)
-{
-	return (var[0] == 'x');
-}
-
 void	change_flag(char **var, char flag)
 {
 	*var[0] = flag;
-}
-
-char	*extract_value(char *var)
-{
-	char	sep;
-
-	sep = '=';
-	return (ft_strchr(var, sep) + 1);
 }
 
 char	*change_var_value(char **var, char *new_value)
@@ -142,7 +121,7 @@ int	do_export_on_env(char **new_vars)
 	{
 		if (var_already_exist(g_env, &new_vars[i][1]) && !var_has_value(g_env, new_vars[i]))
 		{
-			var_to_change = mratch_in_var_list(g_env, new_vars[i]);
+			var_to_change = match_in_var_list(g_env, new_vars[i]);
 			if (!var_is_exported(*var_to_change))
 				change_flag(var_to_change, 'x');
 		}

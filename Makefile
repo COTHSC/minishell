@@ -16,7 +16,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/utils/get_exported_vars.c  \
 	   ./srcs/builtins/export/export.c  \
 	   ./srcs/builtins/env/env.c  \
-	   ./srcs/builtins/builtins_utils.c  \
+	   ./srcs/utils/builtins_utils.c  \
 	   ./srcs/builtins/unset/unset.c  \
 
 OBJS = $(SRCS:.c=.o)
