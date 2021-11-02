@@ -40,7 +40,7 @@ void    readline_loop(void)
         line_from_terminal = find_dollars(line_from_terminal, es);
         command_block = ft_better_split(line_from_terminal);
         remove_quotes_list(command_block);
-        es = execute(command_block, g_env);
+        es = execute(command_block);
         free(line_from_terminal);
         free_command_block(command_block);
     }
@@ -57,7 +57,7 @@ char **create_basic()
     return (env4);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
     char **env2;
 
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
         g_env = create_basic();
     else
         g_env = str_list_dup(env);
-    init_env(g_env);
+    init_env();
     char **command_block;
     char *line_from_terminal;
     int es;

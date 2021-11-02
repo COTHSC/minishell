@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void    set_to_null(char ***env2, char *var)
+void    set_to_null(char **env2, char *var)
 {
     int i;
     char *tmp;
@@ -8,7 +8,7 @@ void    set_to_null(char ***env2, char *var)
     int oldpwd;
 
     i = -1;
-    env = *env2;
+    env = env2;
     oldpwd = 0;
     while (env[++i])
     {
@@ -48,11 +48,11 @@ void    set_env_value(char **env, char *var_name, char *var_value)
         str_add(env, tmp2);
 }
 
-char *increment_shlvl(char **env)
+char *increment_shlvl()
 {
     int i;
 
-    i = ft_atoi(getenv2(env, "SHLVL"));
+    i = ft_atoi(getenv2("SHLVL"));
     i += 1;
     return (ft_itoa(i));
 }
@@ -62,14 +62,13 @@ int init_env(void)
     int i;
     int oldpwd;
     char *tmp;
-    char **env;
     char buf[PATH_MAX];
 
     i = 0;
     oldpwd = 0;
     set_to_null(g_env, "OLDPWD");
-    set_init_value(g_env, "PWD", getcwd(buf, PATH_MAX));
-    set_init_value(g_env, "SHLVL", increment_shlvl(g_env));
+    set_env_value(g_env, "PWD", getcwd(buf, PATH_MAX));
+    set_env_value(g_env, "SHLVL", increment_shlvl());
     while (g_env[i])
     {
         tmp = ft_strjoin("x", g_env[i]);
