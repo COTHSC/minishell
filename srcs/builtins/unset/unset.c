@@ -28,21 +28,21 @@ char	**delete_var(char **var_list, char *var_to_del)
 	return (tmp);
 }
 
-int	delete_element_from_env(char ***env, char **argv)
+int	delete_element_from_env(char **env, char **vars_list)
 {
 	int	i;
 	char **tmp;
 
 	i = 1;
-	while (argv[i])
+	while (vars_list[i])
 	{
-		if (match_in_var_list(*env, argv[i]))
+		if (match_in_var_list(env, vars_list[i]))
 		{
-			tmp = delete_var(*env, argv[i]);
+			tmp = delete_var(env, vars_list[i]);
 			if (!tmp)
 				return (EXIT_FAILURE);
-			free_str_list(*env, strlen_list(*env));
-			*env = str_list_dup(tmp);
+			free_str_list(env, strlen_list(env));
+			env = str_list_dup(tmp);
 			if (!tmp)
 				return (EXIT_FAILURE);
 			free_str_list(tmp, strlen_list(tmp));
@@ -52,7 +52,7 @@ int	delete_element_from_env(char ***env, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-int ft_unset(int argc, char **argv, char ***env)
+int ft_unset(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
