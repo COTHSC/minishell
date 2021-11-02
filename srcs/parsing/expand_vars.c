@@ -1,5 +1,3 @@
- #include "../../libs/libft/libft.h"
- #include "../../libs/libft+/libftp.h"
  #include "../../includes/minishell.h"
  #include <stdio.h> 
  

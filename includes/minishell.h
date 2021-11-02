@@ -7,8 +7,9 @@
 # include "../srcs/builtins/builtins.h"
 # include <stdio.h>
 
-
 char **g_env;
+
+
 
 /* Functions used to expand environmental variables */
 
@@ -46,4 +47,5 @@ char	**match_in_var_list(char **var_list, char *var_to_match);
 char	*extract_value(char *var);
 int		var_has_value(char **var_list, char *var);
 int		var_is_exported(char *var);
+
 #endif
