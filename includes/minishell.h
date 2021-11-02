@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:46:59 by calle             #+#    #+#             */
-/*   Updated: 2021/10/28 17:32:05 by jescully         ###   ########.fr       */
+/*   Updated: 2021/11/02 14:44:19 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,12 @@ int builtin_finder(char *name);
 void    free_command_block(char **command_block);
 int init_env(char ***env2);
 char **ft_exported_vars(char **env, char select);
+/*
+** ------------------ BUILTINS AUXILIARIES ------------------
+*/
+int		var_is_matching(char *var_to_compare, char *var_to_match);
+char	*match_in_var_list(char **var_list, char *var_to_match);
+char	*extract_value(char *var);
+int		var_has_value(char **var_list, char *var);
+int		var_is_exported(char *var);
 #endif
