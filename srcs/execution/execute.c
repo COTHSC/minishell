@@ -7,7 +7,7 @@
 # include <fcntl.h>
 # include "../../includes/minishell.h"
 
-int select_builtin_test(int index, int argc, char **argv, char ***env);
+int select_builtin_test(int index, int argc, char **argv);
 
 void    free_command_block(char **command_block)
 {
@@ -19,17 +19,17 @@ void    free_command_block(char **command_block)
     free(command_block);
 }
 
-int     execute_builtin(char **command_block, char ***env)
+int     execute_builtin(char **command_block)
 {
     int ret;
 
     ret = -1;
     if (command_block[0] && builtin_finder(command_block[0]) != -1)
-        ret = select_builtin_test(builtin_finder(command_block[0]), strlen_list(command_block), command_block, env);
+        ret = select_builtin_test(builtin_finder(command_block[0]), strlen_list(command_block), command_block);
     return (ret);
 }
 
-int execute_binary(char **command_block, char ***env)
+int execute_binary(char **command_block)
 {
     int     pid1;
     char    *path;
@@ -40,7 +40,7 @@ int execute_binary(char **command_block, char ***env)
     if (pid1 == 0)
     {
         path = get_path(command_block);
-        clean_env = ft_exported_vars(*env, 'x');
+        clean_env = ft_exported_vars('x');
         if ((execve(path, command_block, clean_env)) == -1)
         { 
             free(path);
@@ -57,14 +57,14 @@ int execute_binary(char **command_block, char ***env)
    return (0); 
 }
 
-int    execute(char **command_block, char ***env)
+int    execute(char **command_block)
 {
     if (command_block[0])
     {
         if (builtin_finder(command_block[0]) != -1)
-            return (execute_builtin(command_block, env));
+            return (execute_builtin(command_block));
         else
-            return (execute_binary(command_block, env));
+            return (execute_binary(command_block));
     }
     return (-1);
 }
