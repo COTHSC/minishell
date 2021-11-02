@@ -60,5 +60,5 @@ int ft_unset(int argc, char **argv)
 	if (argc == 1)
 		return (EXIT_SUCCESS);
 	else
-		return (delete_element_from_env(env, argv));
+		return (delete_element_from_env(g_env, argv));
 }

@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/11/02 14:59:39 by calle            ###   ########.fr       */
+/*   Updated: 2021/11/02 16:11:45 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*extract_value(char *var)
 	char	sep;
 
 	sep = '=';
-	return (ft_strchr(var, sep));
+	return (ft_strchr(var, sep) + 1);
 }
 
 char	*change_var_value(char **var, char *new_value)
@@ -116,18 +116,18 @@ char	*change_var_value(char **var, char *new_value)
 	return (0);
 }
 
-int	add_var_to_env(char **env, char *var_to_add)
+int	add_var_to_env(char *var_to_add)
 {
 	char	**tmp;
 	char	*flagged_var_to_add;
 
 	flagged_var_to_add = ft_strjoin("x", var_to_add);
-	tmp = str_add(env, flagged_var_to_add);
+	tmp = str_add(g_env, flagged_var_to_add);
 	free(flagged_var_to_add);
 	if (!tmp)
 		return (EXIT_FAILURE);
-	free_str_list(env, strlen_list(env));
-	env = str_list_dup(tmp);
+	free_str_list(g_env, strlen_list(g_env));
+	g_env = str_list_dup(tmp);
 	free_str_list(tmp, strlen_list(tmp));
 	return (EXIT_SUCCESS);
 }
@@ -140,18 +140,18 @@ int	do_export_on_env(char **new_vars)
 	i = 1;
 	while (new_vars[i])
 	{
-		if (var_already_exist(g_env[1], &new_vars[i][1]) && !var_has_value(g_env, new_vars[i]))
+		if (var_already_exist(g_env, &new_vars[i][1]) && !var_has_value(g_env, new_vars[i]))
 		{
-			var_to_change = match_in_var_list(g_env, new_vars[i]);
+			var_to_change = mratch_in_var_list(g_env, new_vars[i]);
 			if (!var_is_exported(*var_to_change))
 				change_flag(var_to_change, 'x');
 		}
-		else if (var_already_exist(g_env[1], &new_vars[i][1]) && var_has_value(g_env, new_vars[i]))
+		else if (var_already_exist(g_env, &new_vars[i][1]) && var_has_value(g_env, new_vars[i]))
 		{
 			//replace all var_name=var_value in the env list with a x flag
 		}
 		else
-			add_var_to_env(g_env, new_vars[i]);
+			add_var_to_env(new_vars[i]);
 	}
 	return (EXIT_SUCCESS);
 }
