@@ -1,6 +1,6 @@
 #include "../builtins/builtins.h"
 
-int	var_is_matching(char *var_to_compare, char *var_to_match)
+int	var_name_is_matching(char *var_to_compare, char *var_to_match)
 {
 	int		c_pos;
 	char	*c_addr;
@@ -8,7 +8,7 @@ int	var_is_matching(char *var_to_compare, char *var_to_match)
 	int		sep;
 
 	sep = '=';
-	c_addr = ft_strchr(var_to_compare, sep);
+	c_addr = ft_strchr(var_to_compare, sep); // var value exist ?
 	max_len = max_strlen(var_to_compare, var_to_match);
 	if (!c_addr && ft_strncmp(var_to_compare, var_to_match, max_len) == 0)
 		return (1);
@@ -19,18 +19,16 @@ int	var_is_matching(char *var_to_compare, char *var_to_match)
 	return (0);
 }
 
-char	**match_in_var_list(char **var_list, char *var_to_match)
+char	**match_var_name(char **var_list, char *var_to_match)
 {
-	int	nbr_of_match;
 	int	i;
 	int sep;
 
 	i = 0;
 	sep = '=';
-	nbr_of_match = 0;
 	while (var_list[i])
 	{
-		if (var_is_matching(var_list[i], var_to_match))
+		if (var_name_is_matching(var_list[i], var_to_match))
 			return (&var_list[i]);
 		i++;
 	}
@@ -45,9 +43,9 @@ char	*extract_value(char *var)
 	return (ft_strchr(var, sep) + 1);
 }
 
-int	var_has_value(char **var_list, char *var)
+int	var_has_value(char *var)
 {
-	if (extract_value(*match_in_var_list(var_list, var)))
+	if (extract_value(var))
 		return (1);
 	else
 		return (0);

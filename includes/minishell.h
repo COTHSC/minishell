@@ -33,7 +33,7 @@ int    execute(char **command_block);
 
 int select_builtin(int index, int argc, char **argv);
 
-char    *getenv2(char *name);
+char    *ft_getenv(char *name);
 char    *get_path(char **command_block);
 int		builtin_finder(char *name);
 void    free_command_block(char **command_block);
@@ -42,10 +42,10 @@ char **ft_exported_vars(char select);
 /*
 ** ------------------ BUILTINS AUXILIARIES ------------------
 */
-int		var_is_matching(char *var_to_compare, char *var_to_match);
-char	**match_in_var_list(char **var_list, char *var_to_match);
+int		var_name_is_matching(char *var_to_compare, char *var_to_match);
+char	**match_var_name(char **var_list, char *var_to_match);
 char	*extract_value(char *var);
-int		var_has_value(char **var_list, char *var);
+int		var_has_value(char *var);
 int		var_is_exported(char *var);
 
 #endif

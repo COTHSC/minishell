@@ -15,7 +15,7 @@ char	**delete_var(char **var_list, char *var_to_del)
 		return (NULL);
 	while (var_list[++i])
 	{
-		if (var_is_matching(var_list[i], var_to_del))
+		if (var_name_is_matching(var_list[i], var_to_del))
 			j--;
 		else
 		{
@@ -36,7 +36,7 @@ int	delete_element_from_env(char **env, char **vars_list)
 	i = 1;
 	while (vars_list[i])
 	{
-		if (match_in_var_list(env, vars_list[i]))
+		if (match_var_name(env, vars_list[i]))
 		{
 			tmp = delete_var(env, vars_list[i]);
 			if (!tmp)

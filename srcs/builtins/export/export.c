@@ -6,7 +6,7 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 11:15:47 by calle             #+#    #+#             */
-/*   Updated: 2021/11/02 16:33:30 by calle            ###   ########.fr       */
+/*   Updated: 2021/11/02 20:00:35 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	is_option(char *first_arg)
 
 int	var_already_exist(char **var_list, char *var)
 {
-	if (match_in_var_list(var_list, var))
+	if (match_var_name(var_list, var))
 		return (1);
 	else
 		return (0);
@@ -119,15 +119,15 @@ int	do_export_on_env(char **new_vars)
 	i = 1;
 	while (new_vars[i])
 	{
-		if (var_already_exist(g_env, &new_vars[i][1]) && !var_has_value(g_env, new_vars[i]))
+		if (var_already_exist(g_env, &new_vars[i][1]) && !var_has_value(new_vars[i]))
 		{
-			var_to_change = match_in_var_list(g_env, new_vars[i]);
+			var_to_change = match_var_name(g_env, new_vars[i]);
 			if (!var_is_exported(*var_to_change))
 				change_flag(var_to_change, 'x');
 		}
-		else if (var_already_exist(g_env, &new_vars[i][1]) && var_has_value(g_env, new_vars[i]))
+		else if (var_already_exist(g_env, &new_vars[i][1]) && var_has_value(new_vars[i]))
 		{
-			//replace all var_name=var_value in the env list with a x flag
+			;
 		}
 		else
 			add_var_to_env(new_vars[i]);
