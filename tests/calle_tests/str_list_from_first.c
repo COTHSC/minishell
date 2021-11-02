@@ -2,6 +2,16 @@
 #include "../../libs/libft/libft.h"
 #include "../../libs/libft+/libftp.h"
 
+void	print_my_list(char **my_list)
+{
+    int i = 0;
+    while (my_list[i])
+    {
+        printf("%s\n", my_list[i]);
+        i++;
+    }
+}
+
 int main(void )
 {
 	char **list;
@@ -21,6 +31,7 @@ int main(void )
         printf("%s\n", &list[i][1]);
         i++;
     }
+	print_my_list((&list[0][1]));
 
 	//print_str_list(list, NULL);
 //	print_str_list(&(*p_list[1]), NULL);
