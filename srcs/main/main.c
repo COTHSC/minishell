@@ -10,6 +10,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+char **g_env;
+
 void    set_to_null(char *var);
 
 void    remove_quotes_list(char **command_block)
@@ -56,6 +58,7 @@ char **create_basic()
     env4[2] = ft_strdup("SHLVL=");
     return (env4);
 }
+
 
 int main(int argc, char **argv, char **env)
 {
