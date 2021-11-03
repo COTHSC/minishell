@@ -47,5 +47,6 @@ char	**match_var_name(char **var_list, char *var_to_match);
 char	*extract_value(char *var);
 int		var_has_value(char *var);
 int		var_is_exported(char *var);
+char	**split_to_name_value_pair(char *var);
 
 #endif
