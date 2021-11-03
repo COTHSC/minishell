@@ -31,7 +31,8 @@ int main(void )
         printf("%s\n", &list[i][1]);
         i++;
     }
-	print_my_list((&list[0][1]));
+    p_list
+	print_my_list(&((p_list[0])[1]));
 
 	//print_str_list(list, NULL);
 //	print_str_list(&(*p_list[1]), NULL);
