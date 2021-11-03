@@ -51,7 +51,7 @@ int main(void )
 		//alter an element in environnement base on matching var 
 		char **carved_env;
 
-		g_env = ft_split("xHello xWorld", ' ');
+		g_env = ft_split("xHello dWorld", ' ');
 		carved_env = env_selector(1);
 		if (ft_strncmp(carved_env[0], "Hello", 5) == 0)
 			alter_env(0, "xYATTA");
