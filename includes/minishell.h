@@ -1,5 +1,5 @@
 #ifndef MINISHELL_H
-# define MINISHELL_H
+#define MINISHELL_H
 # include "../libs/libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
@@ -7,7 +7,7 @@
 # include "../srcs/builtins/builtins.h"
 # include <stdio.h>
 
-char **g_env;
+extern char **g_env;
 
 
 
