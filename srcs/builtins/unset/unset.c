@@ -1,64 +1,65 @@
 #include "../builtins.h"
 
-char	**delete_var(char **var_list, char *var_to_del)
+char	**delete_var(char **clean_env, char *var_to_del)
 {
-	int	i;
-	int j;
-	char **tmp;
-	int	nb_to_del;
+	int		i;
+	int		j;
+	char	**tmp;
 
-	i = -1;
+	i = 0;
 	j = 0;
-	nb_to_del = 1;
-	tmp = calloc_str_list(strlen_list(var_list) - nb_to_del);
+	tmp = calloc_str_list(strlen_list(g_env));
 	if (!tmp)
 		return (NULL);
-	while (var_list[++i])
+	while (g_env[i])
 	{
-		if (var_name_is_matching(var_list[i], var_to_del))
+		if (var_name_is_matching(clean_env[i], var_to_del))
 			j--;
 		else
 		{
-			tmp[j] = ft_strdup(var_list[i]);
+			tmp[j] = ft_strdup(g_env[i]);
 			if (!tmp[j])
 				return (free_list_and_return_null(tmp, j));
 		}
 		j++;
+		i++;
 	}
 	return (tmp);
 }
 
-int	delete_element_from_env(char **env, char **vars_list)
+int	delete_element_from_env(char **vars_to_unset)
 {
-	int	i;
-	char **tmp;
+	int		i;
+	char	**tmp;
+	char	**name_value_pair;
+	char	**clean_env;
 
-	i = 1;
-	while (vars_list[i])
+	i = 0;
+	while (vars_to_unset[++i])
 	{
-		if (match_var_name(env, vars_list[i]))
+		name_value_pair = split_to_name_value_pair(vars_to_unset[i]);
+		clean_env = env_selector(1);
+		if (match_var_name(clean_env, name_value_pair[0]))
 		{
-			tmp = delete_var(env, vars_list[i]);
+			tmp = delete_var(clean_env, name_value_pair[0]);
 			if (!tmp)
 				return (EXIT_FAILURE);
-			free_str_list(env, strlen_list(env));
-			env = str_list_dup(tmp);
-			if (!tmp)
-				return (EXIT_FAILURE);
+			free_str_list(g_env, strlen_list(g_env));
+			g_env = str_list_dup(tmp);
 			free_str_list(tmp, strlen_list(tmp));
+			if (!g_env)
+				return (EXIT_FAILURE);
 		}
-		i++;
+		free_str_list(clean_env, strlen_list(clean_env));
+		free_str_list(name_value_pair, strlen_list(name_value_pair));
 	}
 	return (EXIT_SUCCESS);
 }
 
-int ft_unset(int argc, char **argv)
+int	ft_unset(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-
 	if (argc == 1)
 		return (EXIT_SUCCESS);
 	else
-		return (delete_element_from_env(g_env, argv));
+		return (delete_element_from_env(argv));
 }
