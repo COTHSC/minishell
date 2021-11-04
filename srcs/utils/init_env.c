@@ -52,7 +52,7 @@ char *increment_shlvl()
 {
     int i;
 
-    i = ft_atoi(getenv2("SHLVL"));
+    i = ft_atoi(ft_getenv("SHLVL"));
     i += 1;
     return (ft_itoa(i));
 }
