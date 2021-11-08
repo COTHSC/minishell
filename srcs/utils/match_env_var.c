@@ -1,4 +1,4 @@
-#include "../builtins/builtins.h"
+#include "../../includes/minishell.h"
 
 int	var_name_is_matching(char *var_to_compare, char *var_to_match)
 {
@@ -8,7 +8,7 @@ int	var_name_is_matching(char *var_to_compare, char *var_to_match)
 	int		sep;
 
 	sep = '=';
-	c_addr = ft_strchr(var_to_compare, sep); // var value exist ?
+	c_addr = ft_strchr(var_to_compare, sep);
 	max_len = max_strlen(var_to_compare, var_to_match);
 	if (!c_addr && ft_strncmp(var_to_compare, var_to_match, max_len) == 0)
 		return (1);
@@ -35,23 +35,18 @@ char	**match_var_name(char **var_list, char *var_to_match)
 	return (NULL);
 }
 
-char	*extract_value(char *var)
+int	index_matching_var_name(char **var_list, char *var_to_match)
 {
-	char	sep;
+	int	i;
+	int sep;
 
+	i = 0;
 	sep = '=';
-	return (ft_strchr(var, sep) + 1);
-}
-
-int	var_has_value(char *var)
-{
-	if (extract_value(var))
-		return (1);
-	else
-		return (0);
-}
-
-int	var_is_exported(char *var)
-{
-	return (var[0] == 'x');
+	while (var_list[i])
+	{
+		if (var_name_is_matching(var_list[i], var_to_match))
+			return (i);
+		i++;
+	}
+	return (-1);
 }
