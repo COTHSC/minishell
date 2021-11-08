@@ -12,16 +12,17 @@
 
 char **g_env;
 
-void handle_sig(int sig)
+void handle_sig(int sig, siginfo_t *info, void *ucontext)
 {
-	if (sig == SIGINT)
+	(void)ucontext;
+	if (info->si_pid != 0 && sig == SIGINT)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
-		//rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (sig == SIGQUIT)
+	if (info->si_pid != 0 && sig == SIGQUIT)
 	{
 		if (rl_point == 0)
 		{
@@ -33,12 +34,11 @@ void handle_sig(int sig)
 
 void	signal_handler_settings(struct sigaction *sa)
 {
-	sa->sa_handler = &handle_sig;
-	sa->sa_flags = SA_RESTART;
+	sa->sa_flags = SA_RESTART | SA_SIGINFO | SA_NODEFER;
+	sa->sa_sigaction = &handle_sig;
 	sigaction(SIGINT, sa, NULL); // For ctrl + c
-    sigaction(SIGQUIT, sa, NULL); /* For ctrl + \ */
+    	sigaction(SIGQUIT, sa, NULL); /* For ctrl + \ */
 }
-
 
 void	set_terminal_options(struct termios *newtio)
 {
@@ -56,24 +56,24 @@ int	terminal_settings(struct termios *oldtio, struct termios *newtio)
 
 	ret = tcgetattr(STDIN_FILENO, oldtio); //save terminal attributes
 	if (ret < 0)
-    {
-      perror ("error in tcgetattr");
-      return (EXIT_FAILURE);
-    }
+	{
+		perror ("error in tcgetattr");
+		return (EXIT_FAILURE);
+    	}
 	ret = tcgetattr(STDIN_FILENO, newtio); //fetch terminal attributes
 	if (ret < 0)
-    {
-      perror ("error in tcgetattr");
-      return (EXIT_FAILURE);
-    }
+    	{
+		perror ("error in tcgetattr");
+		return (EXIT_FAILURE);
+    	}
 	set_terminal_options(newtio);
 	ret = tcsetattr(STDIN_FILENO, TCSANOW, newtio); //update current terminal attributes
-	if (ret < 0)
-    {
-      perror ("error in tcsetattr");
-      return (EXIT_FAILURE);
-    }
-    return (EXIT_SUCCESS);
+        if (ret < 0)
+    	{
+    		perror ("error in tcsetattr");
+		return (EXIT_FAILURE);
+    	}
+    	return (EXIT_SUCCESS);
 }
 
 void    set_to_null(char *var);
@@ -110,7 +110,7 @@ int main(int argc, char **argv, char **env)
 
     (void)argc;
     (void)argv;
-    //char **command_block;
+    char **command_block;
     int es;
     char *line_from_terminal;
 
@@ -124,18 +124,18 @@ int main(int argc, char **argv, char **env)
         g_env = create_basic();
     else
         g_env = str_list_dup(env);
-//    init_env();
+    init_env();
     es = 0;
     while (1)
     {
-		line_from_terminal = readline(" >  ");
+	line_from_terminal = readline(" >  ");
         add_history(line_from_terminal);
-        //line_from_terminal = find_dollars(line_from_terminal, es);
-        //command_block = ft_better_split(line_from_terminal);
-        //remove_quotes_list(command_block);
-        //es = execute(command_block);
+        line_from_terminal = find_dollars(line_from_terminal, es);
+        command_block = ft_better_split(line_from_terminal);
+        remove_quotes_list(command_block);
+        es = execute(command_block);
         free(line_from_terminal);
-        //free_command_block(command_block);
+        free_command_block(command_block);
     }
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldtio); //restore terminal attributes
     free_str_list(env2, strlen_list(g_env));
