@@ -1,6 +1,6 @@
-#include "builtins.h"
+#include "../../includes/minishell.h"
 
-int	var_is_matching(char *var_to_compare, char *var_to_match)
+int	var_name_is_matching(char *var_to_compare, char *var_to_match)
 {
 	int		c_pos;
 	char	*c_addr;
@@ -19,41 +19,34 @@ int	var_is_matching(char *var_to_compare, char *var_to_match)
 	return (0);
 }
 
-char	**match_in_var_list(char **var_list, char *var_to_match)
+char	**match_var_name(char **var_list, char *var_to_match)
 {
-	int	nbr_of_match;
 	int	i;
 	int sep;
 
 	i = 0;
 	sep = '=';
-	nbr_of_match = 0;
 	while (var_list[i])
 	{
-		if (var_is_matching(var_list[i], var_to_match))
+		if (var_name_is_matching(var_list[i], var_to_match))
 			return (&var_list[i]);
 		i++;
 	}
 	return (NULL);
 }
 
-char	*extract_value(char *var)
+int	index_matching_var_name(char **var_list, char *var_to_match)
 {
-	char	sep;
+	int	i;
+	int sep;
 
+	i = 0;
 	sep = '=';
-	return (ft_strchr(var, sep));
-}
-
-int	var_has_value(char **var_list, char *var)
-{
-	if (extract_value(match_in_var_list(var_list, var)))
-		return (1);
-	else
-		return (0);
-}
-
-int	var_is_exported(char *var)
-{
-	return (var[0] == 'x');
+	while (var_list[i])
+	{
+		if (var_name_is_matching(var_list[i], var_to_match))
+			return (i);
+		i++;
+	}
+	return (-1);
 }

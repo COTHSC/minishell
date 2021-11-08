@@ -10,20 +10,24 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/builtins/pwd/pwd.c  \
 	   ./srcs/builtins/cd/cd.c  \
 	   ./srcs/builtins/exit/exit.c  \
+	   ./srcs/builtins/echo/echo.c  \
 	   ./srcs/builtins/export/export.c  \
 	   ./srcs/builtins/env/env.c  \
 	   ./srcs/builtins/unset/unset.c  \
-	   ./srcs/builtins/echo/echo.c  \
-	   ./srcs/builtins/builtins_utils.c  \
 	   ./srcs/utils/our_get_env.c  \
 	   ./srcs/utils/init_env.c  \
 	   ./srcs/utils/get_exported_vars.c  \
+	   ./srcs/utils/env_modifiers_and_checkers.c \
+	   ./srcs/utils/match_env_var.c \
+	   ./srcs/utils/split_var_by_name_value_pair.c \
+	   ./srcs/utils/env_selector.c \
+	   ./srcs/utils/command_options_checkers.c
 
 OBJS = $(SRCS:.c=.o)
 
 UNAME_S := $(shell uname -s)
    ifeq ($(UNAME_S),Linux)
-        CC=clang-9
+        CC=clang
     endif
     ifeq ($(UNAME_S),Darwin)
         CC= clang

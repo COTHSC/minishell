@@ -15,23 +15,23 @@ int count_exported_vars(char **env)
      return (c);
  }
 
- char **ft_exported_vars(char **env, char select)
+ char **ft_exported_vars(char select)
  {
      int i;
      int c;
-     char **clean_env;
+     char **clean_g_env;
 
      i = -1;
      c = 0;
-     clean_env = (char**)malloc(count_exported_vars(env) * sizeof(char*) + 1);
-     while (env[++i])
+     clean_g_env = (char**)malloc(count_exported_vars(g_env) * sizeof(char*) + 1);
+     while (g_env[++i])
      {
-         if (env[i][0] == select)
+         if (g_env[i][0] == select)
          {
-             clean_env[c] = &env[i][1];
+             clean_g_env[c] = &g_env[i][1];
              c++;
          }
      }
-     clean_env[c] = NULL;
-     return (clean_env);
+     clean_g_env[c] = NULL;
+     return (clean_g_env);
  }

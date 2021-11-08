@@ -1,10 +1,9 @@
 #include "../builtins.h"
 
-int ft_exit(int argc, char **argv, char ***env)
+int ft_exit(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-	(void)env;
 
     printf("exit \n");
     exit(0);

@@ -1,24 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 14:46:59 by calle             #+#    #+#             */
-/*   Updated: 2021/10/28 17:32:05 by jescully         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
-# define MINISHELL_H
-# include "../libs/libft/libft.h"
-# include <stdlib.h>
-# include <unistd.h>
+#define MINISHELL_H
 # include "../libs/libft+/libftp.h"
 # include "../srcs/builtins/builtins.h"
+# include "../libs/libft/libft.h"
 # include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
+extern char **g_env;
 
 /* Functions used to expand environmental variables */
 
@@ -35,18 +24,31 @@ char    **ft_better_split(char const *s);
 
 /* Functions related to the execution of a child program */
 
-int    execute(char **command_block, char ***env);
-
-//char **env2;
-/* OUR builtins */
-
-int select_builtin(int index, int argc, char **argv, char ***env);
-int ft_pwd(int argc, char **argv, char ***env);
-
-char    *getenv2(char **env, char *name);
+int    execute(char **command_block);
+char    *ft_getenv(char *name);
 char    *get_path(char **command_block);
-int builtin_finder(char *name);
 void    free_command_block(char **command_block);
-int init_env(char ***env2);
-char **ft_exported_vars(char **env, char select);
+
+/*
+** ------------------ BUILTINS AUXILIARIES ------------------
+*/
+int		select_builtin(int index, int argc, char **argv);
+int		builtin_finder(char *name);
+/*
+** ------------------ ENV AUXILIARIES ------------------
+*/
+int		init_env(void);
+char	**ft_exported_vars(char select);
+int		var_name_is_matching(char *var_to_compare, char *var_to_match);
+char	**match_var_name(char **var_list, char *var_to_match);
+char	*extract_value(char *var);
+int		var_has_value(char *var);
+int		var_is_exported(char *var);
+int		var_already_exist(char **var_list, char *var);
+void	change_flag(char **var, char flag);
+char	**split_to_name_value_pair(char *var);
+char	**env_selector(int position_selector);
+int		index_matching_var_name(char **var_list, char *var_to_match);
+int		is_option(char *cmd_block);
+int		option_is_called(char *cmd_block, char *option);
 #endif

@@ -9,7 +9,11 @@
 #include "../../includes/minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
- void    set_to_null(char ***env2, char *var);
+
+char **g_env;
+
+void    set_to_null(char *var);
+
 void    remove_quotes_list(char **command_block)
 {
     int i;
@@ -22,10 +26,9 @@ void    remove_quotes_list(char **command_block)
         command_block[i] = temp;
         i++;
     }
-
 }
 
-void    readline_loop(char ***env)
+void    readline_loop(void)
 {
     char **command_block;
     char *line_from_terminal;
@@ -39,7 +42,7 @@ void    readline_loop(char ***env)
         line_from_terminal = find_dollars(line_from_terminal, es);
         command_block = ft_better_split(line_from_terminal);
         remove_quotes_list(command_block);
-        es = execute(command_block, env);
+        es = execute(command_block);
         free(line_from_terminal);
         free_command_block(command_block);
     }
@@ -53,10 +56,9 @@ char **create_basic()
     env4[0] = ft_strdup("PWD=");
     env4[1] = ft_strdup("OLDPWD=");
     env4[2] = ft_strdup("SHLVL=");
-    
     return (env4);
-
 }
+
 
 int main(int argc, char **argv, char **env)
 {
@@ -66,14 +68,13 @@ int main(int argc, char **argv, char **env)
     (void)argv;
 
     if (!env[0])
-        env2 = create_basic();
+        g_env = create_basic();
     else
-        env2 = str_list_dup(env);
-
-    init_env(&env2);
+        g_env = str_list_dup(env);
+    init_env();
     char **command_block;
-     char *line_from_terminal;
-     int es;
+    char *line_from_terminal;
+    int es;
 
      es = 0;
      while (1)
@@ -83,10 +84,10 @@ int main(int argc, char **argv, char **env)
          line_from_terminal = find_dollars(line_from_terminal, es);
          command_block = ft_better_split(line_from_terminal);
          remove_quotes_list(command_block);
-         es = execute(command_block, &env2);
+         es = execute(command_block);
          free(line_from_terminal);
          free_command_block(command_block);
      }
-    free_str_list(env2, strlen_list(env2));
+    free_str_list(env2, strlen_list(g_env));
     return 0;
 }

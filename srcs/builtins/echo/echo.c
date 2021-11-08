@@ -42,10 +42,8 @@ int	valid_n_option(char *option)
 		return (0);
 }
 
-int ft_echo(int argc, char **argv, char ***env)
+int ft_echo(int argc, char **argv)
 {
-	(void)env;
-
 	if (argc == 1)
 	{
 		ft_putchar_fd('\n', 1);
