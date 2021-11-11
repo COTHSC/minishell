@@ -42,7 +42,7 @@ void    readline_loop(void)
         line_from_terminal = find_dollars(line_from_terminal, es);
         command_block = ft_better_split(line_from_terminal);
         remove_quotes_list(command_block);
-        es = execute(command_block);
+    //    es = execute(command_block);
         free(line_from_terminal);
         free_command_block(command_block);
     }
@@ -59,35 +59,48 @@ char **create_basic()
     return (env4);
 }
 
-
 int main(int argc, char **argv, char **env)
 {
-    char **env2;
-
-    (void)argc;
-    (void)argv;
-
+    char **command_blocks;
+    int i;
     if (!env[0])
         g_env = create_basic();
     else
         g_env = str_list_dup(env);
     init_env();
-    char **command_block;
+    char ***command_block;
     char *line_from_terminal;
     int es;
+
+    (void)argc;
+    (void)argv;
+    command_blocks = NULL;
 
      es = 0;
      while (1)
      {
+         i = 0;
          line_from_terminal = readline(" >  ");
          add_history(line_from_terminal);
          line_from_terminal = find_dollars(line_from_terminal, es);
-         command_block = ft_better_split(line_from_terminal);
-         remove_quotes_list(command_block);
+         command_blocks = ft_split(line_from_terminal, '|');
+         command_block = ft_calloc(sizeof(char ***) , 10);
+         while (command_blocks[i])
+         {
+            command_block[i] = ft_better_split(command_blocks[i]);
+            i++;
+         }
+         remove_quotes_list(command_block[0]);
          es = execute(command_block);
          free(line_from_terminal);
-         free_command_block(command_block);
+         i = 0;
+         while (command_blocks[i])
+         {
+            free_command_block(command_block[i]);
+            i++;
+         }
+         free(command_block);
      }
-    free_str_list(env2, strlen_list(g_env));
+    free_str_list(g_env, strlen_list(g_env));
     return 0;
 }
