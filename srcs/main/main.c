@@ -91,7 +91,7 @@ int main(int argc, char **argv, char **env)
             i++;
          }
          remove_quotes_list(command_block[0]);
-         es = execute(command_block);
+         es = execute(*command_block);
          free(line_from_terminal);
          i = 0;
          while (command_blocks[i])

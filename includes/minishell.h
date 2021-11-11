@@ -24,7 +24,7 @@ char    **ft_better_split(char const *s);
 
 /* Functions related to the execution of a child program */
 
-int    execute(char ***command_block);
+int    execute(char **command_block);
 
 //char **env2;
 /* OUR builtins */
