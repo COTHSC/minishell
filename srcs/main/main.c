@@ -84,7 +84,7 @@ int main(int argc, char **argv, char **env)
          add_history(line_from_terminal);
          line_from_terminal = find_dollars(line_from_terminal, es);
          command_blocks = ft_split(line_from_terminal, '|');
-         command_block = ft_calloc(sizeof(char ***) , 10);
+         command_block = ft_calloc(sizeof(char ***) , 100);
          while (command_blocks[i])
          {
             command_block[i] = ft_better_split(command_blocks[i]);

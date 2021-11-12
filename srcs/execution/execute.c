@@ -86,7 +86,9 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
 	dup2(fd[i][0], STDIN_FILENO);
 	if (i != n - 1)
 		dup2(fd[i + 1][1], STDOUT_FILENO);
-	// shoe in for redirections? they seem to take precedence over pipes...
+
+	// shoe in for redirections? they seem to take precedence over pipes. 
+    //
 	execute_binary(cmd);
 	close(fd[i][0]);
 	close(fd[i + 1][1]);

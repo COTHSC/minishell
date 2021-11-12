@@ -56,19 +56,14 @@ int	is_child(int *tab, int size)
 
 int main(int argc, char **argv, char **env)
 {
-	(void)argc;
-	(void)argv;
-	(void)env;
-    int fd[4][2];
-    int i;
-    int d;
-    int *pids;
-    int n;
-     char *ls[] = {"ls", "-al", NULL};
-     char *rev[] = {"rev", NULL};
-     char *nl[] = {"nl", NULL};
-     char *cat[] = {"cat", "-e", NULL};
-    char **cmd[] = {ls, rev, nl, cat, NULL};
+	int (*fd)[2];
+	int i;
+	int *pids;
+	char *ls[] = {"ls", "-al", NULL};
+	char *rev[] = {"rev", NULL};
+	char *nl[] = {"nl", NULL};
+	char *cat[] = {"cat", "-e", NULL};
+	char **cmd[] = {ls, rev, nl, cat, NULL};
 
 	i = 0;
 	int n = 0;
@@ -89,12 +84,7 @@ int main(int argc, char **argv, char **env)
 	write(STDOUT_FILENO, "How\n", 4);
 
 	dup2(stdoutCopy, 1); 
->>>>>>> d639f9bc92fb5289eb0b71f96ed139e1d3265218
 
-	//	dup2(fd[1][1], STDOUT_FILENO);
-
-//	dup2(1, fd[1][1]);
-	
 	while (i < n)
 	{
 		if (is_child(pids, i))
@@ -119,6 +109,7 @@ int main(int argc, char **argv, char **env)
 		dup2(fd[i][0], STDIN_FILENO);
 		if (i != n - 1)
 			dup2(fd[i + 1][1], STDOUT_FILENO);
+
 		execvp(cmd[i][0], cmd[i]);
 		close(fd[i][0]);
 		close(fd[i + 1][1]);
@@ -131,6 +122,7 @@ int main(int argc, char **argv, char **env)
 	while ((wpid = wait(&status)) > 0);
 	close(fd[n][1]);
 	close(fd[n][0]);
+
 	printf("done\n");
 	return 0;
 }
