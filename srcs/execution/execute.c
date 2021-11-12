@@ -1,10 +1,3 @@
-# include <stdio.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <sys/wait.h>
-# include <fcntl.h>
 # include "../../includes/minishell.h"
 
 int select_builtin_test(int index, int argc, char **argv);
