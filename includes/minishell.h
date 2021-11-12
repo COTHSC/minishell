@@ -4,6 +4,8 @@
 # include "../srcs/builtins/builtins.h"
 # include "../libs/libft/libft.h"
 # include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 # include <stdlib.h>
 # include <unistd.h>
 
