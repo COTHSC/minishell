@@ -12,6 +12,9 @@
 
 int main(int argc, char **argv, char **env)
 {
+	(void)argc;
+	(void)argv;
+	(void)env;
     int fd[4][2];
     int i;
     int d;
@@ -30,7 +33,7 @@ int main(int argc, char **argv, char **env)
     pids = malloc(sizeof(int) * n );
 
     i = 0;
-    while (i < n)
+    while (i < n - 1)
     {
         if (pipe(fd[i]) < 0)
             return 1;
@@ -48,7 +51,7 @@ int main(int argc, char **argv, char **env)
         i++;
     }
     i = 0;
-    while (i < n)
+    while (i < n - 1)
     {
             if (pids[i] == 0)
             {
@@ -73,7 +76,7 @@ int main(int argc, char **argv, char **env)
     }
 
     sleep(1);
-    wait(NULL);
+   // wait(NULL);
     printf("I have come here\n");
     while(1)
     {;}
