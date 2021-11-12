@@ -2,10 +2,17 @@
 
 int ft_exit(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
+	int i;
 
-    printf("exit \n");
-    exit(0);
+	i = 0;
+	(void)argc;
+	while (argv[i])
+	{
+		free(argv[i]);
+		i++;
+	}
+	free(argv);
+	printf("exit \n");
+	exit(0);
 	return (EXIT_SUCCESS);
 }

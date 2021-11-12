@@ -74,7 +74,6 @@ int init_env(void)
         g_env[i] = tmp;
         i++;
     }
-    print_str_list(g_env, "");
     return (0);
 }
 

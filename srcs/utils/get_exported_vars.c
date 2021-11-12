@@ -23,7 +23,7 @@ int count_exported_vars(char **env)
 
      i = -1;
      c = 0;
-     clean_g_env = (char**)malloc(count_exported_vars(g_env) * sizeof(char*) + 1);
+     clean_g_env = (char**)malloc(count_exported_vars(g_env) * sizeof(char*) + 2);
      while (g_env[++i])
      {
          if (g_env[i][0] == select)
@@ -32,6 +32,6 @@ int count_exported_vars(char **env)
              c++;
          }
      }
-     clean_g_env[c] = NULL;
+     clean_g_env[(count_exported_vars(g_env) - 1)] = NULL;
      return (clean_g_env);
  }
