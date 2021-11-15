@@ -21,7 +21,9 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/utils/match_env_var.c \
 	   ./srcs/utils/split_var_by_name_value_pair.c \
 	   ./srcs/utils/env_selector.c \
-	   ./srcs/utils/command_options_checkers.c
+	   ./srcs/utils/command_options_checkers.c \
+	   ./srcs/utils/print_builtins_usage.c \
+	   ./srcs/utils/print_builtins_errors.c
 
 OBJS = $(SRCS:.c=.o)
 
