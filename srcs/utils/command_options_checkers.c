@@ -12,3 +12,23 @@ int	option_is_called(char *cmd_block, char *option)
 	else
 		return (0);
 }
+
+int	option_is_called_and_repeated(char *cmd_block, char *option)
+{
+	int	i;
+	char	option_letter;
+
+	if (!cmd_block || ft_strncmp(cmd_block, option, ft_strlen(option)) != 0)
+		return (0);
+	i = 2;
+	option_letter = option[1];
+	while (cmd_block[i])
+	{
+		if (cmd_block[i] != option_letter)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+

@@ -42,6 +42,13 @@ void    free_command_block(char **command_block);
 */
 int		select_builtin(int index, int argc, char **argv);
 int		builtin_finder(char *name);
+int		is_option(char *cmd_block);
+int		option_is_called(char *cmd_block, char *option);
+int		option_is_called_and_repeated(char *cmd_block, char *option);
+void	perror_invalid_option(char *builtin, char *options, char *valid_options);
+void	perror_not_a_valid_identifier(char *identifier, char *builtin);
+void	print_usage_export(void);
+void	print_usage_unset(void);
 /*
 ** ------------------ ENV AUXILIARIES ------------------
 */
@@ -57,6 +64,4 @@ void	change_flag(char **var, char flag);
 char	**split_to_name_value_pair(char *var);
 char	**env_selector(int position_selector);
 int		index_matching_var_name(char **var_list, char *var_to_match);
-int		is_option(char *cmd_block);
-int		option_is_called(char *cmd_block, char *option);
 #endif
