@@ -7,14 +7,14 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/execution/execute.c  \
 	   ./srcs/execution/redirect.c  \
 	   ./srcs/execution/pathfinders.c  \
-	   ./srcs/builtins/builtin_selector_test.c  \
-	   ./srcs/builtins/pwd/pwd.c  \
-	   ./srcs/builtins/cd/cd.c  \
-	   ./srcs/builtins/exit/exit.c  \
-	   ./srcs/builtins/echo/echo.c  \
-	   ./srcs/builtins/export/export.c  \
-	   ./srcs/builtins/env/env.c  \
-	   ./srcs/builtins/unset/unset.c  \
+	   ./srcs/builtins/builtin_selector.c  \
+	   ./srcs/builtins/pwd.c  \
+	   ./srcs/builtins/cd.c  \
+	   ./srcs/builtins/exit.c  \
+	   ./srcs/builtins/echo.c  \
+	   ./srcs/builtins/export.c  \
+	   ./srcs/builtins/env.c  \
+	   ./srcs/builtins/unset.c  \
 	   ./srcs/utils/our_get_env.c  \
 	   ./srcs/utils/init_env.c  \
 	   ./srcs/utils/get_exported_vars.c  \

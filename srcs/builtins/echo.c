@@ -1,4 +1,4 @@
-#include "../builtins.h"
+#include "builtins.h"
 
 int	print_multiple_arguments(char **args, int start, int end)
 {

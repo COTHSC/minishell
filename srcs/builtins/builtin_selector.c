@@ -1,18 +1,10 @@
 #include "./builtins.h"
 
-enum e_builtins {e_echo, e_cd, e_pwd, e_export, e_unset, e_env, e_exit};
+enum e_builtins {e_cd, e_pwd};
 
-int	select_builtin(int index, int argc, char **argv, char **env)
+int	select_builtin_test(int index, int argc, char **argv)
 {
-	static int	(*builtin_lookup[7])(int argc, char **args, char **env) = {
-	ft_echo, ft_cd, ft_pwd, ft_export, ft_unset, ft_env, ft_exit};
+	static int	(*builtin_lookup[7])(int argc, char **args) = {ft_cd, ft_pwd, ft_exit, ft_export, ft_env, ft_unset, ft_echo};
 
-	return (builtin_lookup[index](argc, argv, env));
-}
-
-int main(int argc, char **argv, char **env)
-{
-	select_builtin(e_exit, argc, argv, env);
-	select_builtin(e_pwd, argc, argv, env);
-	return (EXIT_SUCCESS);
+	return (builtin_lookup[index](argc, argv));
 }

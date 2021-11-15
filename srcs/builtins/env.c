@@ -6,11 +6,11 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 12:24:08 by calle             #+#    #+#             */
-/*   Updated: 2021/11/03 14:33:45 by calle            ###   ########.fr       */
+/*   Updated: 2021/11/15 18:54:24 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../builtins.h"
+#include "builtins.h"
 
 void	print_exported_var_with_values( void )
 {
