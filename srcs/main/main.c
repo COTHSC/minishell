@@ -28,33 +28,13 @@ void    remove_quotes_list(char **command_block)
     }
 }
 
-void    readline_loop(void)
-{
-    char **command_block;
-    char *line_from_terminal;
-    int es;
-
-    es = 0;
-    while (1)
-    {
-        line_from_terminal = readline(" >  ");
-        add_history(line_from_terminal);
-        line_from_terminal = find_dollars(line_from_terminal, es);
-        command_block = ft_better_split(line_from_terminal);
-        remove_quotes_list(command_block);
-    //    es = execute(command_block);
-        free(line_from_terminal);
-        free_command_block(command_block);
-    }
-}
-
 char **create_basic()
 {
     char **env4;
 
-    env4 = (char **)malloc(3 * sizeof(char*));
+    env4 = calloc_str_list(4);
     env4[0] = ft_strdup("PWD=");
-    env4[1] = ft_strdup("OLDPWD=");
+    env4[1] = ft_strdup("OLDPWD");
     env4[2] = ft_strdup("SHLVL=");
     return (env4);
 }

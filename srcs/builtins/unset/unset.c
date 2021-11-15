@@ -27,6 +27,20 @@ char	**delete_var(char **clean_env, char *var_to_del)
 	return (tmp);
 }
 
+int	is_a_valid_identifier(char *var)
+{
+	int	i;
+
+	i = 0;
+	while (var[i])	
+	{
+		if (!ft_isalnum(var[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	delete_element_from_env(char **vars_to_unset)
 {
 	int		i;
@@ -37,6 +51,11 @@ int	delete_element_from_env(char **vars_to_unset)
 	i = 0;
 	while (vars_to_unset[++i])
 	{
+		if (!is_a_valid_identifier(vars_to_unset[i]))
+		{
+			perror_not_a_valid_identifier(vars_to_unset[i], "unset");
+			continue;
+		}
 		name_value_pair = split_to_name_value_pair(vars_to_unset[i]);
 		clean_env = env_selector(1);
 		if (match_var_name(clean_env, name_value_pair[0]))
@@ -60,6 +79,12 @@ int	ft_unset(int argc, char **argv)
 {
 	if (argc == 1)
 		return (EXIT_SUCCESS);
+	else if (is_option(argv[1]) && argv[1][1])	
+	{
+		perror_invalid_option("unset", argv[1], NULL);
+		print_usage_unset();
+		return (2);
+	}
 	else
 		return (delete_element_from_env(argv));
 }
