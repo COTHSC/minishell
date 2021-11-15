@@ -17,8 +17,10 @@ int     execute_builtin(char **command_block)
 	int ret;
 
 	ret = -1;
+
 	if (command_block[0] && builtin_finder(command_block[0]) != -1)
 		ret = select_builtin_test(builtin_finder(command_block[0]), strlen_list(command_block), command_block);
+
 	return (ret);
 }
 
@@ -87,8 +89,10 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
 	if (i != n - 1)
 		dup2(fd[i + 1][1], STDOUT_FILENO);
 
-	// shoe in for redirections? they seem to take precedence over pipes. 
-    //
+  // print_str_list(cmd, "");
+    cmd = ft_redirect(cmd);
+    //print_str_list(cmd, "");
+    
 	execute_binary(cmd);
 	close(fd[i][0]);
 	close(fd[i + 1][1]);
@@ -144,8 +148,9 @@ int	ft_multipipes2(char ***cmd)
 			pids[i] = 1;
 			if (i != n - 1)
 				dup2(fd[i + 1][1], 1);
+            cmd[i] = ft_redirect(cmd[i]);
 			execute_builtin(cmd[i]);
-			if (i != n - 1)
+	//		if (i == n - 1)
 				dup2(stdoutCopy, 1);
 		}
 		if (pids[i] == 0)
