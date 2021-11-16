@@ -61,17 +61,17 @@ int	count_valid_successive_options(char **args)
 
 int ft_echo(int argc, char **argv)
 {
-	int	num_valid_options;
+	int	num_options;
 
-	num_valid_options = count_valid_successive_options(argv) + 1;
+	num_options = count_valid_successive_options(argv) + 1;
 	if (argc == 1)
 	{
 		ft_putchar_fd('\n', 1);
 		return (EXIT_SUCCESS);
 	}
-	else if (argc != 1 && (num_valid_options > 0))
+	else if (num_options > 1)
 	{
-		print_multiple_arguments(argv, num_valid_options, strlen_list(argv));
+		print_multiple_arguments(argv, num_options, strlen_list(argv));
 		return (EXIT_SUCCESS);
 	}
 	else
