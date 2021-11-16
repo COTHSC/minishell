@@ -13,3 +13,10 @@ void	print_usage_unset(void)
 	ft_putstr_fd("unset [name ...]", 2);
 	ft_putchar_fd('\n', 2);
 }
+
+void	print_usage_env(void)
+{
+	ft_putstr_fd("env: usage: ", 2);
+	ft_putstr_fd("env", 2);
+	ft_putchar_fd('\n', 2);
+}
