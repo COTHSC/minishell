@@ -9,7 +9,7 @@ char	**str_list_join(char **s1, char **s2)
 
 	len1 = strlen_list(s1);
 	len2 = strlen_list(s2);
-	ret_list = calloc_str_list(len1 + len2);
+	ret_list = calloc_str_list(len1 + len2 + 1);
 	i = 0;
 	while(ret_list && i < len1)
 	{
