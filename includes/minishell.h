@@ -27,7 +27,7 @@ char    **ft_better_split(char const *s);
 /* Functions related to the execution of a child program */
 
 int    execute(char ***command_block);
-char    **ft_redirect(char **command_block);
+char    **ft_redirect(char **command_block, int quiet);
 
 //char **env2;
 /* OUR builtins */
@@ -53,7 +53,7 @@ void	print_usage_unset(void);
 /*
 ** ------------------ ENV AUXILIARIES ------------------
 */
-int		init_env(void);
+int		init_env();
 char	**ft_exported_vars(char select);
 int		var_name_is_matching(char *var_to_compare, char *var_to_match);
 char	**match_var_name(char **var_list, char *var_to_match);
