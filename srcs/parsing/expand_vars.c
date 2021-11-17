@@ -20,10 +20,12 @@ char    *get_var_name(char *s, int *i)
 char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
-   
-    if (ft_getenv(var_name) != ft_getenv("notreal"))
+    char *tmp;
+
+    tmp = ft_strjoin("x", var_name);
+    if (ft_getenv(tmp) != NULL)
     {
-        var_value = ft_strdup(ft_getenv(var_name)); 
+        var_value = ft_strdup(ft_getenv(tmp)); 
         *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else if (!ft_strncmp(var_name, "?", 2))
@@ -36,6 +38,7 @@ char    *get_var_value(char *var_name, int *offset, int status)
         var_value = NULL;
         *offset = ft_strlen(var_name) * -1;
     }
+    free(tmp);
     return (var_value);
 }
 
@@ -53,6 +56,7 @@ char     *expand_and_replace(char *s, char *var_value, char *var_name, int offse
             newstr[d] = var_value[d];
             d++;
         }
+        newstr[d] = '\0';
     }
     else
     {
@@ -90,6 +94,7 @@ char *find_dollars(char *s, int status)
     int i;
     char *newend;
     char *news;
+    int d;
 
     i = -1;
     while (s[++i])
@@ -106,17 +111,13 @@ char *find_dollars(char *s, int status)
             s[i] = 0;
             news = ft_strjoin(s, newend);
             free(newend);
+            d = ft_strlen(s);
             free(s);
             s = news;
+            if (i >= d)
+                return s;
+           // find_dollars(s, status);
         }
     }
     return (s);
 }
-/*
-int main(int argc, char **argv, char **env)
-{
-    char *news;
-    news = find_dollars(ft_strdup(argv[1]));
-    printf("this is the $TEST new s: %s\n", news);
-    return (0);
-}*/
