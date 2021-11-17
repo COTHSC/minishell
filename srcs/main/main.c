@@ -61,26 +61,31 @@ int main(int argc, char **argv, char **env)
     {
         i = 0;
         line_from_terminal = readline(">  ");
-        add_history(line_from_terminal);
-        line_from_terminal = find_dollars(line_from_terminal, es);
-        command_blocks = ft_split(line_from_terminal, '|');
-        command_block = ft_calloc(sizeof(char ***) , 100);
-        while (command_blocks[i])
-        {
-            command_block[i] = ft_better_split(command_blocks[i]);
-            remove_quotes_list(command_block[i]);
-            i++;
-        }
-        free_str_list(command_blocks, strlen_list(command_blocks));
-        es = execute(command_block);
+	if (line_from_terminal)
+	{
+        	add_history(line_from_terminal);
+        	line_from_terminal = find_dollars(line_from_terminal, es);
+        	command_blocks = ft_split(line_from_terminal, '|');
+        	command_block = ft_calloc(sizeof(char ***) , 100);
+        	while (command_blocks[i])
+        	{
+        	    command_block[i] = ft_better_split(command_blocks[i]);
+        	    remove_quotes_list(command_block[i]);
+        	    i++;
+        	}
+       		free_str_list(command_blocks, strlen_list(command_blocks));
+        	es = execute(command_block);
+        	i = 0;
+        	if (es == -14)
+        	{
+        	    free_str_list(g_env, strlen_list(g_env));
+		    free(line_from_terminal);
+        	    break;
+        	}
+	}
         free(line_from_terminal);
-        i = 0;
-        free(command_block);
-        if (es == -14)
-        {
-            free_str_list(g_env, strlen_list(g_env));
-            break;
-        }
+	if (!isatty(STDIN_FILENO))
+		break;
     }
     return 0;
 }
