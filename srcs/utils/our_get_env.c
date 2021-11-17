@@ -5,8 +5,7 @@ int	var_name_match_in_env(char *env_var, char *name)
 	int	len;
 
 	len = ft_strlen(name);
-	if (ft_strnstr(env_var, name, len)
-		&& (!env_var[len] || env_var[len] == '='))
+	if (!ft_strncmp(env_var, name, len) && (!env_var[len] || env_var[len] == '='))
 		return (1);
 	else
 		return (0);
@@ -25,4 +24,3 @@ char    *ft_getenv(char *name)
     }
     return (NULL);
 }
-        //if (!ft_strncmp(name, g_env[i], ft_strlen(name)))

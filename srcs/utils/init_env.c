@@ -83,8 +83,8 @@ int init_env(void)
     set_env_value("SHLVL", shlvl);
     free(shlvl);
     while (g_env[i])
- {
-   tmp = ft_strjoin("x", g_env[i]);
+    {
+        tmp = ft_strjoin("x", g_env[i]);
         free(g_env[i]);
         g_env[i] = tmp;
         i++;
