@@ -40,6 +40,20 @@ char **create_basic()
     return (env4);
 }
 
+int is_empty(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (!ft_iswhitespace(str[i]))
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
 int main(int argc, char **argv, char **env)
 {
     char **command_blocks;
@@ -60,7 +74,7 @@ int main(int argc, char **argv, char **env)
     while (1)
     {
         i = 0;
-        line_from_terminal = readline(">  ");
+       	line_from_terminal = readline(">  ");
 	if (line_from_terminal)
 	{
         	add_history(line_from_terminal);
@@ -69,19 +83,16 @@ int main(int argc, char **argv, char **env)
         	command_block = ft_calloc(sizeof(char ***) , 100);
         	while (command_blocks[i])
         	{
-        	    command_block[i] = ft_better_split(command_blocks[i]);
-        	    remove_quotes_list(command_block[i]);
+        	    if (!is_empty(command_blocks[i]))
+        	    {
+        	        command_block[i] = ft_better_split(command_blocks[i]);
+        	        remove_quotes_list(command_block[i]);
+
+        	    }
         	    i++;
         	}
-       		free_str_list(command_blocks, strlen_list(command_blocks));
+        	free_str_list(command_blocks, strlen_list(command_blocks));
         	es = execute(command_block);
-        	i = 0;
-        	if (es == -14)
-        	{
-        	    free_str_list(g_env, strlen_list(g_env));
-		    free(line_from_terminal);
-        	    break;
-        	}
 	}
         free(line_from_terminal);
 	if (!isatty(STDIN_FILENO))

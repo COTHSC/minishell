@@ -32,8 +32,6 @@ int execute_binary(char **command_block)
     if ((execve(path, command_block, clean_env)) == -1)
     { 
         free(path);
-        printf("present\n");
-        free_command_block(command_block);
         exit(EXIT_FAILURE);
     }
     exit (0); 
@@ -131,9 +129,11 @@ int	ft_multipipes2(char ***cmd)
     pids = malloc(sizeof(int) * n);
     make_pipes(fd, n);
     i = -1;
+
     while (++i < n)
     {
-        cmdcmp = ft_redirect(cmd[i], 1);
+        cmdcmp = str_list_dup(cmd[i]);
+        cmdcmp = ft_redirect(cmdcmp, 1);
         if (builtin_finder(cmdcmp[0]) == -1)
             pids[i] = fork();
         else

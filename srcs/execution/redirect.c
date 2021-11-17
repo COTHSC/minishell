@@ -72,6 +72,7 @@ char	**delete_str(char **str_list, int index)
 		j++;
 		i++;
 	}
+    free_str_list(str_list, strlen_list(str_list));
 	return (tmp);
 }
 
@@ -94,6 +95,7 @@ int exec_dup(char *filenames, int redirect_type)
     else if (redirect_type == 1)
         fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
     check_fd(fd, str);
+    free(str);
     if (redirect_type < 3)
         dup2(fd, STDOUT_FILENO);
     else
@@ -119,7 +121,6 @@ char **make_dup(char **command_block, int index, int d, int redirect_type, int q
     char *filenames;
     char **cmd;
 
-    filenames = malloc(sizeof(char *));
     cmd = command_block;
     i = index;
     while ((command_block[d][i]) && is_redirect(command_block[d][i]))
@@ -131,12 +132,14 @@ char **make_dup(char **command_block, int index, int d, int redirect_type, int q
         filenames = ft_strdup(&command_block[d][i]);
         if (quiet == 0)
             exec_dup(filenames, redirect_type);
+        free(filenames);
     }
     else 
     {
         make_dup(command_block, 0, d + 1, redirect_type, quiet);
         cmd = delete_str(command_block, d + 1);
     }
+
     return (cmd);
 }
 
@@ -144,28 +147,23 @@ char    **ft_redirect(char **command_blocks, int quiet)
 {
     int i;
     int d;
-    char **command_block;
 
-    command_block = str_list_dup(command_blocks);
     i = 0;
-    while (command_block[i])
+    while (command_blocks[i])
     {
         d = 0;
-        while (command_block[i][d])
+        while (command_blocks[i][d])
         {
-            if (is_redirect(command_block[i][d]))
+            if (is_redirect(command_blocks[i][d]))
             {
-                command_block = make_dup(command_block, d, i, 0, quiet);
-                if (ft_strlen(command_block[i]) == 0)
-                    command_block = delete_str(command_block, i);
-                return (ft_redirect(command_block, quiet));
+                command_blocks = make_dup(command_blocks,  d, i, 0, quiet);
+                if (ft_strlen(command_blocks[i]) == 0)
+                    command_blocks = delete_str(command_blocks, i);
+                return (ft_redirect(command_blocks, quiet));
             }
             d++;
         }
         i++;
     }
-    i = 0;
-    if (!quiet)
-        free(command_blocks);
-    return (command_block);
+    return (command_blocks);
 }
