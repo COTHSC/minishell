@@ -92,7 +92,7 @@ char *find_dollars(char *s, int status)
     char *news;
 
     i = -1;
-    while (s[++i])
+    while (s && s[++i])
     {
         if (isquote(s[i]) == 1)
         {
