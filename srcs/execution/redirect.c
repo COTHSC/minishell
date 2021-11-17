@@ -10,7 +10,6 @@
  # include <sys/wait.h>
  # include <fcntl.h>
 
-
 int     is_redirect(char c)
 {
     if (c == '>')
@@ -18,7 +17,6 @@ int     is_redirect(char c)
     else if (c == '<')
         return (3);
     return (0);
-
 }
 
 void    check_fd(int fd, char *filename)
@@ -49,15 +47,6 @@ void    check_fd(int fd, char *filename)
     }
     free(pwd);
 }
-
-
- char    **calloc_str_list(int size)                                                           
- {                                                      
-     char **str_list;                                                                          
-                                                                                                  
-     str_list = (char **)ft_calloc(size + 1, sizeof(char *));                                       
-     return (str_list);                                                                            
- }       
 
 char	**delete_str(char **str_list, int index)
 {
@@ -92,13 +81,10 @@ int exec_dup(char *filenames, int redirect_type)
     char *str;
     int fd;
 
-
     fd = 0;
     i = 0;
     while (filenames[i] && !is_redirect(filenames[i]))
-    {
         i++;
-    }
     str = ft_strdup(filenames);
     str[i] = 0;
     if (redirect_type == 2)
@@ -117,7 +103,6 @@ int exec_dup(char *filenames, int redirect_type)
         close(fd);
         return 0;
     }
-
     else
     {
         redirect_type = 0;
@@ -125,11 +110,10 @@ int exec_dup(char *filenames, int redirect_type)
             redirect_type += is_redirect(filenames[i++]);
         exec_dup(&filenames[i], redirect_type);
     }
-
     return (0);
 }
 
-char **make_dup(char **command_block, int index, int d, int redirect_type)
+char **make_dup(char **command_block, int index, int d, int redirect_type, int quiet)
 {
     int i;
     char *filenames;
@@ -138,7 +122,6 @@ char **make_dup(char **command_block, int index, int d, int redirect_type)
     filenames = malloc(sizeof(char *));
     cmd = command_block;
     i = index;
-
     while ((command_block[d][i]) && is_redirect(command_block[d][i]))
             redirect_type += is_redirect(command_block[d][i++]);
     if (i != index)
@@ -146,21 +129,24 @@ char **make_dup(char **command_block, int index, int d, int redirect_type)
     if (command_block[d][i])
     {
         filenames = ft_strdup(&command_block[d][i]);
-        exec_dup(filenames, redirect_type);
+        if (quiet == 0)
+            exec_dup(filenames, redirect_type);
     }
     else 
     {
-        make_dup(command_block, 0, d + 1, redirect_type);
+        make_dup(command_block, 0, d + 1, redirect_type, quiet);
         cmd = delete_str(command_block, d + 1);
     }
     return (cmd);
 }
 
-char    **ft_redirect(char **command_block)
+char    **ft_redirect(char **command_blocks, int quiet)
 {
     int i;
     int d;
+    char **command_block;
 
+    command_block = str_list_dup(command_blocks);
     i = 0;
     while (command_block[i])
     {
@@ -169,16 +155,17 @@ char    **ft_redirect(char **command_block)
         {
             if (is_redirect(command_block[i][d]))
             {
-                command_block = make_dup(command_block, d, i, 0);
+                command_block = make_dup(command_block, d, i, 0, quiet);
                 if (ft_strlen(command_block[i]) == 0)
                     command_block = delete_str(command_block, i);
-                return ft_redirect(command_block);
+                return (ft_redirect(command_block, quiet));
             }
             d++;
         }
         i++;
     }
     i = 0;
+    if (!quiet)
+        free(command_blocks);
     return (command_block);
 }
-
