@@ -8,7 +8,7 @@ static char	**split_till_char(char *s, char c)
 	c_pos = ft_strchr(s, c);
 	if (!c_pos)
 	{
-		tmp = calloc_str_list(2);
+		tmp = calloc_str_list(3);
 		tmp[0] = ft_strdup(s);
 		return (tmp);
 	}

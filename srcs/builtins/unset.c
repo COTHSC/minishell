@@ -8,7 +8,7 @@ char	**delete_var(char **clean_env, char *var_to_del)
 
 	i = 0;
 	j = 0;
-	tmp = calloc_str_list(strlen_list(g_env));
+	tmp = calloc_str_list(strlen_list(g_env) + 1);
 	if (!tmp)
 		return (NULL);
 	while (g_env[i])
