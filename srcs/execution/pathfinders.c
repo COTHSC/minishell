@@ -57,11 +57,14 @@ char    *get_path(char **command_block)
     int     d;
     char    *path;
 
-    if (access(command_block[0], F_OK) == 0)
-        return (command_block[0]);
     d = 0;
     paths = ft_split(getenv("PATH"), ':');
     path = try_paths(paths, command_block[0]);
+    if (!path)
+    {
+        if (access(command_block[0], F_OK) == 0)
+            return (command_block[0]);
+    }
     if (!path)
     {
         d = 0;
@@ -70,7 +73,6 @@ char    *get_path(char **command_block)
         while (command_block[d])
             free(command_block[d++]);
         free(command_block);
-
         ft_putstr_fd(": command not found\n", 2);
         exit(127);
     }
