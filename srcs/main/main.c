@@ -82,11 +82,8 @@ int main(int argc, char **argv, char **env)
         while (command_blocks[i])
         {
             if (!is_empty(command_blocks[i]))
-            {
                 command_block[i] = ft_better_split(command_blocks[i]);
-                remove_quotes_list(command_block[i]);
-
-            }
+            remove_quotes_list(command_block[i]);
             i++;
         }
         free_str_list(command_blocks, strlen_list(command_blocks));
@@ -99,6 +96,7 @@ int main(int argc, char **argv, char **env)
             free_str_list(g_env, strlen_list(g_env));
             break;
         }
+
     }
     return 0;
 }
