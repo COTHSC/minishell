@@ -93,6 +93,13 @@ int main(int argc, char **argv, char **env)
         	}
         	free_str_list(command_blocks, strlen_list(command_blocks));
         	es = execute(command_block);
+        	free(line_from_terminal);
+        	free(command_block);
+		if (es == -14)
+		{
+        		free_str_list(g_env, strlen_list(g_env));
+			exit(0);
+		}
 	}
         free(line_from_terminal);
 	if (!isatty(STDIN_FILENO))
