@@ -40,6 +40,20 @@ char **create_basic()
     return (env4);
 }
 
+int is_empty(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (!ft_iswhitespace(str[i]))
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
 int main(int argc, char **argv, char **env)
 {
     char **command_blocks;
@@ -67,8 +81,12 @@ int main(int argc, char **argv, char **env)
         command_block = ft_calloc(sizeof(char ***) , 100);
         while (command_blocks[i])
         {
-            command_block[i] = ft_better_split(command_blocks[i]);
-            remove_quotes_list(command_block[i]);
+            if (!is_empty(command_blocks[i]))
+            {
+                command_block[i] = ft_better_split(command_blocks[i]);
+                remove_quotes_list(command_block[i]);
+
+            }
             i++;
         }
         free_str_list(command_blocks, strlen_list(command_blocks));
