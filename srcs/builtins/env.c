@@ -6,11 +6,11 @@
 /*   By: calle <calle@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 12:24:08 by calle             #+#    #+#             */
-/*   Updated: 2021/11/03 14:33:45 by calle            ###   ########.fr       */
+/*   Updated: 2021/11/16 14:42:37 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../builtins.h"
+#include "builtins.h"
 
 void	print_exported_var_with_values( void )
 {
@@ -30,15 +30,12 @@ void	print_exported_var_with_values( void )
 
 int	ft_env(int argc, char **argv)
 {
-	(void)argc;
 	(void)argv;
-//	if (argc != 1)
-//	{
-//		errno = 1;
-//		perror(NULL);
-//		return (EXIT_FAILURE);
-//	}
+	if (argc != 1)
+	{
+		print_usage_env();
+		return (2);
+	}
 	print_exported_var_with_values();
-	print_str_list(argv + 1, NULL);
 	return (EXIT_SUCCESS);
 }

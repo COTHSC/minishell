@@ -30,5 +30,3 @@ int	option_is_called_and_repeated(char *cmd_block, char *option)
 	}
 	return (1);
 }
-
-

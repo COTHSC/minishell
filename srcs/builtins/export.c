@@ -11,7 +11,7 @@
 /*************************************************************************** */
 
 
-#include "../builtins.h"
+#include "builtins.h"
 
 void	quote_and_cpy_val(int value_start, char *value, char **q_env, int i)
 {

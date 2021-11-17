@@ -1,4 +1,4 @@
-#include "../builtins.h"
+#include "builtins.h"
 
 char	**delete_var(char **clean_env, char *var_to_del)
 {

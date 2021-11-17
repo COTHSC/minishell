@@ -1,4 +1,4 @@
-#include "../builtins.h"
+#include "builtins.h"
 
 int	print_multiple_arguments(char **args, int start, int end)
 {
@@ -42,16 +42,36 @@ int	valid_n_option(char *option)
 		return (0);
 }
 
+int	count_valid_successive_options(char **args)
+{
+	int	i;
+	int	counter;
+
+	i = 1;
+	counter = 0;
+	while (args[i])
+	{
+		if (!valid_n_option(args[i]))
+			break;	
+		counter++;
+		i++;
+	}
+	return (counter);
+}
+
 int ft_echo(int argc, char **argv)
 {
+	int	num_options;
+
+	num_options = count_valid_successive_options(argv) + 1;
 	if (argc == 1)
 	{
 		ft_putchar_fd('\n', 1);
 		return (EXIT_SUCCESS);
 	}
-	else if (argc != 1 && valid_n_option(argv[1]))
+	else if (num_options > 1)
 	{
-		print_multiple_arguments(argv, 2, strlen_list(argv));
+		print_multiple_arguments(argv, num_options, strlen_list(argv));
 		return (EXIT_SUCCESS);
 	}
 	else

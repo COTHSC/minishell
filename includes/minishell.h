@@ -50,6 +50,7 @@ void	perror_invalid_option(char *builtin, char *options, char *valid_options);
 void	perror_not_a_valid_identifier(char *identifier, char *builtin);
 void	print_usage_export(void);
 void	print_usage_unset(void);
+void	print_usage_env(void);
 /*
 ** ------------------ ENV AUXILIARIES ------------------
 */
