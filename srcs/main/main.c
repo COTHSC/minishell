@@ -36,6 +36,7 @@ char **create_basic()
     env4[0] = ft_strdup("PWD=");
     env4[1] = ft_strdup("OLDPWD");
     env4[2] = ft_strdup("SHLVL=");
+    env4[3] = NULL;
     return (env4);
 }
 
@@ -43,44 +44,43 @@ int main(int argc, char **argv, char **env)
 {
     char **command_blocks;
     int i;
+    char ***command_block;
+    char *line_from_terminal;
+    int es;
+    (void)argc;
+    (void)argv;
+
     if (!env[0])
         g_env = create_basic();
     else
         g_env = str_list_dup(env);
     init_env();
-    char ***command_block;
-    char *line_from_terminal;
-    int es;
-
-    (void)argc;
-    (void)argv;
     command_blocks = NULL;
-
-     es = 0;
-     while (1)
-     {
-         i = 0;
-         line_from_terminal = readline(" >  ");
-         add_history(line_from_terminal);
-         line_from_terminal = find_dollars(line_from_terminal, es);
-         command_blocks = ft_split(line_from_terminal, '|');
-         command_block = ft_calloc(sizeof(char ***) , 100);
-         while (command_blocks[i])
-         {
+    es = 0;
+    while (1)
+    {
+        i = 0;
+        line_from_terminal = readline(">  ");
+        add_history(line_from_terminal);
+        line_from_terminal = find_dollars(line_from_terminal, es);
+        command_blocks = ft_split(line_from_terminal, '|');
+        command_block = ft_calloc(sizeof(char ***) , 100);
+        while (command_blocks[i])
+        {
             command_block[i] = ft_better_split(command_blocks[i]);
+            remove_quotes_list(command_block[i]);
             i++;
-         }
-         remove_quotes_list(command_block[0]);
-         es = execute(command_block);
-         free(line_from_terminal);
-         i = 0;
-         while (command_blocks[i])
-         {
-            free_command_block(command_block[i]);
-            i++;
-         }
-         free(command_block);
-     }
-    free_str_list(g_env, strlen_list(g_env));
+        }
+        free_str_list(command_blocks, strlen_list(command_blocks));
+        es = execute(command_block);
+        free(line_from_terminal);
+        i = 0;
+        free(command_block);
+        if (es == -14)
+        {
+            free_str_list(g_env, strlen_list(g_env));
+            break;
+        }
+    }
     return 0;
 }
