@@ -27,7 +27,7 @@ char	**double_quoting_env_values(char **env)
 	int		dist;
 
 	i = 0;
-	q_env = calloc_str_list(strlen_list(env));
+	q_env = calloc_str_list(strlen_list(env) + 1);
 	if (!q_env)
 		return (NULL);
 	while (env[i])

@@ -20,7 +20,7 @@ char	**sort_str_list(char **list)
 	int		j;
 
 	j = 0;
-	t = calloc_str_list(strlen_list(list));
+	t = calloc_str_list(strlen_list(list) + 1);
 	while (t && j < strlen_list(list))
 	{
 		i = 0;

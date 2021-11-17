@@ -21,9 +21,9 @@ char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
    
-    if (getenv(var_name) != getenv("notreal"))
+    if (ft_getenv(var_name) != ft_getenv("notreal"))
     {
-        var_value = ft_strdup(getenv(var_name)); 
+        var_value = ft_strdup(ft_getenv(var_name)); 
         *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else if (!ft_strncmp(var_name, "?", 2))
