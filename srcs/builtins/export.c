@@ -96,16 +96,17 @@ int	alter_env_var(char **clean_env, char *name, char *var_to_add)
 		if (!tmp_env)
 			return (EXIT_FAILURE);
 		free_str_list(g_env, strlen_list(g_env));
-		g_env = str_list_dup(tmp_env);
-		free_str_list(tmp_env, strlen_list(tmp_env));
+//		g_env = str_list_dup(tmp_env);
+//		free_str_list(tmp_env, strlen_list(tmp_env));
+        g_env = tmp_env;
 		if (!g_env)
 			return (EXIT_FAILURE);
 	}
 	else 
 	{
 		free(g_env[i]);
-		g_env[i] = ft_strdup(flagged_var_to_add);
-		free(flagged_var_to_add);
+		g_env[i] = flagged_var_to_add;
+//		free(flagged_var_to_add);
 		if (!g_env[i])
 			return (EXIT_FAILURE);
 	}
