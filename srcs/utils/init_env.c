@@ -14,14 +14,14 @@ void    set_to_null(char *var)
         if (ft_strnstr(var, g_env[i], ft_strlen(var)) && (!g_env[i][ft_strlen(var)] || g_env[i][ft_strlen(var)] == '='))
         {
             free(g_env[i]);
-            tmp = ft_strdup("OLDPWD");
+            tmp = ft_strdup("xOLDPWD");
             g_env[i] = tmp;
             oldpwd++;
         }
     }
     if (!oldpwd)
     {
-        newenv = str_add(g_env, "OLDPWD");
+        newenv = str_add(g_env, "xOLDPWD");
         free_str_list(g_env, strlen_list(g_env));
         g_env = newenv;
     }
@@ -62,7 +62,7 @@ char *increment_shlvl()
 {
     int i;
 
-    i = ft_atoi(ft_getenv("SHLVL"));
+    i = ft_atoi(ft_getenv("SHLVL", 'x'));
     i += 1;
     return (ft_itoa(i));
 }
@@ -77,11 +77,6 @@ int init_env(void)
 
     i = 0;
     oldpwd = 0;
-    set_to_null("OLDPWD");
-    set_env_value("PWD", getcwd(buf, PATH_MAX));
-    shlvl = increment_shlvl();
-    set_env_value("SHLVL", shlvl);
-    free(shlvl);
     while (g_env[i])
     {
         tmp = ft_strjoin("x", g_env[i]);
@@ -89,6 +84,11 @@ int init_env(void)
         g_env[i] = tmp;
         i++;
     }
+    set_to_null("xOLDPWD");
+    set_env_value("xPWD", getcwd(buf, PATH_MAX));
+    shlvl = increment_shlvl();
+    set_env_value("xSHLVL", shlvl);
+    free(shlvl);
     return (0);
 }
 

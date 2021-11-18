@@ -34,7 +34,7 @@ char    **ft_redirect(char **command_block, int quiet);
 
 int select_builtin(int index, int argc, char **argv);
 
-char    *ft_getenv(char *name);
+char    *ft_getenv(char *name, char c);
 char    *get_path(char **command_block);
 void    free_command_block(char **command_block);
 
