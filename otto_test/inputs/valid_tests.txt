@@ -1,0 +1,12 @@
+echo
+echo -nnnnnnnnn
+echo hello
+echo $USER
+echo -n $USER
+echo -nnnn $USER
+echo -nnnn $USER -nn
+pwd
+env | grep $USER
+unset $USER | env | grep $USER
+export | grep $USER
+exit
