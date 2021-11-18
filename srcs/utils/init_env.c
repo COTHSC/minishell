@@ -30,7 +30,7 @@ void    set_env_value(char *var_name, char *var_value)
     }
 
 }
-
+/*
 void    set_to_null(char *var)
 {
     int i;
@@ -61,7 +61,7 @@ void    set_to_null(char *var)
 
 }
 
-
+*/
 
 char *increment_shlvl()
 {
@@ -77,11 +77,12 @@ int init_env(void)
     int i;
     int oldpwd;
     char *tmp;
-    char buf[PATH_MAX];
     char *shlvl;
 
     i = 0;
     oldpwd = 0;
+    if (!match_var_name(g_env, "OLDPWD"))
+        alter_env_var(g_env, "OLDPWD", "", "x");
     while (g_env[i])
     {
         tmp = ft_strjoin("x", g_env[i]);
@@ -89,8 +90,7 @@ int init_env(void)
         g_env[i] = tmp;
         i++;
     }
-    set_to_null("xOLDPWD");
-    set_env_value("xPWD", getcwd(buf, PATH_MAX));
+
     shlvl = increment_shlvl();
     set_env_value("xSHLVL", shlvl);
     free(shlvl);

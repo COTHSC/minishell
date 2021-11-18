@@ -1,14 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <limits.h>
 #include "../../includes/minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 char **g_env;
 
@@ -31,12 +21,16 @@ void    remove_quotes_list(char **command_block)
 char **create_basic()
 {
     char **env4;
+    char buf[PATH_MAX];
+    char *cwd;
 
+    cwd = ft_strdup(getcwd(buf, PATH_MAX));
     env4 = calloc_str_list(4);
-    env4[0] = ft_strdup("PWD=");
+    env4[0] = ft_strjoin("PWD=", cwd);
     env4[1] = ft_strdup("OLDPWD");
     env4[2] = ft_strdup("SHLVL=");
     env4[3] = NULL;
+    free(cwd);
     return (env4);
 }
 
