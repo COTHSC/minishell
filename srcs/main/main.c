@@ -1,14 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <limits.h>
 #include "../../includes/minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 char **g_env;
 
@@ -31,12 +21,16 @@ void    remove_quotes_list(char **command_block)
 char **create_basic()
 {
     char **env4;
+    char buf[PATH_MAX];
+    char *cwd;
 
+    cwd = ft_strdup(getcwd(buf, PATH_MAX));
     env4 = calloc_str_list(4);
-    env4[0] = ft_strdup("PWD=");
+    env4[0] = ft_strjoin("PWD=", cwd);
     env4[1] = ft_strdup("OLDPWD");
     env4[2] = ft_strdup("SHLVL=");
     env4[3] = NULL;
+    free(cwd);
     return (env4);
 }
 
@@ -56,9 +50,9 @@ int is_empty(char *str)
 
 int main(int argc, char **argv, char **env)
 {
-    char **command_blocks;
+    char **commands;
     int i;
-    char ***command_block;
+    char ***command_list;
     char *line_from_terminal;
     int es;
     (void)argc;
@@ -69,7 +63,7 @@ int main(int argc, char **argv, char **env)
     else
         g_env = str_list_dup(env);
     init_env();
-    command_blocks = NULL;
+    commands = NULL;
     es = 0;
     while (1)
     {
@@ -80,21 +74,20 @@ int main(int argc, char **argv, char **env)
             get_next_line(STDIN_FILENO, &line_from_terminal);
         add_history(line_from_terminal);
         line_from_terminal = find_dollars(line_from_terminal, es);
-
-        command_blocks = ft_split(line_from_terminal, '|');
-        command_block = ft_calloc(sizeof(char ***) , 100);
-        while (command_blocks[i])
+        commands = ft_split(line_from_terminal, '|');
+        command_list = ft_calloc(sizeof(char ***) , 100);
+        while (commands[i])
         {
-            if (!is_empty(command_blocks[i]))
+            if (!is_empty(commands[i]))
             {
-                command_block[i] = ft_better_split(command_blocks[i]);
-                remove_quotes_list(command_block[i]);
+                command_list[i] = ft_better_split(commands[i]);
+                remove_quotes_list(command_list[i]);
             }
             i++;
         }
-        free_str_list(command_blocks, strlen_list(command_blocks));
-        es = execute(command_block);
-        free(command_block);
+        free_str_list(commands, strlen_list(commands));
+        es = execute(command_list);
+        free(command_list);
         free(line_from_terminal);
         if (!isatty(STDIN_FILENO))
             es = -14;

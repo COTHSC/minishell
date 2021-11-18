@@ -77,11 +77,15 @@ int	is_child(int *tab, int size)
 
 int	execute_child(int (*fd)[2], int i, int n, char **cmd)
 {
-    if (!close_unused_fds(fd, i, n))
-        exit(EXIT_FAILURE);
-    dup2(fd[i][0], STDIN_FILENO);
-    if (i != n - 1)
-        dup2(fd[i + 1][1], STDOUT_FILENO);
+    if (fd)
+    {
+        if (!close_unused_fds(fd, i, n))
+            exit(EXIT_FAILURE);
+        dup2(fd[i][0], STDIN_FILENO);
+        if (i != n - 1)
+            dup2(fd[i + 1][1], STDOUT_FILENO);
+
+    }
     cmd = ft_redirect(cmd, 0);
     execute_binary(cmd);
     close(fd[i][0]);
@@ -119,7 +123,8 @@ int	ft_multipipes2(char ***cmd)
     int i;
     int *pids;
     int status;
-    int stdoutCopy = dup(1);
+    //int stdoutCopy = dup(1);
+
     int n = 0;
     pid_t wpid;
     char **cmdcmp;
@@ -134,19 +139,27 @@ int	ft_multipipes2(char ***cmd)
     {
         cmdcmp = str_list_dup(cmd[i]);
         cmdcmp = ft_redirect(cmdcmp, 1);
-        if (builtin_finder(cmdcmp[0]) == -1)
-            pids[i] = fork();
-        else
-        {
-            pids[i] = 1;
-            if (i != n - 1)
-                dup2(fd[i + 1][1], 1);
-            cmd[i] = ft_redirect(cmd[i], 0);
-            status = execute_builtin(cmd[i]);
-            dup2(stdoutCopy, 1);
-        }
+        pids[i] = fork();
         if (pids[i] == 0)
-            execute_child(fd, i, n, cmd[i]);
+        {
+            if (builtin_finder(cmdcmp[0]) == -1)
+                execute_child(fd, i, n, cmd[i]);
+            else
+            {
+             //   pids[i] = 1;
+                if (!close_unused_fds(fd, i, n))
+                    exit(EXIT_FAILURE);
+                dup2(fd[i][0], 0);
+                if (i != n - 1)
+                    dup2(fd[i + 1][1], 1);
+                cmd[i] = ft_redirect(cmd[i], 0);
+                status = execute_builtin(cmd[i]);
+                close(fd[i][0]);
+                close(fd[i+1][1]);
+                //if (i == n - 1)
+               // dup2(stdoutCopy, 1);
+            }
+        }
         free_list_and_return_null(cmdcmp, strlen_list(cmdcmp));
         free_list_and_return_null(cmd[i], strlen_list(cmd[i]));
     }
@@ -162,7 +175,35 @@ int	ft_multipipes2(char ***cmd)
 
 int    execute(char ***command_block)
 {
+    char **cmdcmp;
+    int pid;
+    int status;
+
+    status = 0;
     if (command_block[0])
-        return( ft_multipipes2(command_block));
-    return (-1);
+    {
+        if (nb_cmds(command_block) > 1)
+            return(ft_multipipes2(command_block));
+        else
+        {
+            cmdcmp = str_list_dup(command_block[0]);
+            cmdcmp = ft_redirect(cmdcmp, 1);
+            if (builtin_finder(cmdcmp[0]) == -1)
+            {
+                pid = fork();
+                if (pid == 0)
+                    execute_child(NULL, 0, 1, command_block[0]);
+                wait(NULL);
+            }
+
+            else
+            {
+                command_block[0] = ft_redirect(command_block[0], 0);
+                status = execute_builtin(command_block[0]);
+            }
+            free_list_and_return_null(cmdcmp, strlen_list(cmdcmp));
+            free_list_and_return_null(command_block[0], strlen_list(command_block[0]));
+        }
+    }
+    return (status);
 }

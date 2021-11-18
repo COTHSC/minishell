@@ -44,7 +44,7 @@ int builtin_finder(char *name)
     i = 0;
     while (i < 7)
     {
-        if (ft_strncmp(name, builtin_lookup[i], ft_strlen(name)) == 0)
+        if (ft_strncmp(name, builtin_lookup[i], ft_strlen(name)) == 0 && ft_strlen(name) == ft_strlen(builtin_lookup[i]))
             return (i);
         i++;
     }

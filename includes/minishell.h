@@ -9,6 +9,8 @@
 #include <sys/wait.h>
 # include <stdlib.h>
 # include <unistd.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 extern char **g_env;
 
