@@ -1,29 +1,39 @@
 NAME = minishell 
 
 SRCS = ./srcs/parsing/ft_better_split.c  \
-	   ./srcs/parsing/expand_vars.c  \
 	   ./srcs/main/main.c  \
+	   ./srcs/parsing/expand_vars.c  \
 	   ./srcs/parsing/remove_quotes.c  \
 	   ./srcs/execution/execute.c  \
+	   ./srcs/execution/redirect.c  \
 	   ./srcs/execution/pathfinders.c  \
-	   ./srcs/builtins/builtin_selector_test.c  \
-	   ./srcs/builtins/pwd/pwd.c  \
-	   ./srcs/builtins/cd/cd.c  \
-	   ./srcs/builtins/exit/exit.c  \
-	   ./srcs/builtins/export/export.c  \
-	   ./srcs/builtins/env/env.c  \
-	   ./srcs/builtins/unset/unset.c  \
-	   ./srcs/builtins/echo/echo.c  \
-	   ./srcs/builtins/builtins_utils.c  \
+	   ./srcs/builtins/builtin_selector.c  \
+	   ./srcs/builtins/pwd.c  \
+	   ./srcs/builtins/cd.c  \
+	   ./srcs/builtins/exit.c  \
+	   ./srcs/builtins/echo.c  \
+	   ./srcs/builtins/export.c  \
+	   ./srcs/builtins/env.c  \
+	   ./srcs/builtins/unset.c  \
 	   ./srcs/utils/our_get_env.c  \
 	   ./srcs/utils/init_env.c  \
 	   ./srcs/utils/get_exported_vars.c  \
+	   ./srcs/utils/env_checkers.c \
+	   ./srcs/utils/env_modifiers.c \
+	   ./srcs/utils/match_env_var.c \
+	   ./srcs/utils/split_var_by_name_value_pair.c \
+	   ./srcs/utils/env_selector.c \
+	   ./srcs/utils/command_options_checkers.c \
+	   ./get_next_line/get_next_line.c \
+	   ./get_next_line/get_next_line_utils.c \
+	   ./srcs/utils/print_builtins_usage.c \
+	   ./srcs/utils/print_builtins_errors.c
 
 OBJS = $(SRCS:.c=.o)
 
 UNAME_S := $(shell uname -s)
    ifeq ($(UNAME_S),Linux)
-        CC=clang-9
+        CC=clang
     endif
     ifeq ($(UNAME_S),Darwin)
         CC= clang

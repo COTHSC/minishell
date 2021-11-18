@@ -1,87 +1,99 @@
 #include "../../includes/minishell.h"
 
-void    set_to_null(char ***env2, char *var)
-{
-    int i;
-    char *tmp;
-    char **env;
-    int oldpwd;
-
-    i = -1;
-    env = *env2;
-    oldpwd = 0;
-    while (env[++i])
-    {
-        if (ft_strnstr(env[i], var, ft_strlen(var)) && (!env[i][ft_strlen(var)] || env[i][ft_strlen(var)] == '='))
-        {
-            tmp = ft_strdup("OLDPWD");
-            env[i] = tmp;
-            oldpwd++;
-        }
-    }
-    if (!oldpwd)
-        str_add(env, "OLDPWD");
-}
-
-void    set_init_value(char ***env2, char *var, char *var_value)
+void    set_env_value(char *var_name, char *var_value)
 {
     int i;
     char *tmp;
     char *tmp2;
-    char **env;
-    int oldpwd;
+    int exists;
 
     i = -1;
-    env = *env2;
-    oldpwd = 0;
-    tmp = ft_strjoin(var, "=");
+    exists = 0;
+    tmp = ft_strjoin(var_name, "=");
     tmp2 = ft_strjoin(tmp, var_value);
     free(tmp);
-    while (env[++i])
+    while (g_env[++i])
     {
-        if (ft_strnstr(env[i], var, ft_strlen(var)) && (!env[i][ft_strlen(var)] || env[i][ft_strlen(var)] == '='))
+        if (!ft_strncmp(g_env[i], var_name, ft_strlen(var_name)) && (!g_env[i][ft_strlen(var_name)] || g_env[i][ft_strlen(var_name)] == '='))
         {
-            env[i] = tmp2;
-         //   free(tmp2);
+            free(g_env[i]);
+            g_env[i] = tmp2;
+            exists++;
+            if (exists)
+                break;
+        }
+    }
+    if (!exists)
+    {
+        g_env = str_add(g_env, tmp2);
+        free(tmp2);
+    }
+
+}
+/*
+void    set_to_null(char *var)
+{
+    int i;
+    int oldpwd;
+    char **newenv;
+    char buf[PATH_MAX];
+
+    i = -1;
+    oldpwd = 0;
+    if (!ft_getenv("OLDPWD=", 'x'))
+    {
+        newenv = str_add(g_env, "xOLDPWD");
+        free_str_list(g_env, strlen_list(g_env));
+        g_env = newenv;
+        return;
+    }
+    while (g_env[++i])
+    {
+        if (!ft_strncmp(var, g_env[i], ft_strlen(var)) && (!g_env[i][ft_strlen(var)] || g_env[i][ft_strlen(var)] == '='))
+        {
+           // free(g_env[i]);
+            set_env_value("xOLDPWD", getcwd(buf, PATH_MAX));
+           // tmp = ft_strdup("xOLDPWD");
+           // g_env[i] = tmp;
             oldpwd++;
         }
     }
-    if (!oldpwd)
-        str_add(env, tmp2);
+
 }
 
-char *increment_shlvl(char **env)
+*/
+
+char *increment_shlvl()
 {
     int i;
 
-    i = ft_atoi(getenv2(env, "SHLVL"));
+    i = ft_atoi(ft_getenv("SHLVL", 'x'));
     i += 1;
     return (ft_itoa(i));
 }
 
-int init_env(char ***env2)
+int init_env(void)
 {
     int i;
     int oldpwd;
     char *tmp;
-    char **env;
-    char buf[PATH_MAX];
+    char *shlvl;
 
-    env = *env2;
     i = 0;
     oldpwd = 0;
-    set_to_null(env2, "OLDPWD");
-    set_init_value(env2, "PWD", getcwd(buf, PATH_MAX));
-    set_init_value(env2, "SHLVL", increment_shlvl(env));
-    while (env[i])
+    if (!match_var_name(g_env, "OLDPWD"))
+        alter_env_var(g_env, "OLDPWD", "", "x");
+    while (g_env[i])
     {
-        tmp = ft_strjoin("x",env[i]);
-        free(env[i]);
-        env[i] = tmp;
+        tmp = ft_strjoin("x", g_env[i]);
+        free(g_env[i]);
+        g_env[i] = tmp;
         i++;
     }
-    *env2 = env;
-    print_str_list(*env2, "");
+
+    shlvl = increment_shlvl();
+    set_env_value("xSHLVL", shlvl);
+    free(shlvl);
     return (0);
 }
 

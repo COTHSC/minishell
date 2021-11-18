@@ -1,15 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <limits.h>
 #include "../../includes/minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
- void    set_to_null(char ***env2, char *var);
+
+char **g_env;
+
+void    set_to_null(char *var);
+
 void    remove_quotes_list(char **command_block)
 {
     int i;
@@ -22,71 +16,87 @@ void    remove_quotes_list(char **command_block)
         command_block[i] = temp;
         i++;
     }
-
-}
-
-void    readline_loop(char ***env)
-{
-    char **command_block;
-    char *line_from_terminal;
-    int es;
-
-    es = 0;
-    while (1)
-    {
-        line_from_terminal = readline(" >  ");
-        add_history(line_from_terminal);
-        line_from_terminal = find_dollars(line_from_terminal, es);
-        command_block = ft_better_split(line_from_terminal);
-        remove_quotes_list(command_block);
-        es = execute(command_block, env);
-        free(line_from_terminal);
-        free_command_block(command_block);
-    }
 }
 
 char **create_basic()
 {
     char **env4;
+    char buf[PATH_MAX];
+    char *cwd;
 
-    env4 = (char **)malloc(3 * sizeof(char*));
-    env4[0] = ft_strdup("PWD=");
-    env4[1] = ft_strdup("OLDPWD=");
+    cwd = ft_strdup(getcwd(buf, PATH_MAX));
+    env4 = calloc_str_list(4);
+    env4[0] = ft_strjoin("PWD=", cwd);
+    env4[1] = ft_strdup("OLDPWD");
     env4[2] = ft_strdup("SHLVL=");
-    
+    env4[3] = NULL;
+    free(cwd);
     return (env4);
+}
 
+int is_empty(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (!ft_iswhitespace(str[i]))
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
 int main(int argc, char **argv, char **env)
 {
-    char **env2;
-
+    char **commands;
+    int i;
+    char ***command_list;
+    char *line_from_terminal;
+    int es;
     (void)argc;
     (void)argv;
 
     if (!env[0])
-        env2 = create_basic();
+        g_env = create_basic();
     else
-        env2 = str_list_dup(env);
+        g_env = str_list_dup(env);
+    init_env();
+    commands = NULL;
+    es = 0;
+    while (1)
+    {
+        i = 0;
+        if (isatty(STDIN_FILENO))
+            line_from_terminal = readline(">  ");
+        else
+            get_next_line(STDIN_FILENO, &line_from_terminal);
+        add_history(line_from_terminal);
+        line_from_terminal = find_dollars(line_from_terminal, es);
+        commands = ft_split(line_from_terminal, '|');
+        command_list = ft_calloc(sizeof(char ***) , 100);
+        while (commands[i])
+        {
+            if (!is_empty(commands[i]))
+            {
+                command_list[i] = ft_better_split(commands[i]);
+                remove_quotes_list(command_list[i]);
+            }
+            i++;
+        }
+        free_str_list(commands, strlen_list(commands));
+        es = execute(command_list);
+        free(command_list);
+        free(line_from_terminal);
+        if (!isatty(STDIN_FILENO))
+            es = -14;
+        if (es == -14)
+        {
+            free_str_list(g_env, strlen_list(g_env));
+            break;
+        }
 
-    init_env(&env2);
-    char **command_block;
-     char *line_from_terminal;
-     int es;
-
-     es = 0;
-     while (1)
-     {
-         line_from_terminal = readline(" >  ");
-         add_history(line_from_terminal);
-         line_from_terminal = find_dollars(line_from_terminal, es);
-         command_block = ft_better_split(line_from_terminal);
-         remove_quotes_list(command_block);
-         es = execute(command_block, &env2);
-         free(line_from_terminal);
-         free_command_block(command_block);
-     }
-    free_str_list(env2, strlen_list(env2));
+    }
     return 0;
 }

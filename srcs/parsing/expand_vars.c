@@ -1,5 +1,3 @@
- #include "../../libs/libft/libft.h"
- #include "../../libs/libft+/libftp.h"
  #include "../../includes/minishell.h"
  #include <stdio.h> 
  
@@ -22,10 +20,12 @@ char    *get_var_name(char *s, int *i)
 char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
-   
-    if (getenv(var_name) != getenv("notreal"))
+
+//    tmp = ft_strjoin("x", var_name);
+
+    if (ft_getenv(var_name, 'x') != NULL)
     {
-        var_value = ft_strdup(getenv(var_name)); 
+        var_value = ft_strdup(ft_getenv(var_name, 'x')); 
         *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else if (!ft_strncmp(var_name, "?", 2))
@@ -55,6 +55,7 @@ char     *expand_and_replace(char *s, char *var_value, char *var_name, int offse
             newstr[d] = var_value[d];
             d++;
         }
+        newstr[d] = '\0';
     }
     else
     {
@@ -92,9 +93,10 @@ char *find_dollars(char *s, int status)
     int i;
     char *newend;
     char *news;
+    int d;
 
     i = -1;
-    while (s[++i])
+    while (s && s[++i])
     {
         if (isquote(s[i]) == 1)
         {
@@ -108,17 +110,13 @@ char *find_dollars(char *s, int status)
             s[i] = 0;
             news = ft_strjoin(s, newend);
             free(newend);
+            d = ft_strlen(s);
             free(s);
             s = news;
+            if (i >= d)
+                return s;
+           // find_dollars(s, status);
         }
     }
     return (s);
 }
-/*
-int main(int argc, char **argv, char **env)
-{
-    char *news;
-    news = find_dollars(ft_strdup(argv[1]));
-    printf("this is the $TEST new s: %s\n", news);
-    return (0);
-}*/

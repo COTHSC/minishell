@@ -3,23 +3,23 @@
 char **str_add(char **str_list, char *str_to_add)
 {
 	int	i;
-	char **str_list_dup;
+	char **dup_list;
 	int	list_size;
 
 	i = 0;
 	list_size = strlen_list(str_list);
-	str_list_dup = calloc_str_list(list_size + 1);
-	if (!str_list_dup)
+	dup_list = calloc_str_list(list_size + 2);
+	if (!dup_list)
 		return (NULL);
 	while (i < list_size)
 	{
-		str_list_dup[i] = ft_strdup(str_list[i]);
-		if (!str_list_dup[i])
-			return (free_list_and_return_null(str_list_dup, i));
+		dup_list[i] = ft_strdup(str_list[i]);
+		if (!dup_list[i])
+			return (free_list_and_return_null(dup_list, i));
 		i++;
 	}
-	str_list_dup[i] = ft_strdup(str_to_add);
-	if (!str_list_dup[i])
-		return (free_list_and_return_null(str_list_dup, i));
-	return (str_list_dup);
+	dup_list[i] = ft_strdup(str_to_add);
+	if (!dup_list[i])
+		return (free_list_and_return_null(dup_list, i));
+	return (dup_list);
 }
