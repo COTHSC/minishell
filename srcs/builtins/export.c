@@ -79,56 +79,6 @@ int	display_entire_env( void )
 	return (EXIT_SUCCESS);
 }
 
-int	alter_env_var(char **clean_env, char *name, char *var_to_add)
-{
-	int		i;
-	char	**tmp_env;
-	char	*flagged_var_to_add;
-
-	i = index_matching_var_name(clean_env, name);
-	flagged_var_to_add = ft_strjoin("x", var_to_add);
-	if (!flagged_var_to_add)
-		return (EXIT_FAILURE);
-	if (i == -1)
-	{
-		tmp_env = str_add(g_env, flagged_var_to_add);
-		free(flagged_var_to_add);
-		if (!tmp_env)
-			return (EXIT_FAILURE);
-		free_str_list(g_env, strlen_list(g_env));
-		g_env = str_list_dup(tmp_env);
-		free_str_list(tmp_env, strlen_list(tmp_env));
-		if (!g_env)
-			return (EXIT_FAILURE);
-	}
-	else 
-	{
-		free(g_env[i]);
-		g_env[i] = ft_strdup(flagged_var_to_add);
-		free(flagged_var_to_add);
-		if (!g_env[i])
-			return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	has_valid_identifier(char *var_name)
-{
-	int	i;
-
-	i = 0;
-	while (var_name[i] && var_name[i] != '=')	
-	{
-		if (!ft_isalnum(var_name[i]))
-			return (0);
-		i++;
-	}
-	if ((i == 0) && (var_name[i] == '='))
-		return (0);
-	else
-		return (1);
-}
-
 int	do_export_on_env(char **new_vars)
 {
 	int		i;
@@ -150,7 +100,7 @@ int	do_export_on_env(char **new_vars)
 				change_flag(&g_env[idx_var_to_alter], 'x');
 		}
 		else
-			alter_env_var(clean_env, name_value_pair[0], new_vars[i]);
+			alter_env_var(clean_env, name_value_pair[0], new_vars[i], "x");
 		free_str_list(name_value_pair, strlen_list(name_value_pair));
 		i++;
 	}
