@@ -1,32 +1,5 @@
 #include "../../includes/minishell.h"
 
-void    set_to_null(char *var)
-{
-    int i;
-    char *tmp;
-    int oldpwd;
-    char **newenv;
-
-    i = -1;
-    oldpwd = 0;
-    while (g_env[++i])
-    {
-        if (ft_strnstr(var, g_env[i], ft_strlen(var)) && (!g_env[i][ft_strlen(var)] || g_env[i][ft_strlen(var)] == '='))
-        {
-            free(g_env[i]);
-            tmp = ft_strdup("xOLDPWD");
-            g_env[i] = tmp;
-            oldpwd++;
-        }
-    }
-    if (!oldpwd)
-    {
-        newenv = str_add(g_env, "xOLDPWD");
-        free_str_list(g_env, strlen_list(g_env));
-        g_env = newenv;
-    }
-}
-
 void    set_env_value(char *var_name, char *var_value)
 {
     int i;
@@ -41,7 +14,7 @@ void    set_env_value(char *var_name, char *var_value)
     free(tmp);
     while (g_env[++i])
     {
-        if (ft_strnstr(g_env[i], var_name, ft_strlen(var_name)) && (!g_env[i][ft_strlen(var_name)] || g_env[i][ft_strlen(var_name)] == '='))
+        if (!ft_strncmp(g_env[i], var_name, ft_strlen(var_name)) && (!g_env[i][ft_strlen(var_name)] || g_env[i][ft_strlen(var_name)] == '='))
         {
             free(g_env[i]);
             g_env[i] = tmp2;
@@ -57,6 +30,38 @@ void    set_env_value(char *var_name, char *var_value)
     }
 
 }
+
+void    set_to_null(char *var)
+{
+    int i;
+    int oldpwd;
+    char **newenv;
+    char buf[PATH_MAX];
+
+    i = -1;
+    oldpwd = 0;
+    if (!ft_getenv("OLDPWD=", 'x'))
+    {
+        newenv = str_add(g_env, "xOLDPWD");
+        free_str_list(g_env, strlen_list(g_env));
+        g_env = newenv;
+        return;
+    }
+    while (g_env[++i])
+    {
+        if (!ft_strncmp(var, g_env[i], ft_strlen(var)) && (!g_env[i][ft_strlen(var)] || g_env[i][ft_strlen(var)] == '='))
+        {
+           // free(g_env[i]);
+            set_env_value("xOLDPWD", getcwd(buf, PATH_MAX));
+           // tmp = ft_strdup("xOLDPWD");
+           // g_env[i] = tmp;
+            oldpwd++;
+        }
+    }
+
+}
+
+
 
 char *increment_shlvl()
 {

@@ -23,6 +23,8 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/utils/split_var_by_name_value_pair.c \
 	   ./srcs/utils/env_selector.c \
 	   ./srcs/utils/command_options_checkers.c \
+	   ./get_next_line/get_next_line.c \
+	   ./get_next_line/get_next_line_utils.c \
 	   ./srcs/utils/print_builtins_usage.c \
 	   ./srcs/utils/print_builtins_errors.c
 
