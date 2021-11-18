@@ -8,7 +8,7 @@ int ft_cd(int argc, char **argv)
     req_path = argv[1];
     if (argc == 1)
 	{
-        req_path = ft_getenv("HOME");
+        req_path = ft_getenv("HOME", 'x');
 		if (!req_path)
 		{
 			//"HOME not set" should be return;

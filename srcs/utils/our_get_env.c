@@ -11,16 +11,34 @@ int	var_name_match_in_env(char *env_var, char *name)
 		return (0);
 }
 
-char    *ft_getenv(char *name)
+char    *ft_getenv(char *name, char c)
 {
     int i;
-
+    char *x_check;
+    
+    if (c == 'x')
+        x_check = ft_strjoin("x", name);
+    else
+        x_check = ft_strjoin("d", name);
     i = 0;
     while (g_env[i])
     {
-		if (var_name_match_in_env(g_env[i], name))
-			return ((ft_strchr(g_env[i], '=')) + 1);
+        if (c == 'x')
+        {
+            if (var_name_match_in_env(g_env[i], x_check))
+            {
+                free(x_check);
+                return ((ft_strchr(g_env[i], '=')) + 1);
+            }
+
+        }
+        else if (var_name_match_in_env(&g_env[i][1], name))
+        {
+            free(x_check);
+            return ((ft_strchr(g_env[i], '=')) + 1);
+        }
         i++;
     }
+    free(x_check);
     return (NULL);
 }

@@ -20,12 +20,12 @@ char    *get_var_name(char *s, int *i)
 char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
-    char *tmp;
 
-    tmp = ft_strjoin("x", var_name);
-    if (ft_getenv(tmp) != NULL)
+//    tmp = ft_strjoin("x", var_name);
+
+    if (ft_getenv(var_name, 'x') != NULL)
     {
-        var_value = ft_strdup(ft_getenv(tmp)); 
+        var_value = ft_strdup(ft_getenv(var_name, 'x')); 
         *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else if (!ft_strncmp(var_name, "?", 2))
@@ -38,7 +38,6 @@ char    *get_var_value(char *var_name, int *offset, int status)
         var_value = NULL;
         *offset = ft_strlen(var_name) * -1;
     }
-    free(tmp);
     return (var_value);
 }
 

@@ -13,9 +13,10 @@ char *remove_quote(char *str, int i)
         return (NULL);
     ft_strlcpy(ret, str, i + 1);
     ft_strlcpy(&ret[i], &str[i + 1], ft_strlen(&str[i]) + 1);
-    //free(str);
+    free(str);
     return (ret);
 }
+
 char *remove_quotes(char *s)
 {
     int i;
@@ -38,14 +39,3 @@ char *remove_quotes(char *s)
     }
     return (s);
 }
-/*
-int main(int argc, char **argv)
-{
-    char *str;
-
-    str = "\'this is a se\"\"ntence with a quote in i\'t";
-    printf("%s\n", str);
-    str = remove_quotes(str);
-    printf("%s\n", str);
-    return 0;
-}*/
