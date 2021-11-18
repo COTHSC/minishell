@@ -18,7 +18,8 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/utils/our_get_env.c  \
 	   ./srcs/utils/init_env.c  \
 	   ./srcs/utils/get_exported_vars.c  \
-	   ./srcs/utils/env_modifiers_and_checkers.c \
+	   ./srcs/utils/env_checkers.c \
+	   ./srcs/utils/env_modifiers.c \
 	   ./srcs/utils/match_env_var.c \
 	   ./srcs/utils/split_var_by_name_value_pair.c \
 	   ./srcs/utils/env_selector.c \

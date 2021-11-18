@@ -32,7 +32,19 @@ int	var_already_exist(char **var_list, char *var)
 		return (0);
 }
 
-void	change_flag(char **var, char flag)
+int	has_valid_identifier(char *var_name)
 {
-	*var[0] = flag;
+	int	i;
+
+	i = 0;
+	while (var_name[i] && var_name[i] != '=')	
+	{
+		if (!ft_isalnum(var_name[i]))
+			return (0);
+		i++;
+	}
+	if ((i == 0) && (var_name[i] == '='))
+		return (0);
+	else
+		return (1);
 }
