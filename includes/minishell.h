@@ -51,6 +51,8 @@ int		option_is_called(char *cmd_block, char *option);
 int		option_is_called_and_repeated(char *cmd_block, char *option);
 void	perror_invalid_option(char *builtin, char *options, char *valid_options);
 void	perror_not_a_valid_identifier(char *identifier, char *builtin);
+void	perror_numeric_arg_required(char *failing_arg, char *builtin);
+void	perror_too_many_args(char *builtin);
 void	print_usage_export(void);
 void	print_usage_unset(void);
 void	print_usage_env(void);
