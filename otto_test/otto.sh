@@ -35,6 +35,17 @@ del_empty_file()
 	fi
 }
 
+del_empty_dirs()
+{
+	for dir in "$@"
+	do
+		if [ -z "$(ls -A $dir)" ]
+		then
+			rm -rf $dir
+		fi
+	done
+}
+
 print_success()
 {
 	echo " ${BOLDGREEN}✔${RESET} ${GREEN}test $1${RESET}"
@@ -64,15 +75,15 @@ print_score()
 	fi
 }
 
-execute_tests()
+execute_basic_tests()
 {
 	MINISHELL=$MINISHELL_PATH
 	FILENAME=$1
 	INPUT_FILE="./inputs/$1.txt" 
-	BASH_OUT_DIR="bash_output"
-	MINISHELL_OUT_DIR="minishell_output"
-	DIFF_DIR="diff"
-	ERROR_DIR="errors"
+	BASH_OUT_DIR="bash_output/"
+	MINISHELL_OUT_DIR="minishell_output/"
+	DIFF_DIR="diff/"
+	ERROR_DIR="errors/"
 	del_files "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 	mkdir "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 	TEST_NO=1
@@ -108,6 +119,7 @@ execute_tests()
 	done
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
 	del_files "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
+	del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"	
 }
 
 MINISHELL_PATH="../minishell"
@@ -115,6 +127,6 @@ TESTS_TOTAL=0
 SUCCESSFUL_TESTS=0
 MR_POTATO="./assets/mr_potato"
 SKELETON="./assets/skeleton"
-chmod 755 "./inputs/valid_tests.txt"
-execute_tests "valid_tests"
+chmod 755 "./inputs/basic_tests.txt"
+execute_basic_tests "basic_tests"
 print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL"
