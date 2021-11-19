@@ -94,6 +94,8 @@ int exec_dup(char *filenames, int redirect_type)
         fd = open(str, O_RDONLY , 0777);
     else if (redirect_type == 1)
         fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+    else if (redirect_type == 6)
+        fd = ft_atoi(filenames);
     check_fd(fd, str);
     free(str);
     if (redirect_type < 3)
@@ -102,7 +104,7 @@ int exec_dup(char *filenames, int redirect_type)
         dup2(fd, STDIN_FILENO);
     if (!filenames[i])
     {
-        close(fd);
+       // close(fd);
         return 0;
     }
     else
@@ -156,7 +158,8 @@ char    **ft_redirect(char **command_blocks, int quiet)
         {
             if (is_redirect(command_blocks[i][d]))
             {
-                command_blocks = make_dup(command_blocks,  d, i, 0, quiet);
+                if (!(command_blocks = make_dup(command_blocks,  d, i, 0, quiet)))
+                    return (NULL);
                 if (ft_strlen(command_blocks[i]) == 0)
                     command_blocks = delete_str(command_blocks, i);
                 return (ft_redirect(command_blocks, quiet));
