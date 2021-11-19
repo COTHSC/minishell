@@ -23,6 +23,7 @@ SRC = ft_iswhitespace.c \
 	  str_add.c \
 	  str_list_join.c \
 	  str_list_dup.c \
+	  ft_strtoll.c \
 	  free_list_and_return_null.c
 
 OBJ  = $(SRC:.c=.o)
