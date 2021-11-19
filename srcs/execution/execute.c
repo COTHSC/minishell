@@ -185,12 +185,12 @@ int    execute(char ***command_block)
         else
         {
             cmdcmp = str_list_dup(command_block[0]);
-            cmdcmp = ft_redirect(cmdcmp, 1);
             if (builtin_finder(cmdcmp[0]) == -1)
             {
                 pid = fork();
                 if (pid == 0)
                     execute_child(NULL, 0, 1, command_block[0]);
+                close(3);
                 wait(&status);
                 if (WIFEXITED(status))
                     status = WEXITSTATUS(status);
@@ -200,6 +200,7 @@ int    execute(char ***command_block)
             {
                 command_block[0] = ft_redirect(command_block[0], 0);
                 status = execute_builtin(command_block[0]);
+                close(3);
             }
             free_list_and_return_null(cmdcmp, strlen_list(cmdcmp));
             free_list_and_return_null(command_block[0], strlen_list(command_block[0]));

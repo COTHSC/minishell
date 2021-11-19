@@ -48,6 +48,88 @@ int is_empty(char *str)
     return (1);
 }
 
+int check_redirect_type(int redirect_type)
+{
+    if (redirect_type != 1 && redirect_type != 2 && redirect_type != 3 && redirect_type != 6)
+    {
+        ft_putstr_fd("minishell: syntax error near unexpected token '", 1);
+        ft_putstr_fd("'\n", 1);
+        return (0);
+    }
+    return (1);
+}
+
+char **make_heredoc(char **line_from_terminal)
+{
+    int i = 0;
+    int d = 0;
+    int pid;
+    int fd[2];
+    int redirect_type = 0;
+    char *line;
+    char *separator;
+
+    while (line_from_terminal[i])
+    {
+        d = 0;
+        while (line_from_terminal[i][d])
+        {
+            if (is_redirect(line_from_terminal[i][d]))
+            {
+                while (line_from_terminal[i] && is_redirect(line_from_terminal[i][d]))
+                    redirect_type += is_redirect(line_from_terminal[i][d++]);
+                if (redirect_type == 6)
+                {
+                    pipe(fd);
+                    if (line_from_terminal[i][d])
+                    {
+                        separator = ft_strdup(&line_from_terminal[i][d]);
+                    }
+
+                    else 
+                    {
+                        separator = ft_strdup(line_from_terminal[i + 1]);
+                        free(line_from_terminal[i + 1]);
+                        line_from_terminal[i + 1] = ft_itoa(fd[0]);
+                    }
+                    pid = fork();
+                    if (pid == 0)
+                    {
+                        close(fd[0]);
+                        while (1)
+                        {
+                            ft_putstr_fd("< ", 1);
+                            get_next_line(STDIN_FILENO, &line);
+                            if (strncmp(line, separator, ft_strlen(line)) || strlen(line) == 0)
+                            {
+                                ft_putstr_fd(line, fd[1]);
+                                ft_putstr_fd("\n", fd[1]);
+                                free(line);
+                            }
+                            else
+                            {
+                                close(fd[1]);
+                                free(line);
+                                exit(0);
+                            }
+                        }
+                    }
+                    wait(NULL);
+                    free(separator);
+                    close(fd[1]);
+                    return (line_from_terminal);
+                }
+            }
+            d++;
+
+        }
+        i++;
+
+    }
+    return (line_from_terminal);
+
+}
+
 int main(int argc, char **argv, char **env)
 {
     char **commands;
@@ -75,6 +157,7 @@ int main(int argc, char **argv, char **env)
         else
             get_next_line(STDIN_FILENO, &line_from_terminal);
         add_history(line_from_terminal);
+
         line_from_terminal = find_dollars(line_from_terminal, es);
         commands = ft_split(line_from_terminal, '|');
         command_list = ft_calloc(sizeof(char ***) , 100);
@@ -87,6 +170,7 @@ int main(int argc, char **argv, char **env)
             }
             i++;
         }
+        command_list[0] = make_heredoc(command_list[0]);
         free_str_list(commands, strlen_list(commands));
         tmp_es = execute(command_list);
         if (tmp_es != exit_signal)
