@@ -14,5 +14,5 @@ int ft_exit(int argc, char **argv)
 //	}
 //	free(argv);
 	printf("exit \n");
-	return (-14);
+	return (-1);
 }

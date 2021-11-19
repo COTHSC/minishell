@@ -123,7 +123,6 @@ int	ft_multipipes2(char ***cmd)
     int i;
     int *pids;
     int status;
-    //int stdoutCopy = dup(1);
 
     int n = 0;
     pid_t wpid;
@@ -146,7 +145,6 @@ int	ft_multipipes2(char ***cmd)
                 execute_child(fd, i, n, cmd[i]);
             else
             {
-             //   pids[i] = 1;
                 if (!close_unused_fds(fd, i, n))
                     exit(EXIT_FAILURE);
                 dup2(fd[i][0], 0);
@@ -156,8 +154,6 @@ int	ft_multipipes2(char ***cmd)
                 status = execute_builtin(cmd[i]);
                 close(fd[i][0]);
                 close(fd[i+1][1]);
-                //if (i == n - 1)
-               // dup2(stdoutCopy, 1);
             }
         }
         free_list_and_return_null(cmdcmp, strlen_list(cmdcmp));
@@ -166,6 +162,8 @@ int	ft_multipipes2(char ***cmd)
     close_unused_fds(fd, n + 1, n);
     while ((wpid = wait(&status)) > 0)
         i = 1;
+    if (WIFEXITED(status))
+        status = WEXITSTATUS(status);
     free(pids); 
     close(fd[n][1]);
     close(fd[n][0]);
@@ -193,7 +191,9 @@ int    execute(char ***command_block)
                 pid = fork();
                 if (pid == 0)
                     execute_child(NULL, 0, 1, command_block[0]);
-                wait(NULL);
+                wait(&status);
+                if (WIFEXITED(status))
+                    status = WEXITSTATUS(status);
             }
 
             else

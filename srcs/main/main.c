@@ -54,7 +54,9 @@ int main(int argc, char **argv, char **env)
     int i;
     char ***command_list;
     char *line_from_terminal;
+    int tmp_es;
     int es;
+    int exit_signal = -1;
     (void)argc;
     (void)argv;
 
@@ -86,17 +88,19 @@ int main(int argc, char **argv, char **env)
             i++;
         }
         free_str_list(commands, strlen_list(commands));
-        es = execute(command_list);
+        tmp_es = execute(command_list);
+        if (tmp_es != exit_signal)
+            es = tmp_es;
         free(command_list);
         free(line_from_terminal);
         if (!isatty(STDIN_FILENO))
-            es = -14;
-        if (es == -14)
+            tmp_es = -1;
+        if (tmp_es == -1)
         {
             free_str_list(g_env, strlen_list(g_env));
             break;
         }
 
     }
-    return 0;
+    return (es);
 }
