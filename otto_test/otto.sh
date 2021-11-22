@@ -46,6 +46,15 @@ del_empty_dirs()
 	done
 }
 
+print_welcome()
+{
+	OTTO_WELCOME="./assets/otto_welcome"
+	cat "${OTTO_WELCOME}"	
+	echo "${BOLDBLUE}WELCOME TO OTTO!! AN AUTOMATED TEST SUITE FOR MINISHELL$RESET"
+	sleep 2
+	echo
+}
+
 print_success()
 {
 	echo " ${BOLDGREEN}✔${RESET} ${GREEN}test $1${RESET}"
@@ -63,6 +72,8 @@ print_error()
 
 print_score()
 {
+	MR_POTATO="./assets/mr_potato"
+	SKELETON="./assets/skeleton"
 	if [ $1 -eq $2 ]
 	then
 		echo "${BOLDGREEN}>> SCORE: $1 / $2 ${RESET}"
@@ -80,10 +91,6 @@ execute_basic_tests()
 	MINISHELL=$MINISHELL_PATH
 	FILENAME=$1
 	INPUT_FILE="./inputs/$1.txt" 
-	BASH_OUT_DIR="bash_output/"
-	MINISHELL_OUT_DIR="minishell_output/"
-	DIFF_DIR="diff/"
-	ERROR_DIR="errors/"
 	del_files "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 	mkdir "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 	TEST_NO=1
@@ -118,15 +125,23 @@ execute_basic_tests()
 		TEST_NO=$((TEST_NO + 1))
 	done
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
-	del_files "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
-	del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"	
 }
+
+##execute_redirections_tests()
+##{
+##}
 
 MINISHELL_PATH="../minishell"
 TESTS_TOTAL=0
 SUCCESSFUL_TESTS=0
-MR_POTATO="./assets/mr_potato"
-SKELETON="./assets/skeleton"
-chmod 755 "./inputs/basic_tests.txt"
+BASH_OUT_DIR="bash_output/"
+MINISHELL_OUT_DIR="minishell_output/"
+DIFF_DIR="diff/"
+ERROR_DIR="errors/"
+print_welcome
+chmod 755 ./inputs/*
 execute_basic_tests "basic_tests"
+#execute_redirections_tests "redirection_tests"
 print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL"
+del_files "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
+del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"	
