@@ -19,7 +19,7 @@ BOLDMAGENTA="\033[1m\033[35m"
 BOLDCYAN="\033[1m\033[36m"
 BOLDWHITE="\033[1m\033[37m"
 
-del_files()
+del_files_and_dirs()
 {
 	for file in "$@"
 	do
@@ -76,36 +76,35 @@ print_score()
 	SKELETON="./assets/skeleton"
 	if [ $1 -eq $2 ]
 	then
+		cat	"$MR_POTATO"
 		echo "${BOLDGREEN}>> SCORE: $1 / $2 ${RESET}"
 		echo "What are you looking at you hockey puck??"
-		cat	"$MR_POTATO"
 	else
+		cat	"$SKELETON"
 		echo "${BOLDRED}>> SCORE: $1 / $2 ${RESET}"
 		echo "GET BACK TO WORK YOU PUNK!"
-		cat	"$SKELETON"
 	fi
 }
 
 execute_basic_tests()
 {
 	MINISHELL=$MINISHELL_PATH
-	FILENAME=$1
-	INPUT_FILE="./inputs/$1.txt" 
-	del_files "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
+	TEST_NAME=$1
+	TEST_FILE="./inputs/$TEST_NAME"
+	del_files_and_dirs "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 	mkdir "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 	TEST_NO=1
-	echo "CURRENT TEST: $FILENAME"
-	NUMBER_OF_TEST=$(cat "$INPUT_FILE" | wc -l)
+	echo "\n${BOLDBLUE}CURRENT TEST: BASIC TESTS${RESET}"
+	NUMBER_OF_TEST=$(cat "$TEST_FILE" | wc -l)
 	while [ $TEST_NO -le $NUMBER_OF_TEST ]
 	do
-		CMD_TO_TEST="echo $(sed -n "${TEST_NO}p" $INPUT_FILE)"
-		ERR_FILE=${ERROR_DIR}/${FILENAME}_$TEST_NO
+		CMD_TO_TEST="echo $(sed -n "${TEST_NO}p" $TEST_FILE)"
+		ERR_FILE=${ERROR_DIR}/${TEST_NAME}_$TEST_NO
 		DIFF_FILE=$DIFF_DIR/diff_${TEST_NO}
-		BASH_OUTPUT=${BASH_OUT_DIR}/${FILENAME}_$TEST_NO
-		MINISHELL_OUTPUT=${MINISHELL_OUT_DIR}/${FILENAME}_$TEST_NO
+		BASH_OUTPUT=${BASH_OUT_DIR}/${TEST_NAME}_$TEST_NO
+		MINISHELL_OUTPUT=${MINISHELL_OUT_DIR}/${TEST_NAME}_$TEST_NO
 		echo $CMD_TO_TEST | bash 2> /dev/null | bash >> "$BASH_OUTPUT" 2> /dev/null
 		echo $CMD_TO_TEST | $MINISHELL  2> "$ERR_FILE" | bash >> "$MINISHELL_OUTPUT" 2> /dev/null
-		del_empty_file $ERR_FILE
 		diff $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
 		if [ -s $DIFF_FILE ] || [ -s $ERR_FILE ] 
 		then 
@@ -122,26 +121,67 @@ execute_basic_tests()
 			del_empty_file "$DIFF_FILE"
 			SUCCESSFUL_TESTS=$((SUCCESSFUL_TESTS + 1))
 		fi
+		del_empty_file $ERR_FILE
 		TEST_NO=$((TEST_NO + 1))
 	done
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
 }
 
-##execute_redirections_tests()
-##{
-##}
+execute_redirections_tests()
+{
+	MINISHELL="../../$MINISHELL_PATH"
+	TEST_NAME=$1
+	REDIRECT="/redirection"
+	mkdir "$DIFF_DIR$REDIRECT"
+	TEST_FILE="./inputs/$TEST_NAME"
+	TEST_NO=1
+	echo "\n${BOLDBLUE}CURRENT TEST: REDIRECTION TESTS${RESET}"
+	NUMBER_OF_TEST=$(cat "$TEST_FILE" | wc -l)
+	while [ $TEST_NO -le $NUMBER_OF_TEST ]
+	do
+		CMD_TO_TEST="echo $(sed -n "${TEST_NO}p" $TEST_FILE)"
+		ERR_FILE="../../${ERROR_DIR}/${TEST_NAME}_$TEST_NO"
+		DIFF_FILE=$DIFF_DIR${REDIRECT}/${TEST_NAME}_${TEST_NO}
+		BASH_OUTPUT=${BASH_OUT_DIR}${REDIRECT}_${TEST_NO}/
+		MINISHELL_OUTPUT=${MINISHELL_OUT_DIR}${REDIRECT}_${TEST_NO}/
+		mkdir $BASH_OUTPUT $MINISHELL_OUTPUT
+		$(cd $BASH_OUTPUT; $CMD_TO_TEST | bash 2> /dev/null)
+		$(cd $MINISHELL_OUTPUT; $CMD_TO_TEST | $MINISHELL 2> "$ERR_FILE")
+		diff -r $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
+		if [ -s $DIFF_FILE ] || [ -s $ERR_FILE ]
+		then 
+			if [ -s $ERR_FILE ]
+			then
+				print_error "$TEST_NO"
+				echo -n "  ";
+				cat $ERR_FILE | grep "ERROR:" | sed 's/.*ERROR://'
+			else
+				print_failure "$TEST_NO"
+			fi
+		else
+			print_success "$TEST_NO"
+			del_empty_file "$DIFF_FILE"
+			SUCCESSFUL_TESTS=$((SUCCESSFUL_TESTS + 1))
+		fi
+		del_empty_file $ERR_FILE
+		TEST_NO=$((TEST_NO + 1))
+	done
+	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
+}
 
 MINISHELL_PATH="../minishell"
 TESTS_TOTAL=0
 SUCCESSFUL_TESTS=0
-BASH_OUT_DIR="bash_output/"
-MINISHELL_OUT_DIR="minishell_output/"
-DIFF_DIR="diff/"
-ERROR_DIR="errors/"
+BASH_OUT_DIR="bash_output"
+MINISHELL_OUT_DIR="minishell_output"
+DIFF_DIR="diff"
+ERROR_DIR="errors"
+#BASH_ERROR_DIR="bash_errors"
+#MINISHELL_ERROR_DIR="minishell_errors"
 print_welcome
 chmod 755 ./inputs/*
 execute_basic_tests "basic_tests"
-#execute_redirections_tests "redirection_tests"
+execute_redirections_tests "redirections_tests"
 print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL"
-del_files "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
+#del_files_and_dirs "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
 del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"	
