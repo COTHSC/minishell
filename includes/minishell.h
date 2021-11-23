@@ -31,6 +31,7 @@ char    **ft_better_split(char const *s);
 
 int    execute(char ***command_block);
 char    **ft_redirect(char **command_block, int quiet);
+int     is_redirect(char c);
 
 //char **env2;
 /* OUR builtins */

@@ -100,7 +100,7 @@ char **make_heredoc(char **line_from_terminal)
                         {
                             ft_putstr_fd("< ", 1);
                             get_next_line(STDIN_FILENO, &line);
-                            if (strncmp(line, separator, ft_strlen(line)) || strlen(line) == 0)
+                            if (ft_strncmp(line, separator, ft_strlen(line)) || ft_strlen(line) == 0)
                             {
                                 ft_putstr_fd(line, fd[1]);
                                 ft_putstr_fd("\n", fd[1]);

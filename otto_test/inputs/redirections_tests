@@ -1,0 +1,20 @@
+echo hello > test1
+echo hello> test1
+echo hello >test1
+echo hello>test1
+echo hello >test1 > test2>test3
+echo $USER >test1
+echo hello >echo " world"> test1
+echo hello > echo ' world' > cat echo
+echo hello > echo ' world' > cat echo > test1
+> test1 echo hello > echo ' world'
+echo hello >> test1 | echo world >> test1
+echo hello >>test1 | echo world>> test1
+echo hello>>test1 | echo world>> test1
+echo hello >> test1 | echo world > test1
+echo $USER >> test1 | echo $MAIL >> test1
+>> test1 echo hello >> echo ' world' | echo foo >> test1
+echo "Hell_o\n " > test1 | cat < test1 >> test2 | echo $USER >> test2
+echo "Hell_o\n " > test1 | cat < test1 >> test2 | echo $USER >> test2
+echo "Hell_o\n " > test1 | cat < test1 >> "$USER"_2 | echo $USER >> "$USER"_2
+echo "HIGHlow\n HIGHlow" > test1 | tr a-z A-Z < test1 >>test2 
