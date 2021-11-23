@@ -14,6 +14,8 @@
 
 extern char **g_env;
 
+int     execute_builtin(char **command_block);
+int	execute_child(int (*fd)[2], int i, int n, char **cmd);
 /* Functions used to expand environmental variables */
 
 char *find_dollars(char *s, int status);
@@ -30,7 +32,7 @@ char    **ft_better_split(char const *s);
 /* Functions related to the execution of a child program */
 
 int    execute(char ***command_block);
-char    **ft_redirect(char **command_block, int quiet);
+char    **ft_redirect(char **command_block, int quiet, int *fd);
 int     is_redirect(char c);
 
 //char **env2;

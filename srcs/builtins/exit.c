@@ -2,12 +2,12 @@
 
 int ft_exit(int argc, char **argv)
 {
-	int i;
+////int i;
 
-	i = 0;
-	(void)argc;
-	(void)argv;
-//	while (argv[i])
+////i = 0;
+    (void)argc;
+    (void)argv;
+////while (argv[i])
 //	{
 //		free(argv[i]);
 //		i++;

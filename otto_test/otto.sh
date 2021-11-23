@@ -49,7 +49,7 @@ del_empty_dirs()
 print_welcome()
 {
 	OTTO_WELCOME="./assets/otto_welcome"
-	cat "${OTTO_WELCOME}"	
+	cat ${OTTO_WELCOME}
 	echo "${BOLDBLUE}WELCOME TO OTTO!! AN AUTOMATED TEST SUITE FOR MINISHELL$RESET"
 	sleep 2
 	echo
@@ -106,8 +106,8 @@ execute_basic_tests()
 		echo $CMD_TO_TEST | bash 2> /dev/null | bash >> "$BASH_OUTPUT" 2> /dev/null
 		echo $CMD_TO_TEST | $MINISHELL  2> "$ERR_FILE" | bash >> "$MINISHELL_OUTPUT" 2> /dev/null
 		diff $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
-		if [ -s $DIFF_FILE ] || [ -s $ERR_FILE ] 
-		then 
+		if [ -s $DIFF_FILE ] || [ -s $ERR_FILE ]
+		then
 			if [ -s $ERR_FILE ]
 			then
 				print_error "$TEST_NO"
@@ -149,7 +149,7 @@ execute_redirections_tests()
 		$(cd $MINISHELL_OUTPUT; $CMD_TO_TEST | $MINISHELL 2> "$ERR_FILE")
 		diff -r $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
 		if [ -s $DIFF_FILE ] || [ -s $ERR_FILE ]
-		then 
+		then
 			if [ -s $ERR_FILE ]
 			then
 				print_error "$TEST_NO"
@@ -184,4 +184,4 @@ execute_basic_tests "basic_tests"
 execute_redirections_tests "redirections_tests"
 print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL"
 #del_files_and_dirs "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
-del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"	
+del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"
