@@ -27,14 +27,14 @@ char	**delete_var(char **clean_env, char *var_to_del)
 	return (tmp);
 }
 
-int	is_a_valid_identifier(char *var)
+int	is_a_valid_name(char *var)
 {
 	int	i;
 
 	i = 0;
 	while (var[i])	
 	{
-		if (!ft_isalnum(var[i]))
+		if (!ft_isanywordchar(var[i]))
 			return (0);
 		i++;
 	}
@@ -51,7 +51,7 @@ int	delete_element_from_env(char **vars_to_unset)
 	i = 0;
 	while (vars_to_unset[++i])
 	{
-		if (!is_a_valid_identifier(vars_to_unset[i]))
+		if (!is_a_valid_name(vars_to_unset[i]))
 		{
 			perror_not_a_valid_identifier(vars_to_unset[i], "unset");
 			continue;

@@ -39,7 +39,7 @@ int	has_valid_identifier(char *var_name)
 	i = 0;
 	while (var_name[i] && var_name[i] != '=')	
 	{
-		if (!ft_isalnum(var_name[i]))
+		if (!ft_isanywordchar(var_name[i]))
 			return (0);
 		i++;
 	}
