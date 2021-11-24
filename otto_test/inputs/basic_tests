@@ -23,7 +23,6 @@ cd ../.. | pwd
 cd . | pwd
 exit
 exit | ls
-ls | exit
 ls
 /bin/ls
 ls | cat
