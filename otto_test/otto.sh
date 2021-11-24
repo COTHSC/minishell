@@ -49,7 +49,7 @@ del_empty_dirs()
 print_welcome()
 {
 	OTTO_WELCOME="./assets/otto_welcome"
-	cat "${OTTO_WELCOME}"	
+	cat "${OTTO_WELCOME}"
 	echo -e "${BOLDBLUE}\nWELCOME TO OTTO!! AN AUTOMATED TEST SUITE FOR MINISHELL$RESET"
 	sleep 2
 	echo
@@ -133,7 +133,7 @@ check_diff()
 		LEFT=$(sed -n "s/> //p" $DIFF | sed -n "${i}p")
 		RIGHT=$(sed -n "s/< //p" $DIFF | sed -n "${i}p")
 		if [ LEFT != RIGHT ]
-		then 
+		then
 			return 1;
 		fi
 	done
@@ -202,7 +202,7 @@ execute_errors_and_exit_status_tests()
 		$(cd $MINISHELL_OUTPUT; $CMD_TO_TEST | $MINISHELL 2> err ; echo $? > status)
 		diff -r $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
 		if [ -s $DIFF_FILE ]
-		then 
+		then
 			print_failure "$TEST_NO"
 		else
 			print_success "$TEST_NO"
@@ -230,4 +230,4 @@ execute_redirections_tests "redirections_tests"
 execute_errors_and_exit_status_tests "errors_tests"
 print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL"
 #del_files_and_dirs "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
-del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"	
+del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"

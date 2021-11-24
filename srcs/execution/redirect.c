@@ -1,14 +1,4 @@
 # include "../../includes/minishell.h"
- # include <fcntl.h>
- # include <stdio.h>
- # include <fcntl.h>
- # include <unistd.h>
- # include <stdlib.h>
- # include <unistd.h>
- # include <string.h>
- # include <stdio.h>
- # include <sys/wait.h>
- # include <fcntl.h>
 
 int     is_redirect(char c)
 {
@@ -19,13 +9,12 @@ int     is_redirect(char c)
     return (0);
 }
 
-void    check_fd(int fd, char *filename)
+int    check_fd(int fd, char *filename)
 {
     char    *pwd;
     char    *temp;
     char    *temp1;
     
-
     temp = getenv("PWD");
     temp1 = ft_strjoin(temp, "/");
     pwd = ft_strjoin(temp1, filename);
@@ -43,9 +32,10 @@ void    check_fd(int fd, char *filename)
             ft_putstr_fd(": No such file or directory\n", 2);
         }
         free(pwd);
-        exit(1);
+        return (-1);
     }
     free(pwd);
+    return (0);
 }
 
 char	**delete_str(char **str_list, int index)
@@ -76,76 +66,86 @@ char	**delete_str(char **str_list, int index)
 	return (tmp);
 }
 
-int exec_dup(char *filenames, int redirect_type)
+int open_file(int *fd, int redirect_type, char *file_name)
+{
+    if (check_fd(*fd, file_name) == -1)
+        return (-1);
+    if (redirect_type == 2)
+        *fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0777);
+    else if (redirect_type == 3)
+        *fd = open(file_name, O_RDONLY , 0777);
+    else if (redirect_type == 1)
+        *fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+    else if (redirect_type == 6)
+        *fd = ft_atoi(file_name);
+    return (0);
+}
+
+int exec_dup(int redirect_type, int fd)
+{
+    if (redirect_type < 3)
+        dup2(fd, STDOUT_FILENO);
+    else
+        dup2(fd, STDIN_FILENO);
+    return (0);
+}
+
+int filename_to_fd(char *filenames, int redirect_type, int *fdret)
 {
     int i;
     char *str;
     int fd;
+    static int index_fd;
 
+    if (fdret[0] == -1)
+        index_fd = 0;
     fd = 0;
     i = 0;
     while (filenames[i] && !is_redirect(filenames[i]))
         i++;
     str = ft_strdup(filenames);
     str[i] = 0;
-    if (redirect_type == 2)
-        fd = open(str, O_RDWR | O_CREAT | O_APPEND, 0777);
-    else if (redirect_type == 3)
-        fd = open(str, O_RDONLY , 0777);
-    else if (redirect_type == 1)
-        fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-    else if (redirect_type == 6)
-        fd = ft_atoi(filenames);
-    check_fd(fd, str);
+    if (open_file(&fd, redirect_type, str) == -1)
+        return (-1);
+    fdret[index_fd++] = fd;
     free(str);
-    if (redirect_type < 3)
-        dup2(fd, STDOUT_FILENO);
-    else
-        dup2(fd, STDIN_FILENO);
-    if (!filenames[i])
-    {
-       // close(fd);
-        return 0;
-    }
-    else
+    exec_dup(redirect_type, fd);
+    if (filenames[i])
     {
         redirect_type = 0;
         while ((filenames[i]) && is_redirect(filenames[i]))
             redirect_type += is_redirect(filenames[i++]);
-        exec_dup(&filenames[i], redirect_type);
+        filename_to_fd(&filenames[i], redirect_type, fdret);
     }
     return (0);
 }
 
-char **make_dup(char **command_block, int index, int d, int redirect_type, int quiet)
+char **get_filenames(char **command_block, int index, int d, int redirect_type, int quiet, int *fd)
 {
     int i;
-    char *filenames;
     char **cmd;
 
     cmd = command_block;
     i = index;
     while ((command_block[d][i]) && is_redirect(command_block[d][i]))
+    {
             redirect_type += is_redirect(command_block[d][i++]);
-    if (i != index)
             command_block[d][index] = '\0';
+    }
     if (command_block[d][i])
     {
-        filenames = ft_strdup(&command_block[d][i]);
         if (quiet == 0)
-            exec_dup(filenames, redirect_type);
-        free(filenames);
+            filename_to_fd(&command_block[d][i], redirect_type, fd);
     }
     else 
     {
-        make_dup(command_block, 0, d + 1, redirect_type, quiet);
+        get_filenames(command_block, 0, d + 1, redirect_type, quiet, fd);
         cmd = delete_str(command_block, d + 1);
     }
-
     return (cmd);
 }
 
-char    **ft_redirect(char **command_blocks, int quiet)
+char    **ft_redirect(char **command_blocks, int quiet, int *fd)
 {
     int i;
     int d;
@@ -158,11 +158,11 @@ char    **ft_redirect(char **command_blocks, int quiet)
         {
             if (is_redirect(command_blocks[i][d]))
             {
-                if (!(command_blocks = make_dup(command_blocks,  d, i, 0, quiet)))
+                if (!(command_blocks = get_filenames(command_blocks,  d, i, 0, quiet, fd)))
                     return (NULL);
                 if (ft_strlen(command_blocks[i]) == 0)
                     command_blocks = delete_str(command_blocks, i);
-                return (ft_redirect(command_blocks, quiet));
+                return (ft_redirect(command_blocks, quiet, fd));
             }
             d++;
         }
