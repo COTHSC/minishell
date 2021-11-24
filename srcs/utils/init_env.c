@@ -75,12 +75,12 @@ char *increment_shlvl()
 int init_env(void)
 {
     int i;
-    int oldpwd;
+   // int oldpwd;
     char *tmp;
     char *shlvl;
 
     i = 0;
-    oldpwd = 0;
+   // oldpwd = 0;
     if (!match_var_name(g_env, "OLDPWD"))
         alter_env_var(g_env, "OLDPWD", "", "x");
     while (g_env[i])
