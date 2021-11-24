@@ -1,6 +1,4 @@
  #include "../../includes/minishell.h"
- #include <stdio.h> 
- 
 
 int isquote(char c);
 
@@ -20,8 +18,6 @@ char    *get_var_name(char *s, int *i)
 char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
-
-//    tmp = ft_strjoin("x", var_name);
 
     if (ft_getenv(var_name, 'x') != NULL)
     {

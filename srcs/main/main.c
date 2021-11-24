@@ -59,64 +59,85 @@ int check_redirect_type(int redirect_type)
     return (1);
 }
 
-char **make_heredoc(char **line_from_terminal)
+int is_in_quotes(char *str)
+{
+    if (str[0] == '\'' || str[ft_strlen(str) - 2] == '\'')
+        return (1);
+    if (str[0] == '"' || str[ft_strlen(str) - 2] == '"')
+        return (2);
+    return (0);
+}
+
+void    exec_heredoc(int fd[2], char *separator, int es)
+{
+    char *line;
+    int expand;
+
+    close(fd[0]);
+    expand = 0;
+    if (!is_in_quotes(separator))
+        expand = 1;
+    separator = remove_quotes(separator);
+    while (1)
+    {
+        ft_putstr_fd("> ", 1);
+        get_next_line(STDIN_FILENO, &line);
+        if (expand)
+            line = find_dollars(line, es);
+        if (ft_strncmp(line, separator, ft_strlen(line)) || ft_strlen(line) == 0)
+        {
+            ft_putstr_fd(line, fd[1]);
+            ft_putstr_fd("\n", fd[1]);
+            free(line);
+        }
+        else
+        {
+            close(fd[1]);
+            free(line);
+            exit(0);
+        }
+    }
+}
+
+char **make_heredoc(char **line_from_terminal, int es)
 {
     int i = 0;
     int d = 0;
     int pid;
     int fd[2];
-    int redirect_type = 0;
-    char *line;
     char *separator;
+    int redirect_type = 0;
 
     while (line_from_terminal[i])
     {
         d = 0;
-        while (line_from_terminal[i][d])
+        while (line_from_terminal[i][d + 1])
         {
-            if (is_redirect(line_from_terminal[i][d]))
+            if (line_from_terminal[i][d] == '<' && line_from_terminal[i][d + 1] == '<' )
             {
+                redirect_type = 0;
                 while (line_from_terminal[i] && is_redirect(line_from_terminal[i][d]))
                     redirect_type += is_redirect(line_from_terminal[i][d++]);
-                if (redirect_type == 6)
-                {
-                    pipe(fd);
-                    if (line_from_terminal[i][d])
-                        separator = ft_strdup(&line_from_terminal[i][d]);
-                    else 
-                    {
-                        separator = ft_strdup(line_from_terminal[i + 1]);
-                        free(line_from_terminal[i + 1]);
-                        line_from_terminal[i + 1] = ft_itoa(fd[0]);
-                    }
-                    pid = fork();
-                    if (pid == 0)
-                    {
-                        close(fd[0]);
-                        while (1)
-                        {
-                            ft_putstr_fd("< ", 1);
-                            get_next_line(STDIN_FILENO, &line);
-                            if (ft_strncmp(line, separator, ft_strlen(line)) || ft_strlen(line) == 0)
-                            {
-                                ft_putstr_fd(line, fd[1]);
-                                ft_putstr_fd("\n", fd[1]);
-                                free(line);
-                            }
-                            else
-                            {
-                                close(fd[1]);
-                                free(line);
-                                exit(0);
-                            }
-                        }
-                    }
-                    wait(NULL);
-                    free(separator);
-                    close(fd[1]);
-                    return (line_from_terminal);
-                }
+                if (redirect_type != 6)
+                    return NULL;
+                pipe(fd);
+                if (line_from_terminal[i][d])
+                    separator = ft_strdup(&line_from_terminal[i][d]);
                 else 
+                {
+                    separator = ft_strdup(line_from_terminal[i + 1]);
+                    free(line_from_terminal[i + 1]);
+                    line_from_terminal[i + 1] = ft_itoa(fd[0]);
+                }
+                pid = fork();
+                if (pid == 0)
+                    exec_heredoc(fd, separator, es);
+                wait(NULL);
+                free(separator);
+                close(fd[1]);
+                if (line_from_terminal[++i])
+                    d = -1;
+                else
                     return (line_from_terminal);
             }
             d++;
@@ -150,7 +171,7 @@ int main(int argc, char **argv, char **env)
     {
         i = 0;
         if (isatty(STDIN_FILENO))
-            line_from_terminal = readline(">  ");
+            line_from_terminal = readline("💣-🐚 >  ");
         else
             get_next_line(STDIN_FILENO, &line_from_terminal);
         add_history(line_from_terminal);
@@ -163,11 +184,11 @@ int main(int argc, char **argv, char **env)
             if (!is_empty(commands[i]))
             {
                 command_list[i] = ft_better_split(commands[i]);
+                command_list[i] = make_heredoc(command_list[i], es);
                 remove_quotes_list(command_list[i]);
             }
             i++;
         }
-
         free_str_list(commands, strlen_list(commands));
         tmp_es = execute(command_list);
         if (tmp_es != exit_signal)
