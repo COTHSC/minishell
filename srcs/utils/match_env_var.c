@@ -22,10 +22,8 @@ int	var_name_is_matching(char *var_to_compare, char *var_to_match)
 char	**match_var_name(char **var_list, char *var_to_match)
 {
 	int	i;
-	int sep;
 
 	i = 0;
-	sep = '=';
 	while (var_list[i])
 	{
 		if (var_name_is_matching(var_list[i], var_to_match))
@@ -38,10 +36,8 @@ char	**match_var_name(char **var_list, char *var_to_match)
 int	index_matching_var_name(char **var_list, char *var_to_match)
 {
 	int	i;
-	int sep;
 
 	i = 0;
-	sep = '=';
 	while (var_list[i])
 	{
 		if (var_name_is_matching(var_list[i], var_to_match))
