@@ -104,16 +104,14 @@ execute_basic_tests()
 		echo $CMD_TO_TEST | bash 2> /dev/null | bash >> "$BASH_OUTPUT" 2> /dev/null
 		echo $CMD_TO_TEST | $MINISHELL  2> "$ERR_FILE" | bash >> "$MINISHELL_OUTPUT" 2> /dev/null
 		diff $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
-		if [ -s $DIFF_FILE ] || [ -s $ERR_FILE ] 
+		if [ -s $ERR_FILE ]
+		then
+			print_crash "$TEST_NO"
+			#echo -n "  ";
+			cat $ERR_FILE | grep "ERROR:" | sed 's/.*ERROR://'
+		elif [ -s $DIFF_FILE ]
 		then 
-			if [ -s $ERR_FILE ]
-			then
-				print_crash "$TEST_NO"
-				#echo -n "  ";
-				cat $ERR_FILE | grep "ERROR:" | sed 's/.*ERROR://'
-			else
-				print_failure "$TEST_NO"
-			fi
+			print_failure "$TEST_NO"
 		else
 			print_success "$TEST_NO"
 			del_empty_file "$DIFF_FILE"
@@ -155,23 +153,23 @@ execute_redirections_tests()
 	while [ $TEST_NO -le $NUMBER_OF_TEST ]
 	do
 		CMD_TO_TEST="echo $(sed -n "${TEST_NO}p" $TEST_FILE)"
-		ERR_FILE="../../${ERROR_DIR}/${TEST_NAME}_$TEST_NO"
+		ERR_FILE="${ERROR_DIR}/${TEST_NAME}_$TEST_NO"
 		DIFF_FILE=$DIFF_DIR${REDIRECT}/${TEST_NAME}_${TEST_NO}
 		BASH_OUTPUT=${BASH_OUT_DIR}${REDIRECT}_${TEST_NO}/
 		MINISHELL_OUTPUT=${MINISHELL_OUT_DIR}${REDIRECT}_${TEST_NO}/
 		mkdir $BASH_OUTPUT $MINISHELL_OUTPUT
 		$(cd $BASH_OUTPUT; $CMD_TO_TEST | bash 2> /dev/null)
-		$(cd $MINISHELL_OUTPUT; $CMD_TO_TEST | $MINISHELL 2> "$ERR_FILE")
+		$(cd $MINISHELL_OUTPUT; $CMD_TO_TEST | $MINISHELL 2> "../../$ERR_FILE")
 		diff -r $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
 		DIFF_IS_SCRAMBLED=0
 		check_diff "$DIFF_FILE"
 		DIFF_IS_SCRAMBLED=$?
-		if [ -s $DIFF_FILE ] && [ $DIFF_IS_SCRAMBLED -eq 0 ]
+		if [ -s $ERR_FILE ]
 		then 
-			print_failure "$TEST_NO"
-		elif [ -s $ERR_FILE ]
-		then
 			print_crash "$TEST_NO"
+		elif [ -s $DIFF_FILE ] && [ $DIFF_IS_SCRAMBLED -eq 0 ]
+		then
+			print_failure "$TEST_NO"
 		else
 			print_success "$TEST_NO"
 			del_empty_file "$DIFF_FILE"
