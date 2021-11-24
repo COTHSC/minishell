@@ -7,9 +7,9 @@ int	print_multiple_arguments(char **args, int start, int end)
 	i = start;
 	while(i < end)
 	{
-		ft_putstr_fd(args[i], 1);
+		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (i != end - 1)
-			ft_putchar_fd(' ', 1);
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
 	}
 	return (EXIT_SUCCESS);
@@ -66,7 +66,7 @@ int ft_echo(int argc, char **argv)
 	num_options = count_valid_successive_options(argv) + 1;
 	if (argc == 1)
 	{
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		return (EXIT_SUCCESS);
 	}
 	else if (num_options > 1)
@@ -77,7 +77,7 @@ int ft_echo(int argc, char **argv)
 	else
 	{
 		print_multiple_arguments(argv, 1, strlen_list(argv));
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		return (EXIT_SUCCESS);
 	}
 }
