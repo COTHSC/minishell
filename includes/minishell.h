@@ -11,10 +11,10 @@
 # include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+ # include <fcntl.h>
 
 extern char **g_env;
 
-int     execute_builtin(char **command_block);
 int	execute_child(int (*fd)[2], int i, int n, char **cmd);
 /* Functions used to expand environmental variables */
 

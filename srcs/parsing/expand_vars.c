@@ -114,8 +114,7 @@ char *find_dollars(char *s, int status)
             free(s);
             s = news;
             if (i >= d)
-                return s;
-           // find_dollars(s, status);
+                return (find_dollars(s, status));
         }
     }
     return (s);

@@ -82,10 +82,7 @@ char **make_heredoc(char **line_from_terminal)
                 {
                     pipe(fd);
                     if (line_from_terminal[i][d])
-                    {
                         separator = ft_strdup(&line_from_terminal[i][d]);
-                    }
-
                     else 
                     {
                         separator = ft_strdup(line_from_terminal[i + 1]);
@@ -119,15 +116,14 @@ char **make_heredoc(char **line_from_terminal)
                     close(fd[1]);
                     return (line_from_terminal);
                 }
+                else 
+                    return (line_from_terminal);
             }
             d++;
-
         }
         i++;
-
     }
     return (line_from_terminal);
-
 }
 
 int main(int argc, char **argv, char **env)
@@ -170,7 +166,7 @@ int main(int argc, char **argv, char **env)
             }
             i++;
         }
-        command_list[0] = make_heredoc(command_list[0]);
+
         free_str_list(commands, strlen_list(commands));
         tmp_es = execute(command_list);
         if (tmp_es != exit_signal)
