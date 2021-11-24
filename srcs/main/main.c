@@ -84,7 +84,7 @@ void    exec_heredoc(int fd[2], char *separator, int es)
         get_next_line(STDIN_FILENO, &line);
         if (expand)
             line = find_dollars(line, es);
-        if (ft_strncmp(line, separator, ft_strlen(line)) || ft_strlen(line) == 0)
+        if (ft_strncmp(line, separator, ft_strlen(separator) + 1) || ft_strlen(line) == 0)
         {
             ft_putstr_fd(line, fd[1]);
             ft_putstr_fd("\n", fd[1]);
@@ -122,7 +122,10 @@ char **make_heredoc(char **line_from_terminal, int es)
                     return NULL;
                 pipe(fd);
                 if (line_from_terminal[i][d])
+                {
+                    //replace with strndup
                     separator = ft_strdup(&line_from_terminal[i][d]);
+                }
                 else 
                 {
                     separator = ft_strdup(line_from_terminal[i + 1]);
@@ -174,8 +177,6 @@ int main(int argc, char **argv, char **env)
             line_from_terminal = readline("💣-🐚 >  ");
         else
             get_next_line(STDIN_FILENO, &line_from_terminal);
-        add_history(line_from_terminal);
-
         line_from_terminal = find_dollars(line_from_terminal, es);
         commands = ft_split(line_from_terminal, '|');
         command_list = ft_calloc(sizeof(char ***) , 100);
@@ -202,7 +203,6 @@ int main(int argc, char **argv, char **env)
             free_str_list(g_env, strlen_list(g_env));
             break;
         }
-
     }
     return (es);
 }
