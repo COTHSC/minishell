@@ -1,5 +1,7 @@
 echo
 echo -nnnnnnnnn
+echo -nna
+echo -nnn -nn
 echo hello
 echo $USER
 echo $DOESNOTEXIST_YEAH_REALLY_DOES_NOT_OR_SHOULD_NOT_AT_LEAST
@@ -9,6 +11,7 @@ echo -nnnn $USER -nn
 echo hello "" hello
 echo hello "" "" "" "" "" "" "" "" "" hello 
 echo $?
+$THIS_VAR_DOES_NOT_EXIST_BUT_BASH_DOES_NOT_CARE_LOL
 export test1=1
 export _test_2__=2
 export test3=3 test4=4 test5 test6=6
@@ -28,3 +31,4 @@ ls
 ls | cat
 cat | ls
 cat | cat | cat | ls
+cat | cat | cat | cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |cat | cat | cat |ls

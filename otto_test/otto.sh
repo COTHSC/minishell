@@ -49,25 +49,45 @@ del_empty_dirs()
 print_welcome()
 {
 	OTTO_WELCOME="./assets/otto_welcome"
-	cat "${OTTO_WELCOME}"
-	echo -e "${BOLDBLUE}\nWELCOME TO OTTO!! AN AUTOMATED TEST SUITE FOR MINISHELL$RESET"
-	sleep 2
-	echo
+	if [ $QUIET_SWITCH -eq 0 ]
+	then
+		cat "${OTTO_WELCOME}"
+		echo -e "${BOLDBLUE}\nWELCOME TO OTTO!! AN AUTOMATED TEST SUITE FOR MINISHELL$RESET"
+		sleep 2
+		echo
+	fi
 }
 
 print_success()
 {
-	echo -e " ${BOLDGREEN}✔${RESET} ${GREEN}test $1${RESET}"
+	if [ $QUIET_SWITCH -eq 0 ]
+	then
+		echo -e " ${BOLDGREEN}✔${RESET} ${GREEN}test $1${RESET}"
+	fi
 }
 
 print_failure()
 {
-	echo -e " ${BOLDRED}✖${RESET} ${RED}test $1${RESET}"
+	if [ $QUIET_SWITCH -eq 0 ]
+	then
+		echo -e " ${BOLDRED}✖${RESET} ${RED}test $1${RESET}"
+	fi
 }
 
 print_crash()
 {
-	echo -e "${BOLDRED}💣${RESET} ${RED}test $1${RESET}"
+	if [ $QUIET_SWITCH -eq 0 ]
+	then
+		echo -e "${BOLDRED}💣${RESET} ${RED}test $1${RESET}"
+	fi
+}
+
+print_test_name()
+{
+	if [ $QUIET_SWITCH -eq 0 ]
+	then
+		echo -e "\n${BOLDBLUE}CURRENT TEST: $1${RESET}"
+	fi
 }
 
 print_score()
@@ -76,11 +96,17 @@ print_score()
 	SKELETON="./assets/skeleton"
 	if [ $1 -eq $2 ]
 	then
-		cat	"$MR_POTATO"
+		if [ $QUIET_SWITCH -eq 0 ]
+		then
+			cat	"$MR_POTATO"
+		fi
 		echo -e "${BOLDGREEN}>> SCORE: $1 / $2 ${RESET}"
 		echo -e "What are you looking at you hockey puck??"
 	else
-		cat	"$SKELETON"
+		if [ $QUIET_SWITCH -eq 0 ]
+		then
+			cat	"$SKELETON"
+		fi
 		echo -e "${BOLDRED}>> SCORE: $1 / $2 ${RESET}"
 		echo -e "GET BACK TO WORK YOU PUNK!"
 	fi
@@ -92,8 +118,8 @@ execute_basic_tests()
 	TEST_NAME=$1
 	TEST_FILE="./inputs/$TEST_NAME"
 	TEST_NO=1
-	echo -e "\n${BOLDBLUE}CURRENT TEST: BASIC${RESET}"
 	NUMBER_OF_TEST=$(cat "$TEST_FILE" | wc -l)
+	print_test_name "BASIC"
 	while [ $TEST_NO -le $NUMBER_OF_TEST ]
 	do
 		CMD_TO_TEST="echo $(sed -n "${TEST_NO}p" $TEST_FILE)"
@@ -148,7 +174,7 @@ execute_redirections_tests()
 	mkdir "$DIFF_DIR$REDIRECT"
 	TEST_FILE="./inputs/$TEST_NAME"
 	TEST_NO=1
-	echo -e "\n${BOLDBLUE}CURRENT TEST: REDIRECTIONS${RESET}"
+	print_test_name "REDIRECTIONS"
 	NUMBER_OF_TEST=$(cat "$TEST_FILE" | wc -l)
 	while [ $TEST_NO -le $NUMBER_OF_TEST ]
 	do
@@ -181,6 +207,24 @@ execute_redirections_tests()
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
 }
 
+check_error()
+{
+	BASH_ERR=$(sed -n 's/bash\: line *[0-9]\: //p' $1)
+	MINISHELL_ERR=$(sed -n 's/minishell\: //p' $2)
+	CHECK_DIFF_ERR=$(diff <(echo "$BASH_ERR") <(echo "$MINISHELL_ERR"))
+	BASH_STATUS=$(cat $3)
+	MINISHELL_STATUS=$(cat $4)
+	CHECK_DIFF_STATUS=$(diff <(echo "$BASH_STATUS") <(echo "$MINISHELL_STATUS"))
+	#echo "CHECK_DIFF_ERR: $CHECK_DIFF_ERR"
+	#echo "CHECK_DIFF_STATUS: $CHECK_DIFF_STATUS"
+	if [ -z "$CHECK_DIFF_ERR" ] && [ -z "$CHECK_DIFF_STATUS" ]
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+
 execute_errors_and_exit_status_tests()
 {
 	MINISHELL="../../$MINISHELL_PATH"
@@ -189,7 +233,7 @@ execute_errors_and_exit_status_tests()
 	mkdir "$DIFF_DIR$ERROR_AND_EXIT_DIR"
 	TEST_FILE="./inputs/$TEST_NAME"
 	TEST_NO=1
-	echo -e "\n${BOLDBLUE}CURRENT TEST: ERROR MESSAGE AND EXIT STATUS${RESET}"
+	print_test_name "ERRORS AND EXIT STATUS"
 	NUMBER_OF_TEST=$(cat "$TEST_FILE" | wc -l)
 	while [ $TEST_NO -le $NUMBER_OF_TEST ]
 	do
@@ -198,10 +242,12 @@ execute_errors_and_exit_status_tests()
 		BASH_OUTPUT=${BASH_OUT_DIR}${ERROR_AND_EXIT_DIR}_${TEST_NO}/
 		MINISHELL_OUTPUT=${MINISHELL_OUT_DIR}${ERROR_AND_EXIT_DIR}_${TEST_NO}/
 		mkdir $BASH_OUTPUT $MINISHELL_OUTPUT
-		$(cd $BASH_OUTPUT; $CMD_TO_TEST | bash 2> err ; echo $? > status)
-		$(cd $MINISHELL_OUTPUT; $CMD_TO_TEST | $MINISHELL 2> err ; echo $? > status)
+		$(cd $BASH_OUTPUT; $CMD_TO_TEST | bash > /dev/null 2> err ; echo $? > status)
+		$(cd $MINISHELL_OUTPUT; $CMD_TO_TEST | $MINISHELL > /dev/null 2> err ; echo $? > status)
 		diff -r $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
-		if [ -s $DIFF_FILE ]
+		check_error "${BASH_OUTPUT}err" "${MINISHELL_OUTPUT}err" "${BASH_OUTPUT}status" "${MINISHELL_OUTPUT}status"
+		CONFIRMED_ERROR=$?
+		if [ -s $DIFF_FILE ] && [ $CONFIRMED_ERROR -eq 1 ]
 		then
 			print_failure "$TEST_NO"
 		else
@@ -214,6 +260,12 @@ execute_errors_and_exit_status_tests()
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
 }
 
+QUIET_SWITCH=0
+CHECK_QUIET=$(diff <(echo "$1") <(echo "-q"))
+if [ -z "$CHECK_QUIET" ]
+then
+	QUIET_SWITCH=1
+fi
 MINISHELL_PATH="../minishell"
 TESTS_TOTAL=0
 SUCCESSFUL_TESTS=0
@@ -224,7 +276,7 @@ ERROR_DIR="errors"
 del_files_and_dirs "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 mkdir "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 print_welcome
-chmod 755 ./inputs/*
+chmod 755 ./inputs/*tests*
 execute_basic_tests "basic_tests"
 execute_redirections_tests "redirections_tests"
 execute_errors_and_exit_status_tests "errors_tests"
