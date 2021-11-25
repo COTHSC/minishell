@@ -79,38 +79,6 @@ int	display_entire_env( void )
 	return (EXIT_SUCCESS);
 }
 
-int	do_export_on_env(char **new_vars)
-{
-	int		i;
-	int		idx_var_to_alter;
-	char	**clean_env;
-	char	**name_value_pair;
-
-	clean_env = env_selector(1);
-	i = 1;
-	while (new_vars[i])
-	{
-		name_value_pair = split_to_name_value_pair(new_vars[i]);
-		if (!has_valid_identifier(new_vars[i]))
-			perror_not_a_valid_identifier(new_vars[i], "export");
-		else if (var_already_exist(clean_env, name_value_pair[0]) && !var_has_value(new_vars[i]))
-		{
-			idx_var_to_alter = index_matching_var_name(clean_env, name_value_pair[0]);
-			if (!var_is_exported(g_env[idx_var_to_alter]))
-				change_flag(&g_env[idx_var_to_alter], 'x');
-		}
-		else
-			alter_env_var(clean_env, name_value_pair[0], new_vars[i], "x");
-		free_str_list(name_value_pair, strlen_list(name_value_pair));
-		i++;
-	}
-	free_str_list(clean_env, strlen_list(clean_env));
-	if (!new_vars[i])
-		return (EXIT_SUCCESS);
-	else
-		return (EXIT_FAILURE);
-}
-
 int ft_export(int argc, char **argv)
 {
 	if (argc == 1)
@@ -122,5 +90,5 @@ int ft_export(int argc, char **argv)
 		return (2);
 	}
 	else
-		return (do_export_on_env(argv));
+		return (check_env_and_modify(argv, "x"));
 }
