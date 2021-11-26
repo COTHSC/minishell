@@ -16,6 +16,7 @@
 extern char **g_env;
 
 char *remove_quote(char *str, int i);
+char    **parse_block(char **command_block);
 int	execute_child(int (*fd)[2], int i, int n, char **cmd);
 /* Functions used to expand environmental variables */
 
