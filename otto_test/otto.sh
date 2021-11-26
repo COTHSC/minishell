@@ -72,6 +72,7 @@ print_failure()
 	then
 		echo -e " ${BOLDRED}✖${RESET} ${RED}test $1${RESET}"
 	fi
+	echo "$2" >> "failed_tests"
 }
 
 print_crash()
@@ -80,6 +81,7 @@ print_crash()
 	then
 		echo -e "${BOLDRED}💣${RESET} ${RED}test $1${RESET}"
 	fi
+	echo "$2" >> "failed_tests"
 }
 
 print_test_name()
@@ -132,12 +134,12 @@ execute_basic_tests()
 		diff $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
 		if [ -s $ERR_FILE ]
 		then
-			print_crash "$TEST_NO"
+			print_crash "$TEST_NO" "$CMD_TO_TEST"
 			#echo -n "  ";
 			cat $ERR_FILE | grep "ERROR:" | sed 's/.*ERROR://'
 		elif [ -s $DIFF_FILE ]
 		then 
-			print_failure "$TEST_NO"
+			print_failure "$TEST_NO" "$CMD_TO_TEST"
 		else
 			print_success "$TEST_NO"
 			del_empty_file "$DIFF_FILE"
@@ -192,10 +194,10 @@ execute_redirections_tests()
 		DIFF_IS_SCRAMBLED=$?
 		if [ -s $ERR_FILE ]
 		then 
-			print_crash "$TEST_NO"
+			print_crash "$TEST_NO" "$CMD_TO_TEST"
 		elif [ -s $DIFF_FILE ] && [ $DIFF_IS_SCRAMBLED -eq 0 ]
 		then
-			print_failure "$TEST_NO"
+			print_failure "$TEST_NO" "$CMD_TO_TEST"
 		else
 			print_success "$TEST_NO"
 			del_empty_file "$DIFF_FILE"
@@ -249,9 +251,9 @@ execute_errors_and_exit_status_tests()
 		CONFIRMED_ERROR=$?
 		if [ -s $DIFF_FILE ] && [ $CONFIRMED_ERROR -eq 1 ]
 		then
-			print_failure "$TEST_NO"
+			print_failure "$TEST_NO" "$CMD_TO_TEST"
 		else
-			print_success "$TEST_NO"
+			print_success "$TEST_NO" 
 			del_empty_file "$DIFF_FILE"
 			SUCCESSFUL_TESTS=$((SUCCESSFUL_TESTS + 1))
 		fi
@@ -273,7 +275,7 @@ BASH_OUT_DIR="bash_output"
 MINISHELL_OUT_DIR="minishell_output"
 DIFF_DIR="diff"
 ERROR_DIR="errors"
-del_files_and_dirs "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
+del_files_and_dirs "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR" "failed_tests"
 mkdir "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 print_welcome
 chmod 755 ./inputs/*tests*
