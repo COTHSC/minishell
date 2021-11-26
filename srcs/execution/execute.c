@@ -234,6 +234,7 @@ int    execute(char ***command_block)
             if (builtin_finder(cmdcmp[0]) == -1)
             {
                 pid = fork();
+
                 if (pid == 0)
                     execute_child(NULL, 0, 1, command_block[0]);
                 wait(&status);
@@ -250,5 +251,6 @@ int    execute(char ***command_block)
             free_list_and_return_null(command_block[0], strlen_list(command_block[0]));
         }
     }
+
     return (status);
 }

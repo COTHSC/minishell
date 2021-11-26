@@ -48,6 +48,7 @@ int is_empty(char *str)
     return (1);
 }
 
+/*
 int check_redirect_type(int redirect_type)
 {
     if (redirect_type != 1 && redirect_type != 2 && redirect_type != 3 && redirect_type != 6)
@@ -58,6 +59,7 @@ int check_redirect_type(int redirect_type)
     }
     return (1);
 }
+*/
 
 int is_in_quotes(char *str)
 {
@@ -66,88 +68,6 @@ int is_in_quotes(char *str)
     if (str[0] == '"' || str[ft_strlen(str) - 2] == '"')
         return (2);
     return (0);
-}
-
-void    exec_heredoc(int fd[2], char *separator, int es)
-{
-    char *line;
-    int expand;
-
-    close(fd[0]);
-    expand = 0;
-    if (!is_in_quotes(separator))
-        expand = 1;
-    separator = remove_quotes(separator);
-    while (1)
-    {
-        ft_putstr_fd("> ", 1);
-        get_next_line(STDIN_FILENO, &line);
-        if (expand)
-            line = find_dollars(line, es);
-        if (ft_strncmp(line, separator, ft_strlen(separator) + 1) || ft_strlen(line) == 0)
-        {
-            ft_putstr_fd(line, fd[1]);
-            ft_putstr_fd("\n", fd[1]);
-            free(line);
-        }
-        else
-        {
-            close(fd[1]);
-            free(line);
-            exit(0);
-        }
-    }
-}
-
-char **make_heredoc(char **line_from_terminal, int es)
-{
-    int i = 0;
-    int d = 0;
-    int pid;
-    int fd[2];
-    char *separator;
-    int redirect_type = 0;
-
-    while (line_from_terminal[i])
-    {
-        d = 0;
-        while (line_from_terminal[i][d + 1])
-        {
-            if (line_from_terminal[i][d] == '<' && line_from_terminal[i][d + 1] == '<' )
-            {
-                redirect_type = 0;
-                while (line_from_terminal[i] && is_redirect(line_from_terminal[i][d]))
-                    redirect_type += is_redirect(line_from_terminal[i][d++]);
-                if (redirect_type != 6)
-                    return NULL;
-                pipe(fd);
-                if (line_from_terminal[i][d])
-                {
-                    //replace with strndup
-                    separator = ft_strdup(&line_from_terminal[i][d]);
-                }
-                else 
-                {
-                    separator = ft_strdup(line_from_terminal[i + 1]);
-                    free(line_from_terminal[i + 1]);
-                    line_from_terminal[i + 1] = ft_itoa(fd[0]);
-                }
-                pid = fork();
-                if (pid == 0)
-                    exec_heredoc(fd, separator, es);
-                wait(NULL);
-                free(separator);
-                close(fd[1]);
-                if (line_from_terminal[++i])
-                    d = -1;
-                else
-                    return (line_from_terminal);
-            }
-            d++;
-        }
-        i++;
-    }
-    return (line_from_terminal);
 }
 
 int main(int argc, char **argv, char **env)
@@ -185,8 +105,9 @@ int main(int argc, char **argv, char **env)
             if (!is_empty(commands[i]))
             {
                 command_list[i] = ft_better_split(commands[i]);
-                command_list[i] = make_heredoc(command_list[i], es);
+                command_list[i] = parse_block(command_list[i]);
                 remove_quotes_list(command_list[i]);
+
             }
             i++;
         }
