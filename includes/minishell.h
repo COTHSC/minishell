@@ -45,7 +45,10 @@ int select_builtin(int index, int argc, char **argv);
 char    *ft_getenv(char *name, char c);
 char    *get_path(char **command_block);
 void    free_command_block(char **command_block);
-
+/*
+** ------------------ PARSING ------------------
+*/
+char	**parse_declaration(char **command_blocks);
 /*
 ** ------------------ BUILTINS AUXILIARIES ------------------
 */
@@ -74,9 +77,9 @@ int		var_is_exported(char *var);
 int		var_already_exist(char **var_list, char *var);
 void	change_flag(char **var, char flag);
 char	**split_to_name_value_pair(char *var);
-char	**env_selector(int position_selector);
+char	**env_selector(int position_selector, char *flag);
 int		index_matching_var_name(char **var_list, char *var_to_match);
 int	alter_env_var(char **clean_env, char *name, char *var_to_add, char *flag);
-int	check_env_and_modify(char **args, char *flag);
+int	check_and_alter_env(char **args, char *flag);
 int	has_valid_identifier(char *var_name);
 #endif
