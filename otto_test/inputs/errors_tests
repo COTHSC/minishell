@@ -29,6 +29,10 @@ exit hello 1
 exit 1 2 3 
 exit 1 2
 exit 1 2.2
+exit 3200
+exit 3201
+exit -999999998
+exit 9999999999999999999998
 exit 9999999999999999999999
 ls | exit
 export test1%=1
@@ -48,3 +52,5 @@ cat THIS_IS_Not_AN_EXISTING_FILE
 ../../inputs/this_is_a_file
 THIS_CMD_DOES_NOT_EXIST
 $THIS_VAR_DOES_NOT_EXIST_BUT_BASH_DOES_NOT_CARE_LOL
+test--9=$PWD
+test--9=$USER
