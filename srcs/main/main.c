@@ -48,7 +48,15 @@ int is_empty(char *str)
     return (1);
 }
 
-/*
+int is_in_quotes(char *str)
+{
+    if (str[0] == '\'' || str[ft_strlen(str) - 2] == '\'')
+        return (1);
+    if (str[0] == '"' || str[ft_strlen(str) - 2] == '"')
+        return (2);
+    return (0);
+}
+
 int check_redirect_type(int redirect_type)
 {
     if (redirect_type != 1 && redirect_type != 2 && redirect_type != 3 && redirect_type != 6)
@@ -58,16 +66,6 @@ int check_redirect_type(int redirect_type)
         return (0);
     }
     return (1);
-}
-*/
-
-int is_in_quotes(char *str)
-{
-    if (str[0] == '\'' || str[ft_strlen(str) - 2] == '\'')
-        return (1);
-    if (str[0] == '"' || str[ft_strlen(str) - 2] == '"')
-        return (2);
-    return (0);
 }
 
 int main(int argc, char **argv, char **env)
@@ -107,7 +105,6 @@ int main(int argc, char **argv, char **env)
                 command_list[i] = ft_better_split(commands[i]);
                 command_list[i] = parse_block(command_list[i]);
                 remove_quotes_list(command_list[i]);
-
             }
             i++;
         }

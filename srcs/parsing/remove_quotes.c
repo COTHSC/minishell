@@ -1,6 +1,5 @@
 #include "../../libs/libft/libft.h"
 #include "../../libs/libft+/libftp.h"
-#include <stdio.h>
 
 int isquote(char c);
 
