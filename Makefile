@@ -31,7 +31,8 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./get_next_line/get_next_line.c \
 	   ./get_next_line/get_next_line_utils.c \
 	   ./srcs/utils/print_builtins_usage.c \
-	   ./srcs/utils/print_builtins_errors.c
+	   ./srcs/utils/print_builtins_errors.c \
+	   ./srcs/utils/print_minishell_errors.c
 
 OBJS = $(SRCS:.c=.o)
 
