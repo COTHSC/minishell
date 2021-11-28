@@ -19,13 +19,20 @@ char *remove_quote(char *str, int i);
 char    **parse_block(char **command_block);
 int	execute_child(int (*fd)[2], int i, int n, char **cmd);
 /* Functions used to expand environmental variables */
+int check_syntax(char *s);
+int isquote(char c);
 
+int check_redirect_type(int redirect_type);
 char *find_dollars(char *s, int status);
 
+int go_through_quote(char const *s, int lead, int *quote);
+void	perror_syntax_error(char unexpected_token);
 /* Functions used to treat and remove quotes from arguments */
 
 char *remove_quotes(char *s);
 
+void   remove_quotes_list(char **command_block);
+char **get_command(char **cmd_block);
 /* Functions used to split arguments into an an array of strings to be executed */
 
 char    **ft_better_split(char const *s);
@@ -34,7 +41,7 @@ char    **ft_better_split(char const *s);
 /* Functions related to the execution of a child program */
 
 int    execute(char ***command_block);
-char    **ft_redirect(char **command_block, int quiet, int *fd);
+char    **ft_redirect(char **command_block, int *fd);
 int     is_redirect(char c);
 
 //char **env2;
@@ -61,9 +68,11 @@ void	perror_invalid_option(char *builtin, char *options, char *valid_options);
 void	perror_not_a_valid_identifier(char *identifier, char *builtin);
 void	perror_numeric_arg_required(char *failing_arg, char *builtin);
 void	perror_too_many_args(char *builtin);
+void    print_minishell_error(int error, char *str);
 void	print_usage_export(void);
 void	print_usage_unset(void);
 void	print_usage_env(void);
+void	print_usage_cd(void);
 /*
 ** ------------------ ENV AUXILIARIES ------------------
 */

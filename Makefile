@@ -4,6 +4,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/main/main.c  \
 	   ./srcs/parsing/expand_vars.c  \
 	   ./srcs/parsing/remove_quotes.c  \
+	   ./srcs/parsing/parse_syntax.c  \
 	   ./srcs/parsing/parse_declarations.c  \
 	   ./srcs/execution/execute.c  \
 	   ./srcs/execution/redirect.c  \
@@ -30,7 +31,8 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./get_next_line/get_next_line.c \
 	   ./get_next_line/get_next_line_utils.c \
 	   ./srcs/utils/print_builtins_usage.c \
-	   ./srcs/utils/print_builtins_errors.c
+	   ./srcs/utils/print_builtins_errors.c \
+	   ./srcs/utils/print_minishell_errors.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -15,12 +15,21 @@ int ft_cd(int argc, char **argv)
 			return (EXIT_FAILURE);
 		}
 	}
-    if(!(dir_pointer = opendir(req_path)))
+    if (argc > 1 && is_option(argv[1]))
     {
-        ft_putstr_fd("minishell: cd: ", 1);
-        ft_putstr_fd((char*)req_path, 1);
-        ft_putstr_fd(": ", 1);
-        perror(NULL);
+        perror_invalid_option("cd", argv[1], "");
+        print_usage_cd();
+        return (2);
+    }
+    if (argc > 2)
+    {
+        perror_too_many_args("cd");
+        return (1);
+    }
+    dir_pointer = opendir(req_path);
+    if(!dir_pointer)
+    {
+        print_minishell_error(errno, (char *)req_path);
         return (EXIT_FAILURE);
     }
     else
@@ -28,10 +37,7 @@ int ft_cd(int argc, char **argv)
         closedir(dir_pointer);
         if(chdir(req_path)== -1)
         {
-            ft_putstr_fd("minishell: cd: ", 1);
-            ft_putstr_fd((char*)req_path, 1);
-            ft_putstr_fd(": ", 1);
-            perror(NULL);
+            print_minishell_error(errno, (char *)req_path);
             return (EXIT_FAILURE);
         }
     }
