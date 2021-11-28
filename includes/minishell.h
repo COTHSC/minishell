@@ -64,6 +64,7 @@ void	perror_too_many_args(char *builtin);
 void	print_usage_export(void);
 void	print_usage_unset(void);
 void	print_usage_env(void);
+void	print_usage_cd(void);
 /*
 ** ------------------ ENV AUXILIARIES ------------------
 */
