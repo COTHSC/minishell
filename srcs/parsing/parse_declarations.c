@@ -114,7 +114,6 @@ char	**parse_declaration(char **command_blocks)
 	int declaration_switch;
 
 	declaration_switch = switch_declaration_on(command_blocks);
-	cleaned_blocks = NULL;
 	if (declaration_switch == 0)
 	{
 		cleaned_blocks = remove_valid_declaration(command_blocks);
@@ -123,12 +122,10 @@ char	**parse_declaration(char **command_blocks)
 	}
 	else
 	{
-		printf("BEfOR\n");
 		check_and_alter_env(command_blocks, "d");
 		cleaned_blocks = calloc_str_list(2);
 		cleaned_blocks[0] = ft_strdup("");
 		free_str_list(command_blocks, strlen_list(command_blocks));
-		printf("AFTER\n");
 		return (cleaned_blocks);
 	}
 }
