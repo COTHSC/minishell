@@ -98,7 +98,6 @@ int main(int argc, char **argv, char **env)
             es = 2;
             free(line_from_terminal);
         }
-
         else
         {
 
@@ -112,7 +111,6 @@ int main(int argc, char **argv, char **env)
                     command_list[i] = ft_better_split(commands[i]);
                     command_list[i] = parse_declaration(command_list[i]);
                     command_list[i] = parse_block(command_list[i]);
-                    remove_quotes_list(command_list[i]);
                 }
                 i++;
             }

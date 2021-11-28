@@ -31,6 +31,7 @@ void	perror_syntax_error(char unexpected_token);
 
 char *remove_quotes(char *s);
 
+void    remove_quotes_list(char **command_block);
 /* Functions used to split arguments into an an array of strings to be executed */
 
 char    **ft_better_split(char const *s);

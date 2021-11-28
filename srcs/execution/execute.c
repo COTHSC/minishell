@@ -121,6 +121,7 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
 
     }
     cmd = ft_redirect(cmd, 0, fds);
+    remove_quotes_list(cmd);
     execute_binary(cmd);
     close_fds(fds);
     if (fd)
@@ -145,6 +146,7 @@ int     execute_builtin(int (*fd)[2], int i, int n, char **cmd)
             dup2(fd[i + 1][1], STDOUT_FILENO);
     }
     cmd = ft_redirect(cmd, 0, fds);
+    remove_quotes_list(cmd);
     ret = -1;
     if (cmd[0])
         ret = select_builtin_test(builtin_finder(cmd[0]), strlen_list(cmd), cmd);
