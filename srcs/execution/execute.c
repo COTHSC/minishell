@@ -120,7 +120,7 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
             dup2(fd[i + 1][1], STDOUT_FILENO);
 
     }
-    cmd = ft_redirect(cmd, 0, fds);
+    cmd = ft_redirect(cmd, fds);
     remove_quotes_list(cmd);
     execute_binary(cmd);
     close_fds(fds);
@@ -145,7 +145,7 @@ int     execute_builtin(int (*fd)[2], int i, int n, char **cmd)
         if (i != n - 1)
             dup2(fd[i + 1][1], STDOUT_FILENO);
     }
-    cmd = ft_redirect(cmd, 0, fds);
+    cmd = ft_redirect(cmd, fds);
     remove_quotes_list(cmd);
     ret = -1;
     if (cmd[0])
@@ -193,7 +193,7 @@ int	ft_multipipes2(char ***cmd)
     while (++i < n)
     {
         cmdcmp = str_list_dup(cmd[i]);
-        cmdcmp = ft_redirect(cmdcmp, 1, NULL);
+        cmdcmp = get_command(cmdcmp);
         pids[i] = fork();
         if (pids[i] == 0)
         {
@@ -232,7 +232,7 @@ int    execute(char ***command_block)
         else
         {
             cmdcmp = str_list_dup(command_block[0]);
-            cmdcmp = ft_redirect(cmdcmp, 1, NULL);
+            cmdcmp = get_command(cmdcmp);
             if (builtin_finder(cmdcmp[0]) == -1)
             {
                 pid = fork();
