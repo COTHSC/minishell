@@ -155,7 +155,7 @@ char    *check_syntax(char *s)
     }
     return (s);
 } 
-/*    
+
 int main(int argc, char **argv)
 {
     char *line_to_check;
@@ -165,4 +165,4 @@ int main(int argc, char **argv)
     printf("%s\n", line_to_check);
     return (0);
 }
-*/
+

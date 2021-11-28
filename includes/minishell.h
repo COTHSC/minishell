@@ -19,9 +19,14 @@ char *remove_quote(char *str, int i);
 char    **parse_block(char **command_block);
 int	execute_child(int (*fd)[2], int i, int n, char **cmd);
 /* Functions used to expand environmental variables */
+int check_syntax(char *s);
+int isquote(char c);
 
+int check_redirect_type(int redirect_type);
 char *find_dollars(char *s, int status);
 
+int go_through_quote(char const *s, int lead, int *quote);
+void	perror_syntax_error(char unexpected_token);
 /* Functions used to treat and remove quotes from arguments */
 
 char *remove_quotes(char *s);

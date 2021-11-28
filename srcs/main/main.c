@@ -61,8 +61,6 @@ int check_redirect_type(int redirect_type)
 {
     if (redirect_type != 1 && redirect_type != 2 && redirect_type != 3 && redirect_type != 6)
     {
-        ft_putstr_fd("minishell: syntax error near unexpected token '", 1);
-        ft_putstr_fd("'\n", 1);
         return (0);
     }
     return (1);
@@ -95,27 +93,36 @@ int main(int argc, char **argv, char **env)
             line_from_terminal = readline("💣-🐚 >  ");
         else
             get_next_line(STDIN_FILENO, &line_from_terminal);
-		//parse synthax error on line_from_term
-        line_from_terminal = find_dollars(line_from_terminal, es);
-        commands = ft_split(line_from_terminal, '|');
-        command_list = ft_calloc(sizeof(char ***) , 100);
-        while (commands[i])
+        if (check_syntax(line_from_terminal))
         {
-            if (!is_empty(commands[i]))
-            {
-                command_list[i] = ft_better_split(commands[i]);
-				command_list[i] = parse_declaration(command_list[i]);
-                command_list[i] = parse_block(command_list[i]);
-                remove_quotes_list(command_list[i]);
-            }
-            i++;
+            es = 2;
+            free(line_from_terminal);
         }
-        free_str_list(commands, strlen_list(commands));
-        tmp_es = execute(command_list);
-        if (tmp_es != exit_signal)
-            es = tmp_es;
-        free(command_list);
-        free(line_from_terminal);
+
+        else
+        {
+
+            line_from_terminal = find_dollars(line_from_terminal, es);
+            commands = ft_split(line_from_terminal, '|');
+            command_list = ft_calloc(sizeof(char ***) , 100);
+            while (commands[i])
+            {
+                if (!is_empty(commands[i]))
+                {
+                    command_list[i] = ft_better_split(commands[i]);
+                    command_list[i] = parse_declaration(command_list[i]);
+                    command_list[i] = parse_block(command_list[i]);
+                    remove_quotes_list(command_list[i]);
+                }
+                i++;
+            }
+            free_str_list(commands, strlen_list(commands));
+            tmp_es = execute(command_list);
+            if (tmp_es != exit_signal)
+                es = tmp_es;
+            free(command_list);
+            free(line_from_terminal);
+        }
         if (!isatty(STDIN_FILENO))
             tmp_es = -1;
         if (tmp_es == -1)
