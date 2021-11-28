@@ -91,33 +91,41 @@ char *make_heredocs(char *seps, int fd[2])
     return (final_redir);
 }
 
-char   *parse_line(char *command_line)
+char   *parse_line(char *s)
 {
     int i;
     int fd[2];
     char *command;
     char *test;
     char *temp;
+    int quote;
 
-    i = 0;
-    while (command_line[i + 1])
+    i = 1;
+    while (s[i])
     {
-        if (command_line[i] == '<' && command_line[i + 1] == '<')
+        if (s[i - 1] == '<' && s[i] == '<')
         {
-            if (!command_line[i + 2])
-                return (command_line);
-            command = ft_strndup(command_line, i);
-            temp = make_heredocs(&command_line[i], fd);
+            if (!s[i + 1])
+                return (s);
+            command = ft_strndup(s, i);
+            temp = make_heredocs(&s[i - 1], fd);
             test = ft_strjoin(command, temp);
             free(command);
             free(temp);
-            free(command_line);
-            command_line = test;
-            return (command_line);
+            free(s);
+            s = test;
+            return (s);
         }
-        i++;
+        if ((quote = isquote(s[i - 1])))
+        {
+            i = go_through_quote(s, i - 1, &quote);
+            if (s[i])
+                i++;
+        }
+        if (s[i])
+            i++;
     }
-    return (command_line);
+    return (s);
 }
 
 int     end_is_heredoc(char *s)

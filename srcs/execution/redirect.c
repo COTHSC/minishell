@@ -149,6 +149,7 @@ char    **ft_redirect(char **command_blocks, int quiet, int *fd)
 {
     int i;
     int d;
+    int quote;
 
     i = 0;
     while (command_blocks[i])
@@ -156,6 +157,7 @@ char    **ft_redirect(char **command_blocks, int quiet, int *fd)
         d = 0;
         while (command_blocks[i][d])
         {
+
             if (is_redirect(command_blocks[i][d]))
             {
                 if (!(command_blocks = get_filenames(command_blocks,  d, i, 0, quiet, fd)))
@@ -164,6 +166,8 @@ char    **ft_redirect(char **command_blocks, int quiet, int *fd)
                     command_blocks = delete_str(command_blocks, i);
                 return (ft_redirect(command_blocks, quiet, fd));
             }
+            if ((quote = isquote(command_blocks[i][d])))
+                d = go_through_quote(command_blocks[i], d, &quote);
             d++;
         }
         i++;
