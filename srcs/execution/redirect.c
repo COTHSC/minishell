@@ -97,6 +97,7 @@ int filename_to_fd(char *filenames, int redirect_type, int *fdret)
     int fd;
     static int index_fd;
 
+
     if (fdret[0] == -1)
         index_fd = 0;
     fd = 0;
@@ -105,6 +106,7 @@ int filename_to_fd(char *filenames, int redirect_type, int *fdret)
         i++;
     str = ft_strdup(filenames);
     str[i] = 0;
+    str = remove_quotes(str);
     if (open_file(&fd, redirect_type, str) == -1)
         return (-1);
     fdret[index_fd++] = fd;
@@ -120,7 +122,7 @@ int filename_to_fd(char *filenames, int redirect_type, int *fdret)
     return (0);
 }
 
-char **get_filenames(char **command_block, int index, int d, int redirect_type, int quiet, int *fd)
+char **get_filenames(char **command_block, int index, int d, int redirect_type, int *fd)
 {
     int i;
     char **cmd;
@@ -134,18 +136,17 @@ char **get_filenames(char **command_block, int index, int d, int redirect_type, 
     }
     if (command_block[d][i])
     {
-        if (quiet == 0)
             filename_to_fd(&command_block[d][i], redirect_type, fd);
     }
     else 
     {
-        get_filenames(command_block, 0, d + 1, redirect_type, quiet, fd);
+        get_filenames(command_block, 0, d + 1, redirect_type, fd);
         cmd = delete_str(command_block, d + 1);
     }
     return (cmd);
 }
 
-char    **ft_redirect(char **command_blocks, int quiet, int *fd)
+char    **ft_redirect(char **command_blocks, int *fd)
 {
     int i;
     int d;
@@ -157,14 +158,13 @@ char    **ft_redirect(char **command_blocks, int quiet, int *fd)
         d = 0;
         while (command_blocks[i][d])
         {
-
             if (is_redirect(command_blocks[i][d]))
             {
-                if (!(command_blocks = get_filenames(command_blocks,  d, i, 0, quiet, fd)))
+                if (!(command_blocks = get_filenames(command_blocks,  d, i, 0, fd)))
                     return (NULL);
                 if (ft_strlen(command_blocks[i]) == 0)
                     command_blocks = delete_str(command_blocks, i);
-                return (ft_redirect(command_blocks, quiet, fd));
+                return (ft_redirect(command_blocks, fd));
             }
             if ((quote = isquote(command_blocks[i][d])))
                 d = go_through_quote(command_blocks[i], d, &quote);
@@ -173,4 +173,52 @@ char    **ft_redirect(char **command_blocks, int quiet, int *fd)
         i++;
     }
     return (command_blocks);
+}
+
+char **get_filenames_no_redirect(char **command_block, int index, int d)
+{
+    int i;
+    char **cmd;
+
+    cmd = command_block;
+    i = index;
+    while ((command_block[d][i]) && is_redirect(command_block[d][i]))
+            command_block[d][index] = '\0';
+    if (command_block[d][i])
+        return (cmd);
+    else 
+    {
+        get_filenames_no_redirect(command_block, 0, d + 1);
+        cmd = delete_str(command_block, d + 1);
+    }
+    return (cmd);
+}
+
+char **get_command(char **cmd_block)
+{
+    int i;
+    int d;
+    int quote;
+
+    i = 0;
+    while (cmd_block[i])
+    {
+        d = 0;
+        while (cmd_block[i][d])
+        {
+            if (is_redirect(cmd_block[i][d]))
+            {
+                if (!(cmd_block = get_filenames_no_redirect(cmd_block,  d, i)))
+                    return (NULL);
+                if (ft_strlen(cmd_block[i]) == 0)
+                    cmd_block = delete_str(cmd_block, i);
+                return (get_command(cmd_block));
+            }
+            if ((quote = isquote(cmd_block[i][d])))
+                d = go_through_quote(cmd_block[i], d, &quote);
+            d++;
+        }
+        return(cmd_block);
+    }
+    return (cmd_block);
 }

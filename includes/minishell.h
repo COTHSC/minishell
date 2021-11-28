@@ -31,7 +31,8 @@ void	perror_syntax_error(char unexpected_token);
 
 char *remove_quotes(char *s);
 
-void    remove_quotes_list(char **command_block);
+void   remove_quotes_list(char **command_block);
+char **get_command(char **cmd_block);
 /* Functions used to split arguments into an an array of strings to be executed */
 
 char    **ft_better_split(char const *s);
@@ -40,7 +41,7 @@ char    **ft_better_split(char const *s);
 /* Functions related to the execution of a child program */
 
 int    execute(char ***command_block);
-char    **ft_redirect(char **command_block, int quiet, int *fd);
+char    **ft_redirect(char **command_block, int *fd);
 int     is_redirect(char c);
 
 //char **env2;
