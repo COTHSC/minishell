@@ -57,7 +57,7 @@ int	delete_element_from_env(char **vars_to_unset)
 			continue;
 		}
 		name_value_pair = split_to_name_value_pair(vars_to_unset[i]);
-		clean_env = env_selector(1);
+		clean_env = env_selector(1, NULL);
 		if (match_var_name(clean_env, name_value_pair[0]))
 		{
 			tmp = delete_var(clean_env, name_value_pair[0]);

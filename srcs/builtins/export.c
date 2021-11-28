@@ -47,31 +47,31 @@ char	**double_quoting_env_values(char **env)
 	return (q_env);
 }
 
-int	display_entire_env( void )
+int	display_exported_vars( void )
 {
-	char	**cleaned_env;
+	char	**exported_vars;
 	char	**sorted_env;
 	char	**prefixed_env;
 
-	cleaned_env = env_selector(1);
-	if (!cleaned_env)
+	exported_vars = env_selector(1, "x");
+	if (!exported_vars)
 		return (EXIT_FAILURE);
-	sorted_env = sort_str_list(cleaned_env);
+	sorted_env = sort_str_list(exported_vars);
 	if (!sorted_env)
 	{
-		free_str_list(cleaned_env, strlen_list(cleaned_env));
+		free_str_list(exported_vars, strlen_list(exported_vars));
 		return (EXIT_FAILURE);
 	}
 	prefixed_env = double_quoting_env_values(sorted_env);
 	if (!prefixed_env)
 	{
-		free_str_list(cleaned_env, strlen_list(cleaned_env));
+		free_str_list(exported_vars, strlen_list(exported_vars));
 		free_str_list(sorted_env, strlen_list(sorted_env));
 		return (EXIT_FAILURE);
 	}
 	print_str_list(prefixed_env, "declare -x ");
-	if (cleaned_env)
-		free_str_list(cleaned_env, strlen_list(cleaned_env));
+	if (exported_vars)
+		free_str_list(exported_vars, strlen_list(exported_vars));
 	if (sorted_env)
 		free_str_list(sorted_env, strlen_list(sorted_env));
 	if (prefixed_env)
@@ -82,7 +82,7 @@ int	display_entire_env( void )
 int ft_export(int argc, char **argv)
 {
 	if (argc == 1)
-		return (display_entire_env());
+		return (display_exported_vars());
 	else if (is_option(argv[1]) && argv[1][1])	
 	{
 		perror_invalid_option("export", argv[1], NULL);
@@ -90,5 +90,5 @@ int ft_export(int argc, char **argv)
 		return (2);
 	}
 	else
-		return (check_env_and_modify(argv, "x"));
+		return (check_and_alter_env(argv + 1, "x"));
 }

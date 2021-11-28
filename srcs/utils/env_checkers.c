@@ -21,7 +21,10 @@ int	var_has_value(char *var)
 
 int	var_is_exported(char *var)
 {
-	return (var[0] == 'x');
+	if (var)
+		return (var[0] == 'x');
+	else
+		return (-1);
 }
 
 int	var_already_exist(char **var_list, char *var)

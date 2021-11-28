@@ -95,6 +95,7 @@ int main(int argc, char **argv, char **env)
             line_from_terminal = readline("💣-🐚 >  ");
         else
             get_next_line(STDIN_FILENO, &line_from_terminal);
+		//parse synthax error on line_from_term
         line_from_terminal = find_dollars(line_from_terminal, es);
         commands = ft_split(line_from_terminal, '|');
         command_list = ft_calloc(sizeof(char ***) , 100);
@@ -103,6 +104,7 @@ int main(int argc, char **argv, char **env)
             if (!is_empty(commands[i]))
             {
                 command_list[i] = ft_better_split(commands[i]);
+				command_list[i] = parse_declaration(command_list[i]);
                 command_list[i] = parse_block(command_list[i]);
                 remove_quotes_list(command_list[i]);
             }

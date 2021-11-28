@@ -158,6 +158,8 @@ char    **parse_block(char **command_block)
     int fd[2];
 
     i = 0;
+	if (!command_block[0] || !command_block[0][0])
+		return (command_block);	
     while (command_block[i])
     {
             command_block[i] = parse_line(command_block[i]);
