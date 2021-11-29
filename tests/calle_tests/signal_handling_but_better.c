@@ -72,7 +72,6 @@ int set_terminal_attributes(struct termios *newtio)
 void handle_sig(int sig, siginfo_t *info, void *ucontext)
 {
 	int pid;
-    int es;
     (void)ucontext;
 
 	pid = info->si_pid;
@@ -85,7 +84,6 @@ void handle_sig(int sig, siginfo_t *info, void *ucontext)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-        es = 130;
 	}
 //	if (pid == 0 && sig == SIGINT)
 //    {
@@ -175,7 +173,7 @@ int do_exec()
     }
     if (WIFEXITED(exit_status))                                                                  
          exit_status = WEXITSTATUS(exit_status);
-    printf("Exit status: %d\n", exit_status);
+    //printf("Exit status: %d\n", exit_status);
 	return (0);
 }
 
