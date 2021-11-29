@@ -107,6 +107,33 @@ int	nb_cmds(char ***cmd)
     return (n);
 }
 
+int check_if_file(char **cmd)
+{
+    int i;
+    int d;
+    int invalid_fd;
+    int fd;
+
+    i = 0;
+    while (cmd[i])
+    {
+        d = 0;
+        while (cmd[i][d])
+        {
+            if (cmd[i][d] == '/')
+            {
+                fd = open(cmd[i], O_RDWR);
+                invalid_fd = check_fd(fd, cmd[i]);
+                if (invalid_fd)
+                    return (invalid_fd);
+            }
+            d++;
+        }
+        i++;
+    }
+    return (0);
+}
+
 int	execute_child(int (*fd)[2], int i, int n, char **cmd)
 {
     int fds[100];
@@ -124,7 +151,10 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
     }
     cmd = ft_redirect(&redir);
     remove_quotes_list(cmd);
-    execute_binary(cmd);
+    if (!check_if_file(cmd))
+        execute_binary(cmd);
+    else
+        exit(127);
     close_fds(fds);
     if (fd)
     {

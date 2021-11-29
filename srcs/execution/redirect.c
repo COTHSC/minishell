@@ -28,6 +28,7 @@ int    check_fd(int fd, char *filename)
         }
         else
         {
+            ft_putstr_fd("minishell: ", 2);
             ft_putstr_fd(filename, 2);
             ft_putstr_fd(": No such file or directory\n", 2);
 
