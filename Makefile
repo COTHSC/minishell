@@ -54,31 +54,26 @@ INCLUDES= -I includes/
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(MAKE) -C ./libs/libft/
 	$(MAKE) -C ./libs/libft+/
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) ./libs/libft/libft.a ./libs/libft+/libft+.a -lreadline
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) ./libs/libft+/libft+.a -lreadline
 
 %.o: %.c
 	$(CC) -o $@ -c $^ $(CFLAGS) $(INCLUDES)
 
 debug :
-	$(MAKE) -C ./libs/libft/ debug
 	$(MAKE) -C ./libs/libft+/ debug
-	$(CC) $(CFLAGS) $(GFLAG) -o $(NAME) $(SRCS) ./libs/libft/libft.a ./libs/libft+/libft+.a -lreadline
+	$(CC) $(CFLAGS) $(GFLAG) -o $(NAME) $(SRCS) ./libs/libft+/libft+.a -lreadline
 
 debug_lldb :
-	$(MAKE) -C ./libs/libft/ debug_lldb
 	$(MAKE) -C ./libs/libft+/ debug_lldb
-	$(CC) $(CFLAGS) -g -o $(NAME) $(SRCS) ./libs/libft/libft.a ./libs/libft+/libft+.a -lreadline
+	$(CC) $(CFLAGS) -g -o $(NAME) $(SRCS) ./libs/libft+/libft+.a -lreadline
 
 clean :
 	rm -f $(OBJS)
-	$(MAKE) -C ./libs/libft/ clean
 	$(MAKE) -C ./libs/libft+/ clean
 
 fclean:	clean
 	rm -f $(NAME)
-	$(MAKE) -C ./libs/libft/ fclean
 	$(MAKE) -C ./libs/libft+/ fclean
 
 re: fclean all

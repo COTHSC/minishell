@@ -41,8 +41,9 @@ int exec_heredoc(char *separator, int fds[2])
         close(fds[0]);
         while (1)
         {
-            ft_putstr_fd("> ", 1);
-            get_next_line(STDIN_FILENO, &line);
+         //   ft_putstr_fd("> ", 1);
+         //   get_next_line(STDIN_FILENO, &line);
+            line = readline("> ");
             if (ft_strncmp(line, separator, ft_strlen(separator) + 1) || ft_strlen(line) == 0)
             {
                 ft_putstr_fd(line, fds[1]);

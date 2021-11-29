@@ -6,7 +6,7 @@
 /*   By: jescully <jescully@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/16 13:43:14 by jescully          #+#    #+#             */
-/*   Updated: 2021/11/18 14:23:40 by jescully         ###   ########.fr       */
+/*   Updated: 2021/11/29 16:21:33 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include "../includes/minishell.h"
 
 int				get_next_line(int const fd, char **line);
 char			*ft_strchr(const char *s, int c);
