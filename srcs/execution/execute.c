@@ -111,7 +111,9 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
 {
     int fds[100];
     init_fds(fds);
+    t_redir redir;
 
+    redir.cmd = cmd;
     if (fd)
     {
         close_unused_fds(fd, i, n);
@@ -120,7 +122,7 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
             dup2(fd[i + 1][1], STDOUT_FILENO);
 
     }
-    cmd = ft_redirect(cmd, fds);
+    cmd = ft_redirect(&redir);
     remove_quotes_list(cmd);
     execute_binary(cmd);
     close_fds(fds);
@@ -136,7 +138,10 @@ int     execute_builtin(int (*fd)[2], int i, int n, char **cmd)
 {
     int ret;
     int fds[100];
+    t_redir redir;
 
+    redir.cmd = cmd;
+    redir.es = 0;
     init_fds(fds);
     if (fd)
     {
@@ -145,18 +150,19 @@ int     execute_builtin(int (*fd)[2], int i, int n, char **cmd)
         if (i != n - 1)
             dup2(fd[i + 1][1], STDOUT_FILENO);
     }
-    cmd = ft_redirect(cmd, fds);
-    remove_quotes_list(cmd);
-    ret = -1;
-    if (cmd[0])
-        ret = select_builtin_test(builtin_finder(cmd[0]), strlen_list(cmd), cmd);
+    redir.es = 0;
+    redir.cmd = ft_redirect(&redir);
+    remove_quotes_list(redir.cmd);
+    ret = 1;
+    if (redir.cmd[0] && !redir.es)
+        ret = select_builtin_test(builtin_finder(redir.cmd[0]), strlen_list(redir.cmd), redir.cmd);
     close_fds(fds);
     if (fd)
     {
         close(fd[i][0]);
         close(fd[i + 1][1]);
     }
-    free_str_list(cmd, strlen_list(cmd));
+    free_str_list(redir.cmd, strlen_list(redir.cmd));
     if (fd)
         exit (ret);
     return (ret);
@@ -222,35 +228,37 @@ int    execute(char ***command_block)
     int stdoutcpy = dup(STDOUT_FILENO);
     int stdincpy = dup(STDIN_FILENO);
     int fd[100];
+    t_redir redir;
 
     init_fds(fd);
     status = 0;
+    redir.cmd = command_block[0];
     if (command_block[0])
     {
         if (nb_cmds(command_block) > 1)
             return(ft_multipipes2(command_block));
         else
         {
-            cmdcmp = str_list_dup(command_block[0]);
+            cmdcmp = str_list_dup(redir.cmd);
             cmdcmp = get_command(cmdcmp);
             if (builtin_finder(cmdcmp[0]) == -1)
             {
                 pid = fork();
 
                 if (pid == 0)
-                    execute_child(NULL, 0, 1, command_block[0]);
+                    execute_child(NULL, 0, 1, redir.cmd);
                 wait(&status);
                 if (WIFEXITED(status))
                     status = WEXITSTATUS(status);
             }
             else
             {
-                status = execute_builtin(NULL, 0 , 1, str_list_dup(command_block[0]));
+                status = execute_builtin(NULL, 0 , 1, str_list_dup(redir.cmd));
                 dup2(stdincpy, STDIN_FILENO);
                 dup2(stdoutcpy, STDOUT_FILENO);
             }
             free_list_and_return_null(cmdcmp, strlen_list(cmdcmp));
-            free_list_and_return_null(command_block[0], strlen_list(command_block[0]));
+            free_list_and_return_null(redir.cmd, strlen_list(redir.cmd));
         }
     }
 

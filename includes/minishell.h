@@ -15,6 +15,14 @@
 
 extern char **g_env;
 
+
+
+typedef struct s_redir {
+	int es;
+	char **cmd;
+    int fd[100];
+}	t_redir;
+
 char *remove_quote(char *str, int i);
 char    **parse_block(char **command_block);
 int	execute_child(int (*fd)[2], int i, int n, char **cmd);
@@ -41,7 +49,7 @@ char    **ft_better_split(char const *s);
 /* Functions related to the execution of a child program */
 
 int    execute(char ***command_block);
-char    **ft_redirect(char **command_block, int *fd);
+char    **ft_redirect(t_redir *redir);
 int     is_redirect(char c);
 
 //char **env2;

@@ -60,7 +60,7 @@ void	perror_syntax_error(char unexpected_token)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd("syntax error near unexpected token ", 2);
-	ft_putstr_fd("\'", 2);
+	ft_putstr_fd("`", 2);
 	ft_putchar_fd(unexpected_token, 2);
 	ft_putstr_fd("\'", 2);
 	ft_putchar_fd('\n', 2);
