@@ -42,8 +42,7 @@ int     check_between_the_pipes(char *s)
     i = 1;
     while (s[i])
     {
-        //replace with iswhitespace
-        if (s[i] != ' ')
+        if (!ft_iswhitespace(s[i]))
         {
             if (s[i] == '|')
                 return (0);
@@ -63,7 +62,6 @@ int check_syntax(char *s)
     i = 0;
     while (s[i])
     {
-
         if (s[i] == ';')
         {
             perror_syntax_error(s[i]);

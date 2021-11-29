@@ -102,7 +102,7 @@ int main(int argc, char **argv, char **env)
         {
 
             line_from_terminal = find_dollars(line_from_terminal, es);
-            commands = ft_split(line_from_terminal, '|');
+            commands = ft_pipe_split(line_from_terminal);
             command_list = ft_calloc(sizeof(char ***) , 100);
             while (commands[i])
             {

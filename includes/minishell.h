@@ -24,6 +24,7 @@ typedef struct s_redir {
 }	t_redir;
 
 char *remove_quote(char *str, int i);
+char	**ft_pipe_split(char const *s);
 char    **parse_block(char **command_block);
 int	execute_child(int (*fd)[2], int i, int n, char **cmd);
 /* Functions used to expand environmental variables */
