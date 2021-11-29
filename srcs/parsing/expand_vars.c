@@ -19,9 +19,9 @@ char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
 
-    if (ft_getenv(var_name, 'x') != NULL)
+    if (ft_getenv(var_name, 'd') != NULL)
     {
-        var_value = ft_strdup(ft_getenv(var_name, 'x')); 
+        var_value = ft_strdup(ft_getenv(var_name, 'd')); 
         *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else if (!ft_strncmp(var_name, "?", 2))

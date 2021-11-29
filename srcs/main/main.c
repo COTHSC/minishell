@@ -90,7 +90,12 @@ int main(int argc, char **argv, char **env)
     {
         i = 0;
         if (isatty(STDIN_FILENO))
+        {
             line_from_terminal = readline("💣-🐚 >  ");
+            if (line_from_terminal)
+                add_history(line_from_terminal);
+        }
+
         else
             get_next_line(STDIN_FILENO, &line_from_terminal);
         if (check_syntax(line_from_terminal))
