@@ -9,16 +9,34 @@ int     is_redirect(char c)
     return (0);
 }
 
+int is_path(char *s)
+{
+    int i;
+
+    i = 0;
+    while (s[i])
+    {
+        if (s[i] == '/')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
 int    check_fd(int fd, char *filename)
 {
     char    *pwd;
     char    *temp;
     char    *temp1;
-    
-    temp = getenv("PWD");
-    temp1 = ft_strjoin(temp, "/");
-    pwd = ft_strjoin(temp1, filename);
-    free(temp1);
+   
+    pwd = NULL;
+    if (!is_path(filename))
+    {
+        temp = getenv("PWD");
+        temp1 = ft_strjoin(temp, "/");
+        pwd = ft_strjoin(temp1, filename);
+        free(temp1);
+    }
     if (fd < 0)
     {
         if (access(pwd, F_OK) == 0)
@@ -28,14 +46,17 @@ int    check_fd(int fd, char *filename)
         }
         else
         {
+            ft_putstr_fd("minishell: ", 2);
             ft_putstr_fd(filename, 2);
             ft_putstr_fd(": No such file or directory\n", 2);
 
         }
-        free(pwd);
+        if (pwd)
+            free(pwd);
         return (1);
     }
-    free(pwd);
+    if (pwd)
+        free(pwd);
     return (0);
 }
 
