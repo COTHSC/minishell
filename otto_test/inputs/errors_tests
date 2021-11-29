@@ -52,5 +52,5 @@ cat THIS_IS_Not_AN_EXISTING_FILE
 ../../inputs/this_is_a_file
 THIS_CMD_DOES_NOT_EXIST
 $THIS_VAR_DOES_NOT_EXIST_BUT_BASH_DOES_NOT_CARE_LOL
-test--9=$PWD
+test--9=/this/dir/does/not/exist/lol
 test--9=$USER
