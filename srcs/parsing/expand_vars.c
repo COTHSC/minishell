@@ -51,8 +51,8 @@ char     *expand_and_replace(char *s, char *var_value, char *var_name, int offse
             newstr[d] = var_value[d];
             d++;
         }
-        if (d)
-            newstr[d] = '\0';
+       // if (d)
+         //   newstr[d] = '\0';
     }
     else
     {
