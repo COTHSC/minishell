@@ -29,7 +29,7 @@ int ft_cd(int argc, char **argv)
     dir_pointer = opendir(req_path);
     if(!dir_pointer)
     {
-        print_minishell_error(errno, (char *)req_path);
+        print_minishell_error(errno, "cd", (char *)req_path);
         return (EXIT_FAILURE);
     }
     else
@@ -37,7 +37,7 @@ int ft_cd(int argc, char **argv)
         closedir(dir_pointer);
         if(chdir(req_path)== -1)
         {
-            print_minishell_error(errno, (char *)req_path);
+            print_minishell_error(errno,"cd", (char *)req_path);
             return (EXIT_FAILURE);
         }
     }

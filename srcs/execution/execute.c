@@ -113,12 +113,12 @@ int check_if_file(char **cmd)
     {
         if (access(cmd[0], F_OK) != 0)
         {
-           print_minishell_error(errno, cmd[0]); 
+           print_minishell_error(errno, NULL, cmd[0]); 
            return (127);
         }
         else if (access(cmd[0], X_OK) != 0)
         {
-           print_minishell_error(errno, cmd[0]); 
+           print_minishell_error(errno, NULL, cmd[0]); 
            return (126);
         }
     }
