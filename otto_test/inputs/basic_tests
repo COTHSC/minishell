@@ -7,6 +7,9 @@ echo $USER
 echo $DOESNOTEXIST_YEAH_REALLY_DOES_NOT_OR_SHOULD_NOT_AT_LEAST
 echo -n $USER
 echo -nnnn $USER
+echo -nnnn $USER$PWD
+echo -nnnn $USER $PWD
+echo $USER $SHOULD_NOT_EXIT $PWD
 echo -nnnn $USER -nn
 echo hello "" hello
 echo hello "" "" "" "" "" "" "" "" "" hello 
