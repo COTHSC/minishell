@@ -28,6 +28,7 @@ char	**ft_pipe_split(char const *s);
 char    **parse_block(char **command_block);
 int	execute_child(int (*fd)[2], int i, int n, char **cmd);
 int    check_fd(int fd, char *filename);
+int is_path(char *s);
 /* Functions used to expand environmental variables */
 int check_syntax(char *s);
 int isquote(char c);

@@ -109,27 +109,18 @@ int	nb_cmds(char ***cmd)
 
 int check_if_file(char **cmd)
 {
-    int i;
-    int d;
-    int invalid_fd;
-    int fd;
-
-    i = 0;
-    while (cmd[i])
+    if (is_path(cmd[0]))
     {
-        d = 0;
-        while (cmd[i][d])
+        if (access(cmd[0], F_OK) != 0)
         {
-            if (cmd[i][d] == '/')
-            {
-                fd = open(cmd[i], O_RDWR);
-                invalid_fd = check_fd(fd, cmd[i]);
-                if (invalid_fd)
-                    return (invalid_fd);
-            }
-            d++;
+           print_minishell_error(errno, cmd[0]); 
+           return (127);
         }
-        i++;
+        else if (access(cmd[0], X_OK) != 0)
+        {
+           print_minishell_error(errno, cmd[0]); 
+           return (126);
+        }
     }
     return (0);
 }
@@ -139,6 +130,7 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
     int fds[100];
     init_fds(fds);
     t_redir redir;
+    int ret;
 
     redir.cmd = cmd;
     if (fd)
@@ -151,10 +143,10 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
     }
     cmd = ft_redirect(&redir);
     remove_quotes_list(cmd);
-    if (!check_if_file(cmd))
+    if (!(ret = check_if_file(cmd)))
         execute_binary(cmd);
     else
-        exit(127);
+        exit(ret);
     close_fds(fds);
     if (fd)
     {
