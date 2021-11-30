@@ -77,7 +77,8 @@ int main(int argc, char **argv, char **env)
     int exit_signal = -1;
     (void)argc;
     (void)argv;
-
+    
+    init_minishell();
     if (!env[0])
         g_env = create_basic();
     else
@@ -134,5 +135,6 @@ int main(int argc, char **argv, char **env)
             break;
         }
     }
+    reset_og_tio_settings();
     return (es);
 }

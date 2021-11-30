@@ -5,13 +5,15 @@
 # include "../libs/libft/libft.h"
 # include "../get_next_line/get_next_line.h"
 # include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <stdlib.h>
 # include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
- # include <fcntl.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <fcntl.h>
+# include <termios.h>
+# include <signal.h>
 
 extern char **g_env;
 
@@ -64,6 +66,10 @@ char    *ft_getenv(char *name, char c);
 char    *get_path(char **command_block);
 void    free_command_block(char **command_block);
 /*
+** ------------------ SHELL INIT ------------------
+*/
+int     init_minishell(void);
+/*
 ** ------------------ PARSING ------------------
 */
 char	**parse_declaration(char **command_blocks);
@@ -102,4 +108,16 @@ int		index_matching_var_name(char **var_list, char *var_to_match);
 int	alter_env_var(char **clean_env, char *name, char *var_to_add, char *flag);
 int	check_and_alter_env(char **args, char *flag);
 int	has_valid_identifier(char *var_name);
+/*
+** ------------------ TERM AUXILIARIES ------------------
+*/
+struct  termios *setch_og_tio(int switch_off);
+struct  termios *setch_parent_tio(int switch_off);
+int     reset_og_tio_settings(void);
+int     reset_parent_tio_settings(void);
+int     terminal_settings(void);
+/*
+** ------------------ SIGNAL HANDLING ------------------
+*/
+void	signal_handler_settings(struct sigaction *sa);
 #endif
