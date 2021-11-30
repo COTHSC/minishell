@@ -54,6 +54,27 @@ int     check_between_the_pipes(char *s)
     return (0);
 }
 
+int     check_between_the_redirects(char *s)
+{
+    int i;
+
+    i = 1;
+    while (s[i] && is_redirect(s[i]))
+        i++;
+    while (s[i])
+    {
+        if (!ft_iswhitespace(s[i]))
+        {
+            if (is_redirect(s[i]))
+                return (0);
+            else 
+                return (1);
+        }
+        i++;
+    }
+    return (0);
+}
+
 int check_syntax(char *s)
 {
     int i;
@@ -71,6 +92,12 @@ int check_syntax(char *s)
         if (is_redirect(s[i]))
         {
             if (!check_redirect_type(get_redirect_type(&s[i])))
+            {
+                perror_syntax_error(s[i]);
+                s[i] = 0;
+                return (1);
+            }
+            if (!check_between_the_redirects(&s[i]))
             {
                 perror_syntax_error(s[i]);
                 s[i] = 0;
