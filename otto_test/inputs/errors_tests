@@ -1,0 +1,56 @@
+env
+export
+unset
+echo
+cd
+pwd
+exit
+export -e
+export -ep
+exit -p
+unset -e
+unset -ep
+cd -x
+pwd -w
+;|
+|;
+||||;
+<<<<
+>>>
+>>>>>
+<<<;
+; ;
+| |
+echo hello ; ;
+echo hello | |
+echo hello | echo lol | |
+exit hello
+exit hello 1
+exit 1 2 3 
+exit 1 2
+exit 1 2.2
+exit 3200
+exit 3201
+exit -999999998
+exit 9999999999999999999998
+exit 9999999999999999999999
+ls | exit
+export test1%=1
+export test1=1 test2[=2 test3=3
+unset test1=1
+unset test1 test2= test3
+unset test1 test2- test3
+pwd this and that
+cd THIS_DIreCtory_D_OES_NOT_EXIST
+cd ../../inputs/cannot_access_dir/
+cd ../../inputs/this_is_a_dir/ hello
+cd THIS_DIreCtory_D_OES_NOT_EXIST ../../inputs/this_is_a_dir/
+cd ../../otto.sh
+cd ../../inputs/this_is_a_dir/ ../../otto.sh
+cat ../../inputs/cannot_access_file
+cat THIS_IS_Not_AN_EXISTING_FILE
+../../inputs/this_is_a_file
+THIS_CMD_DOES_NOT_EXIST
+$THIS_VAR_DOES_NOT_EXIST_BUT_BASH_DOES_NOT_CARE_LOL
+test--9=/this/dir/does/not/exist/lol
+test--9=$USER

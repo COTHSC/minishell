@@ -48,13 +48,33 @@ int is_empty(char *str)
     return (1);
 }
 
+int is_in_quotes(char *str)
+{
+    if (str[0] == '\'' || str[ft_strlen(str) - 2] == '\'')
+        return (1);
+    if (str[0] == '"' || str[ft_strlen(str) - 2] == '"')
+        return (2);
+    return (0);
+}
+
+int check_redirect_type(int redirect_type)
+{
+    if (redirect_type != 1 && redirect_type != 2 && redirect_type != 3 && redirect_type != 6)
+    {
+        return (0);
+    }
+    return (1);
+}
+
 int main(int argc, char **argv, char **env)
 {
     char **commands;
     int i;
     char ***command_list;
     char *line_from_terminal;
+    int tmp_es;
     int es;
+    int exit_signal = -1;
     (void)argc;
     (void)argv;
 
@@ -65,38 +85,54 @@ int main(int argc, char **argv, char **env)
     init_env();
     commands = NULL;
     es = 0;
+  //  ft_isalnum(1);
     while (1)
     {
         i = 0;
         if (isatty(STDIN_FILENO))
-            line_from_terminal = readline(">  ");
+        {
+            line_from_terminal = readline("💣-🐚 >  ");
+            if (line_from_terminal)
+                add_history(line_from_terminal);
+        }
+
         else
             get_next_line(STDIN_FILENO, &line_from_terminal);
-        add_history(line_from_terminal);
-        line_from_terminal = find_dollars(line_from_terminal, es);
-        commands = ft_split(line_from_terminal, '|');
-        command_list = ft_calloc(sizeof(char ***) , 100);
-        while (commands[i])
+        if (check_syntax(line_from_terminal))
         {
-            if (!is_empty(commands[i]))
-            {
-                command_list[i] = ft_better_split(commands[i]);
-                remove_quotes_list(command_list[i]);
-            }
-            i++;
+            es = 2;
+            free(line_from_terminal);
         }
-        free_str_list(commands, strlen_list(commands));
-        es = execute(command_list);
-        free(command_list);
-        free(line_from_terminal);
+        else
+        {
+
+            line_from_terminal = find_dollars(line_from_terminal, es);
+            commands = ft_pipe_split(line_from_terminal);
+            command_list = ft_calloc(sizeof(char ***) , 1000);
+            while (commands[i])
+            {
+                if (!is_empty(commands[i]))
+                {
+                    command_list[i] = ft_better_split(commands[i]);
+                    command_list[i] = parse_declaration(command_list[i]);
+                    command_list[i] = parse_block(command_list[i]);
+                }
+                i++;
+            }
+            free_str_list(commands, strlen_list(commands));
+            tmp_es = execute(command_list);
+            if (tmp_es != exit_signal)
+                es = tmp_es;
+            free(command_list);
+            free(line_from_terminal);
+        }
         if (!isatty(STDIN_FILENO))
-            es = -14;
-        if (es == -14)
+            tmp_es = -1;
+        if (tmp_es == -1)
         {
             free_str_list(g_env, strlen_list(g_env));
             break;
         }
-
     }
-    return 0;
+    return (es);
 }

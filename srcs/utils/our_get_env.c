@@ -19,7 +19,7 @@ char    *ft_getenv(char *name, char c)
     if (c == 'x')
         x_check = ft_strjoin("x", name);
     else
-        x_check = ft_strjoin("d", name);
+        x_check = ft_strdup(name);
     i = 0;
     while (g_env[i])
     {
@@ -30,7 +30,6 @@ char    *ft_getenv(char *name, char c)
                 free(x_check);
                 return ((ft_strchr(g_env[i], '=')) + 1);
             }
-
         }
         else if (var_name_match_in_env(&g_env[i][1], name))
         {

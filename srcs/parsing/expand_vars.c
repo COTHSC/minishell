@@ -1,6 +1,4 @@
  #include "../../includes/minishell.h"
- #include <stdio.h> 
- 
 
 int isquote(char c);
 
@@ -21,11 +19,9 @@ char    *get_var_value(char *var_name, int *offset, int status)
 {
     char *var_value;
 
-//    tmp = ft_strjoin("x", var_name);
-
-    if (ft_getenv(var_name, 'x') != NULL)
+    if (ft_getenv(var_name, 'd') != NULL)
     {
-        var_value = ft_strdup(ft_getenv(var_name, 'x')); 
+        var_value = ft_strdup(ft_getenv(var_name, 'd')); 
         *offset = ft_strlen(var_value) - ft_strlen(var_name);
     }
     else if (!ft_strncmp(var_name, "?", 2))
@@ -55,7 +51,6 @@ char     *expand_and_replace(char *s, char *var_value, char *var_name, int offse
             newstr[d] = var_value[d];
             d++;
         }
-        newstr[d] = '\0';
     }
     else
     {
@@ -114,8 +109,7 @@ char *find_dollars(char *s, int status)
             free(s);
             s = news;
             if (i >= d)
-                return s;
-           // find_dollars(s, status);
+                return (find_dollars(s, status));
         }
     }
     return (s);

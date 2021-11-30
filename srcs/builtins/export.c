@@ -47,31 +47,31 @@ char	**double_quoting_env_values(char **env)
 	return (q_env);
 }
 
-int	display_entire_env( void )
+int	display_exported_vars( void )
 {
-	char	**cleaned_env;
+	char	**exported_vars;
 	char	**sorted_env;
 	char	**prefixed_env;
 
-	cleaned_env = env_selector(1);
-	if (!cleaned_env)
+	exported_vars = env_selector(1, "x");
+	if (!exported_vars)
 		return (EXIT_FAILURE);
-	sorted_env = sort_str_list(cleaned_env);
+	sorted_env = sort_str_list(exported_vars);
 	if (!sorted_env)
 	{
-		free_str_list(cleaned_env, strlen_list(cleaned_env));
+		free_str_list(exported_vars, strlen_list(exported_vars));
 		return (EXIT_FAILURE);
 	}
 	prefixed_env = double_quoting_env_values(sorted_env);
 	if (!prefixed_env)
 	{
-		free_str_list(cleaned_env, strlen_list(cleaned_env));
+		free_str_list(exported_vars, strlen_list(exported_vars));
 		free_str_list(sorted_env, strlen_list(sorted_env));
 		return (EXIT_FAILURE);
 	}
 	print_str_list(prefixed_env, "declare -x ");
-	if (cleaned_env)
-		free_str_list(cleaned_env, strlen_list(cleaned_env));
+	if (exported_vars)
+		free_str_list(exported_vars, strlen_list(exported_vars));
 	if (sorted_env)
 		free_str_list(sorted_env, strlen_list(sorted_env));
 	if (prefixed_env)
@@ -79,42 +79,10 @@ int	display_entire_env( void )
 	return (EXIT_SUCCESS);
 }
 
-int	do_export_on_env(char **new_vars)
-{
-	int		i;
-	int		idx_var_to_alter;
-	char	**clean_env;
-	char	**name_value_pair;
-
-	clean_env = env_selector(1);
-	i = 1;
-	while (new_vars[i])
-	{
-		name_value_pair = split_to_name_value_pair(new_vars[i]);
-		if (!has_valid_identifier(new_vars[i]))
-			perror_not_a_valid_identifier(new_vars[i], "export");
-		else if (var_already_exist(clean_env, name_value_pair[0]) && !var_has_value(new_vars[i]))
-		{
-			idx_var_to_alter = index_matching_var_name(clean_env, name_value_pair[0]);
-			if (!var_is_exported(g_env[idx_var_to_alter]))
-				change_flag(&g_env[idx_var_to_alter], 'x');
-		}
-		else
-			alter_env_var(clean_env, name_value_pair[0], new_vars[i], "x");
-		free_str_list(name_value_pair, strlen_list(name_value_pair));
-		i++;
-	}
-	free_str_list(clean_env, strlen_list(clean_env));
-	if (!new_vars[i])
-		return (EXIT_SUCCESS);
-	else
-		return (EXIT_FAILURE);
-}
-
 int ft_export(int argc, char **argv)
 {
 	if (argc == 1)
-		return (display_entire_env());
+		return (display_exported_vars());
 	else if (is_option(argv[1]) && argv[1][1])	
 	{
 		perror_invalid_option("export", argv[1], NULL);
@@ -122,5 +90,5 @@ int ft_export(int argc, char **argv)
 		return (2);
 	}
 	else
-		return (do_export_on_env(argv));
+		return (check_and_alter_env(argv + 1, "x"));
 }

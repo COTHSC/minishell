@@ -8,7 +8,7 @@ char	**delete_var(char **clean_env, char *var_to_del)
 
 	i = 0;
 	j = 0;
-	tmp = calloc_str_list(strlen_list(g_env) + 1);
+	tmp = calloc_str_list(strlen_list(g_env));
 	if (!tmp)
 		return (NULL);
 	while (g_env[i])
@@ -27,52 +27,62 @@ char	**delete_var(char **clean_env, char *var_to_del)
 	return (tmp);
 }
 
-int	is_a_valid_identifier(char *var)
+int	is_a_valid_name(char *var)
 {
 	int	i;
 
 	i = 0;
 	while (var[i])	
 	{
-		if (!ft_isalnum(var[i]))
+		if (!ft_isanywordchar(var[i]))
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int	delete_element_from_env(char **vars_to_unset)
+int delete_from_env(char *var_to_unset)
 {
-	int		i;
 	char	**tmp;
 	char	**name_value_pair;
 	char	**clean_env;
 
+    name_value_pair = split_to_name_value_pair(var_to_unset);
+    clean_env = env_selector(1, NULL);
+    if (match_var_name(clean_env, name_value_pair[0]))
+    {
+        tmp = delete_var(clean_env, name_value_pair[0]);
+        if (!tmp)
+            return (EXIT_FAILURE);
+        free_str_list(g_env, strlen_list(g_env));
+        g_env = tmp;
+    }
+    free_str_list(clean_env, strlen_list(clean_env));
+    free_str_list(name_value_pair, strlen_list(name_value_pair));
+    return (EXIT_SUCCESS);
+}
+
+int	check_and_delete_from_env(char **vars_to_unset)
+{
+	int		i;
+    int     catch_error;
+    int     catch_ret;
+
 	i = 0;
+    catch_error = 0;
 	while (vars_to_unset[++i])
 	{
-		if (!is_a_valid_identifier(vars_to_unset[i]))
+		if (!is_a_valid_name(vars_to_unset[i]))
 		{
 			perror_not_a_valid_identifier(vars_to_unset[i], "unset");
+            catch_error = 1;
 			continue;
 		}
-		name_value_pair = split_to_name_value_pair(vars_to_unset[i]);
-		clean_env = env_selector(1);
-		if (match_var_name(clean_env, name_value_pair[0]))
-		{
-			tmp = delete_var(clean_env, name_value_pair[0]);
-			if (!tmp)
-				return (EXIT_FAILURE);
-			free_str_list(g_env, strlen_list(g_env));
-			g_env = str_list_dup(tmp);
-			free_str_list(tmp, strlen_list(tmp));
-			if (!g_env)
-				return (EXIT_FAILURE);
-		}
-		free_str_list(clean_env, strlen_list(clean_env));
-		free_str_list(name_value_pair, strlen_list(name_value_pair));
+        catch_ret = delete_from_env(vars_to_unset[i]);
+        if (catch_ret == EXIT_FAILURE)
+            return (EXIT_FAILURE);
 	}
-	return (EXIT_SUCCESS);
+    return (catch_error);
 }
 
 int	ft_unset(int argc, char **argv)
@@ -86,5 +96,5 @@ int	ft_unset(int argc, char **argv)
 		return (2);
 	}
 	else
-		return (delete_element_from_env(argv));
+		return (check_and_delete_from_env(argv));
 }

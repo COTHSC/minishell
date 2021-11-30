@@ -35,3 +35,33 @@ void	perror_not_a_valid_identifier(char *identifier, char *builtin)
 	ft_putstr_fd("not a valid identifier", 2);
 	ft_putchar_fd('\n', 2);
 }
+
+void	perror_numeric_arg_required(char *failing_arg, char *builtin)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(builtin, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(failing_arg, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd("numeric argument required", 2);
+	ft_putchar_fd('\n', 2);
+}
+
+void	perror_too_many_args(char *builtin)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(builtin, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd("too many arguments", 2);
+	ft_putchar_fd('\n', 2);
+}
+
+void	perror_syntax_error(char unexpected_token)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("syntax error near unexpected token ", 2);
+	ft_putstr_fd("`", 2);
+	ft_putchar_fd(unexpected_token, 2);
+	ft_putstr_fd("\'", 2);
+	ft_putchar_fd('\n', 2);
+}
