@@ -10,7 +10,6 @@ static void handle_sig(int sig, siginfo_t *info, void *ucontext)
 {
     (void)ucontext;
 
-    printf("pid: %d\n", info->si_pid);
 	if (info->si_pid != 0 && sig == SIGINT)
 	{
 		write(1, "^", 1);

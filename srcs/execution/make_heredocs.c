@@ -39,7 +39,6 @@ int exec_heredoc(char *separator, int fds[2])
     pid = 1;
     test = 0;
     pid = fork();
-    printf("AFTER WORK\n");
     if (pid == 0)
     {
         close(fds[0]);
@@ -64,7 +63,6 @@ int exec_heredoc(char *separator, int fds[2])
         }
     }
     wait(&test);
-    printf("AFTER WAIT\n");
     reset_parent_tio_settings();
     close(fds[1]);
     return (0);
