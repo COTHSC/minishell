@@ -5,11 +5,6 @@ void	change_flag(char **var, char flag)
 	*var[0] = flag;
 }
 
-//int var_is_shlvl(char *name)
-//{
-//    return (ft_strncmp(name, "SHLVL"))
-//}
-//
 int	alter_env_var(char **clean_env, char *name, char *var_to_add, char *flag)
 {
 	int		i;
@@ -17,7 +12,6 @@ int	alter_env_var(char **clean_env, char *name, char *var_to_add, char *flag)
 	char	*flagged_var_to_add;
 
 	i = index_matching_var_name(clean_env, name);
-    if (name)
 	flagged_var_to_add = ft_strjoin(flag, var_to_add);
 	if (!flagged_var_to_add)
 		return (EXIT_FAILURE);
