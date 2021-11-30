@@ -214,6 +214,8 @@ int	ft_multipipes2(char ***cmd)
     char **cmdcmp;
 
     n = nb_cmds(cmd);
+    if (n >= FD_SETSIZE / 2)
+        return (1);
     if (make_pipes(fd, n))
         return (1);
     i = -1;
