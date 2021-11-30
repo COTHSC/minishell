@@ -142,6 +142,8 @@ int	execute_child(int (*fd)[2], int i, int n, char **cmd)
             dup2(fd[i + 1][1], STDOUT_FILENO);
     }
     cmd = ft_redirect(&redir);
+    if (redir.es)
+        exit(redir.es);
     remove_quotes_list(cmd);
     if (!(ret = check_if_file(cmd)))
         execute_binary(cmd);
