@@ -108,7 +108,7 @@ int main(int argc, char **argv, char **env)
 
             line_from_terminal = find_dollars(line_from_terminal, es);
             commands = ft_pipe_split(line_from_terminal);
-            command_list = ft_calloc(sizeof(char ***) , 100);
+            command_list = ft_calloc(sizeof(char ***) , 1000);
             while (commands[i])
             {
                 if (!is_empty(commands[i]))

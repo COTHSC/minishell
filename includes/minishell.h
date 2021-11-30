@@ -12,6 +12,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
  # include <fcntl.h>
+ # include <sys/select.h>
 
 extern char **g_env;
 
@@ -20,7 +21,7 @@ extern char **g_env;
 typedef struct s_redir {
 	int es;
 	char **cmd;
-    int fd[100];
+    int fd[FD_SETSIZE];
 }	t_redir;
 
 char *remove_quote(char *str, int i);
