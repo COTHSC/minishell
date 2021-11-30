@@ -33,16 +33,21 @@ int exec_heredoc(char *separator, int fds[2])
 {
     char *line;
     int pid;
+    int test;
 
     pipe(fds);
+    pid = 1;
+    test = 0;
     pid = fork();
+    printf("AFTER WORK\n");
     if (pid == 0)
     {
         close(fds[0]);
         while (1)
         {
-         //   ft_putstr_fd("> ", 1);
-         //   get_next_line(STDIN_FILENO, &line);
+            //ft_putstr_fd("> ", 1);
+            //get_next_line(STDIN_FILENO, &line);
+            reset_og_tio_settings();
             line = readline("> ");
             if (ft_strncmp(line, separator, ft_strlen(separator) + 1) || ft_strlen(line) == 0)
             {
@@ -58,7 +63,9 @@ int exec_heredoc(char *separator, int fds[2])
             }
         }
     }
-    wait(NULL);
+    wait(&test);
+    printf("AFTER WAIT\n");
+    reset_parent_tio_settings();
     close(fds[1]);
     return (0);
 }

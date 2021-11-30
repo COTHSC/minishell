@@ -86,7 +86,6 @@ int main(int argc, char **argv, char **env)
     init_env();
     commands = NULL;
     es = 0;
-  //  ft_isalnum(1);
     while (1)
     {
         i = 0;
@@ -109,7 +108,7 @@ int main(int argc, char **argv, char **env)
 
             line_from_terminal = find_dollars(line_from_terminal, es);
             commands = ft_pipe_split(line_from_terminal);
-            command_list = ft_calloc(sizeof(char ***) , 1000);
+            command_list = ft_calloc(sizeof(char ***) , 100);
             while (commands[i])
             {
                 if (!is_empty(commands[i]))

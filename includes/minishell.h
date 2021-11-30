@@ -107,7 +107,7 @@ char	**env_selector(int position_selector, char *flag);
 int		index_matching_var_name(char **var_list, char *var_to_match);
 int	alter_env_var(char **clean_env, char *name, char *var_to_add, char *flag);
 int	check_and_alter_env(char **args, char *flag);
-int	has_valid_identifier(char *var_name);
+int	has_valid_var_name(char *var);
 /*
 ** ------------------ TERM AUXILIARIES ------------------
 */

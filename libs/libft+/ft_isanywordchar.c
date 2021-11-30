@@ -1,6 +1,6 @@
 #include "./libftp.h"
 
-int ft_isanywordchar(char c)
+int ft_isanywordchar(int c)
 {
 	if (ft_isalnum(c) || c == '_')
 		return (1);

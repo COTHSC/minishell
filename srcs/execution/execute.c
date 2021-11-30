@@ -224,6 +224,7 @@ int	ft_multipipes2(char ***cmd)
         pids[i] = fork();
         if (pids[i] == 0)
         {
+            reset_og_tio_settings();
             if (builtin_finder(cmdcmp[0]) == -1)
                 execute_child(fd, i, n, cmd[i]);
             else
@@ -234,6 +235,7 @@ int	ft_multipipes2(char ***cmd)
     }
     close_unused_fds(fd, n + 1, n);
     status = wait_and_get_status();
+    reset_parent_tio_settings();
     close(fd[n][1]);
     close(fd[n][0]);
     return (status);
@@ -262,8 +264,12 @@ int single_cmd(char **cmd)
     {
         pid = fork();
         if (pid == 0)
+        {
+            reset_og_tio_settings();
             execute_child(NULL, 0, 1, redir.cmd);
+        }
         wait(&status);
+        reset_parent_tio_settings();
         if (WIFEXITED(status))
             status = WEXITSTATUS(status);
     }

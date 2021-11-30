@@ -11,32 +11,10 @@ int	find_index_of_char(char *s, char c)
 		return (-1);
 }
 
-int	is_valid_declaration_name(char *arg)
-{
-	int i;
-	char **name_value_pair;
-
-	name_value_pair = split_to_name_value_pair(arg);
-	i = 0;
-	if (!name_value_pair[0][0])
-		return (0);
-	while (name_value_pair[0][i])
-	{
-		if (!ft_isanywordchar(name_value_pair[0][i]))
-		{
-			free_str_list(name_value_pair, strlen_list(name_value_pair));	
-			return (0);
-		}
-		i++;
-	}
-	free_str_list(name_value_pair, strlen_list(name_value_pair));	
-	return (1);
-}
-
 int	switch_declaration_on(char **args)
 {
-	int i;
-	int declaration_switch;
+	int     i;
+	int     declaration_switch;
 
 	i = 0;
 	declaration_switch = 1;
@@ -44,7 +22,7 @@ int	switch_declaration_on(char **args)
 	{
 		if (find_index_of_char(args[i], '=') < 1)
 			declaration_switch = 0;
-		if (!is_valid_declaration_name(args[i]))
+        if (!has_valid_var_name(args[i]))
 			declaration_switch = 0;
 		i++;
 	}
@@ -91,7 +69,7 @@ char **remove_valid_declaration(char **command_blocks)
 	while (command_blocks[i])
 	{
 		if ((find_index_of_char(command_blocks[i], '=') >= 1)
-				&& is_valid_declaration_name(command_blocks[i]))
+				&& has_valid_var_name(command_blocks[i]))
 		{
 			tmp = str_list_dup(cleaned_cmds);
 			free_str_list(cleaned_cmds, strlen_list(cleaned_cmds));
