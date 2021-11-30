@@ -40,8 +40,6 @@ echo ';;'
 echo ";;;"
 echo /$"123$USER"
 echo | cd .. | pwd
-echo DOET HET NIET > test1 | cat test1
-echo hallo >x1 >x2 >x3 | echo hoi
 echo $1 234
 echo $POEP hallo
 echo "hallo$"
@@ -57,22 +55,12 @@ echo
 echo $TEST
 echo 'how are you'
 echo '$PWD'
-echo > "hardesttest.txt"
-echo adding stuff >> working.txt
-echo more stuff >> working.txt
-echo > working.txt
-echo dit > test1 gaat > test2 goed > test3
-echo dit > test1 gaat > test2 goed > test3 > test4
 echo hallo daar | echo hoi maran
 echo
 echo hallo daar
 "echo" hallo daar
 echo "hallo daar"
 echo hallo daar | echo hoi maran
-echo hallo >file1 >file2
-echo hallo >file1 >file2 maran
-echo hallo >file1 >file2 >>file3 maran siemons
-echo hallo <file1 >file2
 echo $USER""
 echo $USER_
 echo $
@@ -117,9 +105,7 @@ echo 123"hallo$"456
 echo $_1234
 echo hallo
 echo hallo | echo hoi
-echo hallo | echo poep >x1 >x2						
 echo hallo | echo hoi | cat
-echo hallo | echo hoi > y1 >y2 | cat -e
 echo $USERhallo
 echo $2$*
 echo $hallo"poep"
@@ -492,14 +478,8 @@ export TEST=LOL
 $ENV_SHOW
 $EXPORT_SHOW
 export TEST="ls       -l     - a"
-echo test > ls ; cat ls
-echo test > ls >> ls >> ls >> ls
-> lol echo test lol; cat lol
->lol echo > test>lol>test>>lol>test mdr >lol test >test
 cat < ls
-cat < ls > ls
 test
-echo > <
 echo | |
 <
 exit 42

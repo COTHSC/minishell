@@ -11,10 +11,6 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/execution/redirect.c  \
 	   ./srcs/execution/pathfinders.c  \
 	   ./srcs/execution/make_heredocs.c  \
-	   ./srcs/execution/init_minishell.c  \
-	   ./srcs/execution/signal_handling.c  \
-	   ./srcs/execution/term_settings.c  \
-	   ./srcs/execution/term_reset.c  \
 	   ./srcs/builtins/builtin_selector.c  \
 	   ./srcs/builtins/pwd.c  \
 	   ./srcs/builtins/cd.c  \
