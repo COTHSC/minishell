@@ -21,7 +21,9 @@ int	check_and_alter_env(char **args, char *flag)
 	{
 		name_value_pair = split_to_name_value_pair(args[i]);
 		idx_var_to_alter = index_matching_var_name(clean_env, name_value_pair[0]);
-		if (ft_strncmp(flag, "x", 1) == 0 && !has_valid_identifier(args[i]))
+        if (ft_strlen(name_value_pair[0]) == 1 && args[i][0] == '_')
+            continue ;
+		if (ft_strncmp(flag, "x", 1) == 0 && !has_valid_var_name(args[i]))
 			perror_and_set_error(args[i], "export", &ret_value, 1);
 		else if (idx_var_to_alter == -1
 			|| (flag[0] == 'd' && !var_is_exported(g_env[idx_var_to_alter])))
