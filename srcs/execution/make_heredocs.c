@@ -47,11 +47,12 @@ int exec_heredoc(char *separator, int fds[2])
         while (1)
         {
             int test;
-      //      reset_og_tio_settings();
+            reset_hd_tio_settings();
             ft_putstr_fd("> ", STDOUT_FILENO);
-            if (!(test = get_next_line(STDIN_FILENO, &line)) && line[0] == 0)
+            if (!(test = get_next_line(STDIN_FILENO, &line)) && (line[0] == 0  || (int)line[0] ==3))
             {
                 write(fds[1], pipe_buffer, size_to_write);
+                reset_parent_tio_settings();
                 ft_putstr_fd("minishell: warning: here-doc delimited by eof (wanted, dead or alive : ", STDOUT_FILENO);
                 ft_putstr_fd(separator, STDOUT_FILENO);
                 ft_putstr_fd(")", STDOUT_FILENO);
