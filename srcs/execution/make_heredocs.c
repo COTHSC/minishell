@@ -47,7 +47,7 @@ int exec_heredoc(char *separator, int fds[2])
         while (1)
         {
             int test;
-            reset_og_tio_settings();
+      //      reset_og_tio_settings();
             ft_putstr_fd("> ", STDOUT_FILENO);
             if (!(test = get_next_line(STDIN_FILENO, &line)) && line[0] == 0)
             {
