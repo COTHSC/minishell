@@ -16,8 +16,21 @@
 # include <signal.h>
 
 extern char **g_env;
+void	init_split(int *row, int *lead, int *quote);
+void	init_to_zero(int num, ...);
 
 
+int	handle_semicolons(char *s, int i);
+int	handle_redirects(char *s, int i);
+int	handle_pipes(char *s, int i);
+int	handle_quotes(char *s, int *i);
+
+void    print_file_error(int error, char *filename);
+
+int	get_redirect_type(char *s);
+int	check_quotes(char *s);
+int	check_between_the_pipes(char *s);
+int	check_between_the_redirects(char *s);
 
 typedef struct s_redir {
 	int es;

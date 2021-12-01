@@ -1,5 +1,38 @@
 #include "../../includes/minishell.h"
 
+int	go_through_quote(char const *s, int lead, int *quote)
+{
+	while (*quote)
+	{
+		lead++;
+		if (isquote(s[lead]) == *quote)
+			*quote = 0;
+	}
+	return (lead);
+}
+
+void	init_to_zero(int num, ...)
+{
+	va_list	arguments;
+	int		x;
+
+	x = 0;
+	va_start(arguments, num);
+	while (x++ < num)
+		*(va_arg(arguments, int *)) = 0;
+	va_end(arguments);
+}
+
+int	isquote(char c)
+{
+	if (c == '\'')
+		return (1);
+	else if (c == '"')
+		return (2);
+	else
+		return (0);
+}
+
 int	var_name_match_in_env(char *env_var, char *name)
 {
 	int	len;
