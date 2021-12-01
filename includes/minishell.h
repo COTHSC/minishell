@@ -113,8 +113,10 @@ int	has_valid_var_name(char *var);
 */
 struct  termios *setch_og_tio(int switch_off);
 struct  termios *setch_parent_tio(int switch_off);
+struct  termios *setch_hd_tio(int switch_off);
 int     reset_og_tio_settings(void);
 int     reset_parent_tio_settings(void);
+int     reset_hd_tio_settings(void);
 int     terminal_settings(void);
 /*
 ** ------------------ SIGNAL HANDLING ------------------
