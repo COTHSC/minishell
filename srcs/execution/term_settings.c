@@ -44,6 +44,8 @@ int	terminal_settings(void)
 {
 	int	ret;
 
+	if (!isatty(STDIN_FILENO))
+		return (EXIT_SUCCESS);
     if (!setch_og_tio(0))
         return (EXIT_FAILURE);
     if (!setch_parent_tio(0)) 
