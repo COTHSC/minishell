@@ -39,8 +39,6 @@ int exec_heredoc(char *separator, int fds[2])
 
     ft_bzero(pipe_buffer, PIPE_BUF);
     pipe(fds);
-    pid = 1;
-    test = 0;
     pid = fork();
     size_to_write = 0;
     if (pid == 0)
@@ -48,8 +46,12 @@ int exec_heredoc(char *separator, int fds[2])
         close(fds[0]);
         while (1)
         {
-            reset_og_tio_settings();
-            line = readline("> ");
+              reset_og_tio_settings();
+              ft_putstr_fd("> ", STDOUT_FILENO);
+              get_next_line(STDIN_FILENO, &line);
+
+        //    reset_og_tio_settings();
+         //  line = readline("> ");  
             if (!line)
             {
                 write(fds[1], pipe_buffer, size_to_write);
