@@ -18,6 +18,8 @@ static void handle_sig(int sig, siginfo_t *info, void *ucontext)
         if (info->si_pid == 0 && sig == SIGINT)
         {
 //            put_newline();
+            write(1, "^", 1);
+            write(1, "C", 1);
             exit(0);
         }
         else if (info->si_pid != 0 && sig == SIGINT)
