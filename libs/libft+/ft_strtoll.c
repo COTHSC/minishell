@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtoll.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/01 18:41:14 by calle             #+#    #+#             */
+/*   Updated: 2021/12/01 19:09:08 by calle            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./libftp.h"
 
 static int	out_of_ll_range(unsigned long long num, int sign)
 {
 	unsigned long long	min_abs;
-	
 
 	min_abs = (unsigned long long)(-1 * (LLONG_MIN + 1)) + 1;
 	if (sign < 0)

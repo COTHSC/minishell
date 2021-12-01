@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_iswhitespace.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 14:40:48 by jescully          #+#    #+#             */
-/*   Updated: 2021/11/30 16:14:33 by calle            ###   ########.fr       */
+/*   Created: 2021/12/01 18:39:11 by calle             #+#    #+#             */
+/*   Updated: 2021/12/01 18:40:54 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_iswhitespace(int c)
+int	ft_iswhitespace(int c)
 {
-   if (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v' || c == '\f')
-       return (1);
-   else
-       return (0);
+	if (c == ' ' || c == '\t' || c == '\r'
+		|| c == '\n' || c == '\v' || c == '\f')
+		return (1);
+	else
+		return (0);
 }

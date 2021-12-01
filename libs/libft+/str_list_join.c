@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   str_list_join.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/01 18:55:45 by calle             #+#    #+#             */
+/*   Updated: 2021/12/01 18:55:46 by calle            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libftp.h"
 
 char	**str_list_join(char **s1, char **s2)
@@ -11,7 +23,7 @@ char	**str_list_join(char **s1, char **s2)
 	len2 = strlen_list(s2);
 	ret_list = calloc_str_list(len1 + len2 + 1);
 	i = 0;
-	while(ret_list && i < len1)
+	while (ret_list && i < len1)
 	{
 		ret_list[i] = ft_strdup(s1[i]);
 		if (!ret_list[i])
@@ -19,7 +31,7 @@ char	**str_list_join(char **s1, char **s2)
 		i++;
 	}
 	i = 0;
-	while(ret_list && i < len2)
+	while (ret_list && i < len2)
 	{
 		ret_list[len1 + i] = ft_strdup(s2[i]);
 		if (!ret_list[len1 + i])
