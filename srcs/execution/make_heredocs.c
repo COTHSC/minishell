@@ -34,28 +34,45 @@ int exec_heredoc(char *separator, int fds[2])
     char *line;
     int pid;
     int test;
+    char pipe_buffer[PIPE_BUF];
+    int size_to_write;
 
+    ft_bzero(pipe_buffer, PIPE_BUF);
     pipe(fds);
     pid = 1;
     test = 0;
     pid = fork();
+    size_to_write = 0;
     if (pid == 0)
     {
         close(fds[0]);
         while (1)
         {
-            //ft_putstr_fd("> ", 1);
-            //get_next_line(STDIN_FILENO, &line);
             reset_og_tio_settings();
             line = readline("> ");
+            if (!line)
+            {
+                write(fds[1], pipe_buffer, size_to_write);
+                ft_putstr_fd("\n", STDOUT_FILENO);
+                exit(0);
+            }
             if (ft_strncmp(line, separator, ft_strlen(separator) + 1) || ft_strlen(line) == 0)
             {
-                ft_putstr_fd(line, fds[1]);
-                ft_putstr_fd("\n", fds[1]);
+                if (size_to_write + ft_strlen(line) + 2 > PIPE_BUF)
+                {
+                    write(fds[1], pipe_buffer, size_to_write);
+                    free(line);
+                    close(fds[1]);
+                    exit(0);
+                }
+                size_to_write += ft_strlcpy(&pipe_buffer[size_to_write], line, ft_strlen(line) + 1);
+                size_to_write++;
+                pipe_buffer[size_to_write++] = '\n';
                 free(line);
             }
             else
             {
+                write(fds[1], pipe_buffer, size_to_write);
                 free(line);
                 close(fds[1]);
                 exit(0);
@@ -74,7 +91,7 @@ char *make_heredocs(char *seps, int fd[2])
     char *separator;
     char *final_redir;
     char *str_fd;
-    
+
     while (seps[i + 1])
     {
         if (seps[i] == '<' && seps[i + 1] == '<')

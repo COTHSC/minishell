@@ -6,7 +6,7 @@
 /*   By: jean <jescully@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/27 16:36:29 by jean              #+#    #+#             */
-/*   Updated: 2021/11/18 14:23:30 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/01 08:33:15 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int			get_next_line(int const fd, char **line)
 	free(bufstr);
 	*line = cleaned_up_line(available_string);
 	available_string = leftovers(available_string);
-	bytes = ((bytes == 0 && ft_strlen(available_string) == 0) ? 0 : 1);
+    if (available_string)
+	    bytes = ((bytes == 0 && ft_strlen(available_string) == 0) ? 0 : 1);
 	return (bytes);
 }
