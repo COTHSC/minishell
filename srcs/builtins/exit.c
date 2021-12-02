@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 11:15:31 by calle             #+#    #+#             */
+/*   Updated: 2021/12/02 11:24:07 by calle            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 
-int is_valid_status(char *arg)
+static int	is_valid_status(char *arg)
 {
-	int	i;
+	int		i;
 	char	sign;	
 
 	i = 0;
@@ -25,41 +37,41 @@ int is_valid_status(char *arg)
 	return (1);
 }
 
-int ft_exit(int argc, char **argv)
+static int	handle_exit_with_a_status(char *status)
 {
+	int				out_of_range;
 	unsigned char	exit_status;
-	int		out_of_range;
 
 	out_of_range = 0;
-	if (argc == 1)	
+	exit_status = (unsigned char)ft_strtoll(status, &out_of_range);
+	ft_putstr_fd("exit \n", STDERR_FILENO);
+	if (out_of_range == 1)
 	{
-		//No arg supplied return previous exit status
+		perror_numeric_arg_required(status, "exit");
+		return (-(2) - OFFSET_ES);
+	}
+	return (-((int)(exit_status)) - OFFSET_ES);
+}
+
+int	ft_exit(int argc, char **argv)
+{
+	if (argc == 1)
+	{
 		ft_putstr_fd("exit \n", STDERR_FILENO);
-		return (-1);
+		return ((0) - OFFSET_ES);
 	}
 	else if (!is_valid_status(argv[1]))
 	{
 		ft_putstr_fd("exit \n", STDERR_FILENO);
 		perror_numeric_arg_required(argv[1], "exit");
-		return (2);
+		return (-(2) - OFFSET_ES);
 	}
 	else if (argc > 2)
 	{
-		//In case of multiple args, exit do not exit and return a status of 1
 		ft_putstr_fd("exit \n", STDERR_FILENO);
 		perror_too_many_args("exit");
-		return (1);
+		return (-(1) - OFFSET_ES);
 	}
 	else
-	{
-		exit_status = (unsigned char)ft_strtoll(argv[1], &out_of_range);
-		ft_putstr_fd("exit \n", STDERR_FILENO);
-		if (out_of_range == 1)
-		{
-			//If the exit status passed is out of long long range
-			perror_numeric_arg_required(argv[1], "exit");
-			return (2);
-		}
-		return (exit_status);
-	}
+		return (handle_exit_with_a_status(argv[1]));
 }
