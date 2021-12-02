@@ -87,6 +87,7 @@ int main(int argc, char **argv, char **env)
     commands = NULL;
     es = 0;
     tmp_es = 0;
+	line_from_terminal = NULL;
     while (1)
     {
         i = 0;

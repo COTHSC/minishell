@@ -19,15 +19,16 @@ int 	exec_heredoc(char *separator, int fds[2])
 		{ 
 			reset_hd_tio_settings();
 			ft_putstr_fd("> ", STDOUT_FILENO);
-			if (!(test = get_next_line(STDIN_FILENO, &line)) && (line[0] == 0  || (int)line[0] == 3))
+			if (!(test = get_next_line(STDIN_FILENO, &line)) && (line[0] == 0))
 			{
-				free(line);
+			//	free(line);
 				write(fds[1], pipe_buffer, size_to_write);
 				reset_parent_tio_settings();
 				ft_putstr_fd("minishell: warning: here-doc delimited by eof (wanted, dead or alive : ", STDOUT_FILENO);
 				ft_putstr_fd(separator, STDOUT_FILENO);
 				ft_putstr_fd(")", STDOUT_FILENO);
 				ft_putstr_fd("\n", STDOUT_FILENO);
+			//	free(separator);
 				exit(0);
 			}
 			if (ft_strncmp(line, separator, ft_strlen(separator) + 1) || ft_strlen(line) == 0)
@@ -53,6 +54,7 @@ int 	exec_heredoc(char *separator, int fds[2])
 			}
 		}
 	}
+	wait(NULL);
 	reset_parent_tio_settings();
 	close(fds[1]);
 	return (0);

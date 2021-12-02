@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:30:17 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/01 19:30:18 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/02 14:31:49 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ static char	*leftovers(char *available_string)
 {
 	static char	*new_string;
 
-	if (!available_string || ft_strlen(available_string) == 0)
+	if (!available_string)
+	{
+		free(available_string);
 		return (NULL);
+	}
 	if (!ft_strchr(available_string, '\n'))
 	{
 		free(available_string);
