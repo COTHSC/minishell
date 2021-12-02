@@ -10,18 +10,7 @@
 /*																			  */
 /* ************************************************************************** */
 
-#include "../../libs/libft/libft.h"
-#include "../../libs/libft+/libftp.h"
-
-int isquote(char c)
-{
-	if (c == '\'')
-		return (1);
-	else if (c == '"')
-		return (2);
-	else 
-		return (0);
-}
+#include "../../includes/minishell.h"
 
 static int	ft_countthewords(char const *s)
 {
@@ -66,33 +55,22 @@ static int	ftwtw(int len, char **strs, int row, const char *s)
 	return (row);
 }
 
-int fill_word(char const *s, int lead)
+int	fill_word(char const *s, int lead)
 {
+	int	quote;
+
 	while (!ft_iswhitespace(s[lead]) && s[lead])
 	{
-		int quote = 0;
+		quote = 0;
+		lead++;
+		if (isquote(s[lead]))
+			quote = isquote(s[lead]);
+		while (quote)
 		{
 			lead++;
-			if (isquote(s[lead]))
-				quote = isquote(s[lead]);
-			while (quote)
-			{
-				lead++;
-				if (isquote(s[lead]) == quote)
-					quote = 0;
-			}
+			if (isquote(s[lead]) == quote)
+				quote = 0;
 		}
-	}
-	return (lead);
-}
-
-int go_through_quote(char const *s, int lead, int *quote)
-{
-	while (*quote)
-	{
-		lead++;
-		if (isquote(s[lead]) == *quote)
-			*quote = 0;
 	}
 	return (lead);
 }
@@ -105,9 +83,7 @@ char	**ft_better_split(char const *s)
 	int		row;
 	int		quote;
 
-	row = 0;
-	lead = 0;
-	quote = 0;
+	init_split(&row, &lead, &quote);
 	strs = (char **)ft_calloc((ft_countthewords(s) + 1), sizeof(char *));
 	if (!strs)
 		return (NULL);

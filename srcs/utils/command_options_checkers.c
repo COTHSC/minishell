@@ -15,7 +15,7 @@ int	option_is_called(char *cmd_block, char *option)
 
 int	option_is_called_and_repeated(char *cmd_block, char *option)
 {
-	int	i;
+	int		i;
 	char	option_letter;
 
 	if (!cmd_block || ft_strncmp(cmd_block, option, ft_strlen(option)) != 0)

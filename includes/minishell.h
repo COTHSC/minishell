@@ -16,8 +16,33 @@
 # include <signal.h>
 
 extern char **g_env;
+void	init_split(int *row, int *lead, int *quote);
+void	init_to_zero(int num, ...);
 
+int	close_unused_fds(int (*fd)[2], int current, int nb_cmds);
+int	make_pipes(int (*fd)[2], int size);
+void	init_fds(int fd[100]);
+void	close_fds(int fd[100]);
+int	select_builtin_test(int index, int argc, char **argv);
 
+int	wait_and_get_status(void);
+void	free_command_block(char **command_block);
+void	ft_replug(int stdio_cpy[2]);
+int	execute_binary(char **command_block);
+int	nb_cmds(char ***cmd);
+int	check_if_file(char **cmd);
+int	handle_semicolons(char *s, int i);
+int	handle_redirects(char *s, int i);
+int	handle_pipes(char *s, int i);
+int	handle_quotes(char *s, int *i);
+
+void    print_file_error(int error, char *filename);
+void	*free_strs_return_null(int num, ...);
+
+int	get_redirect_type(char *s);
+int	check_quotes(char *s);
+int	check_between_the_pipes(char *s);
+int	check_between_the_redirects(char *s);
 
 typedef struct s_redir {
 	int es;

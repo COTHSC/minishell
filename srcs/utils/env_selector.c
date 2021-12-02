@@ -16,7 +16,7 @@ int	count_env_vars_with_flag(char **env, char flag)
 	return (counter);
 }
 
-char **env_selector(int position_selector, char *flag)
+char	**env_selector(int position_selector, char *flag)
 {
 	char	**selection;
 	int		i;

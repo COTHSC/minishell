@@ -14,7 +14,7 @@ void	perror_invalid_option(char *builtin, char *options, char *valid_options)
 		if (!ft_strchr(valid_options, options[i]))
 		{
 			ft_putchar_fd(options[i], 2);
-			break;
+			break ;
 		}
 		i++;
 	}
