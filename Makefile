@@ -24,6 +24,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/execution/signal_handling.c  \
 	   ./srcs/execution/term_settings.c  \
 	   ./srcs/execution/term_reset.c  \
+	   ./srcs/execution/term_setchers.c  \
 	   ./srcs/builtins/builtin_selector.c  \
 	   ./srcs/builtins/pwd.c  \
 	   ./srcs/builtins/cd.c  \
