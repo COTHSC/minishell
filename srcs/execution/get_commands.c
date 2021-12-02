@@ -44,6 +44,7 @@ char	**get_command(char **cmd_block)
 			if (quote)
 				d = go_through_quote(cmd_block[i], d, &quote);
 		}
+		return (cmd_block);
 	}
 	return (cmd_block);
 }
