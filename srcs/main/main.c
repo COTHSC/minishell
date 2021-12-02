@@ -98,6 +98,10 @@ int main(int argc, char **argv, char **env)
 
         else
             get_next_line(STDIN_FILENO, &line_from_terminal);
+		if (line_from_terminal)
+		{
+
+
         if (check_syntax(line_from_terminal))
         {
             es = 2;
@@ -139,6 +143,7 @@ int main(int argc, char **argv, char **env)
         }
         if (!isatty(STDIN_FILENO))
             tmp_es = -1;
+		}
         if (tmp_es == -1)
         {
             free_str_list(g_env, strlen_list(g_env));

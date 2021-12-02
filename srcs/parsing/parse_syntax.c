@@ -80,6 +80,8 @@ int	check_syntax(char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 	{
 		if (handle_semicolons(s, i))

@@ -19,6 +19,10 @@ extern char **g_env;
 void	init_split(int *row, int *lead, int *quote);
 void	init_to_zero(int num, ...);
 
+int		end_is_heredoc(char *s);
+char	*replace_del(char *s, char *delimiter, int fd);
+char	*ft_strndup(const char *s, int n);
+char *get_sep(char *sep_str);
 char	**delete_str(char **str_list, int index);
 int	exec_dup(int redirect_type, int fd);
 int	get_redirect_and_skip(char *s, int *i);
