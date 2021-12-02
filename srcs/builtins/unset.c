@@ -6,7 +6,7 @@
 /*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:47:24 by calle             #+#    #+#             */
-/*   Updated: 2021/12/02 10:49:43 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/02 16:13:12 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int	check_and_delete_from_env(char **vars_to_unset)
 	catch_error = 0;
 	while (vars_to_unset[++i])
 	{
-		if (!is_a_valid_name(vars_to_unset[i]))
+		if (find_index_of_char(vars_to_unset[i], '=') != -1
+			|| !has_valid_var_name(vars_to_unset[i]))
 		{
 			perror_not_a_valid_identifier(vars_to_unset[i], "unset");
 			catch_error = 1;
@@ -99,6 +100,7 @@ int	check_and_delete_from_env(char **vars_to_unset)
 
 int	ft_unset(int argc, char **argv)
 {
+	printf("var: %s\n", argv[1]);
 	if (argc == 1)
 		return (EXIT_SUCCESS);
 	else if (is_option(argv[1]) && argv[1][1])
