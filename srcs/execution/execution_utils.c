@@ -49,16 +49,6 @@ int	execute_binary(char **command_block)
 	exit (0);
 }
 
-int	nb_cmds(char ***cmd)
-{
-	int	n;
-
-	n = 0;
-	while (cmd[n])
-		n++;
-	return (n);
-}
-
 int	check_if_file(char **cmd)
 {
 	if (is_path(cmd[0]))
