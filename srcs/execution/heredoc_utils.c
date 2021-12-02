@@ -1,5 +1,16 @@
 #include "../../includes/minishell.h"
 
+void	handle_eof_sig(char *del, char buffer[PIPE_BUF], int fds[2], int size)
+{
+	write(fds[1], buffer, size);
+	ft_putstr_fd("minishell: warning: here-doc delimited by eof (wanted, dead \
+or alive : ", STDOUT_FILENO);
+	ft_putstr_fd(del, STDOUT_FILENO);
+	ft_putstr_fd(")", STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	exit(0);
+}
+
 int	end_is_heredoc(char *s)
 {
 	int	str_len;
