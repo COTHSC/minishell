@@ -34,8 +34,6 @@ char	**get_command(char **cmd_block)
 			if (is_redirect(cmd_block[i][d]))
 			{
 				cmd_block = get_filenames_no_redirect(cmd_block, d, i);
-				if (!cmd_block)
-					return (NULL);
 				if (ft_strlen(cmd_block[i]) == 0)
 					cmd_block = delete_str(cmd_block, i);
 				return (get_command(cmd_block));
