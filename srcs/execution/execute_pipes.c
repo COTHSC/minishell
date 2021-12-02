@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 17:00:23 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/02 19:17:31 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
 	t_redir	redir;
 	int		ret;
 
+	redir.es = 0;
 	init_fds(fds);
 	redir.cmd = cmd;
 	close_unused_fds(fd, i, n);
@@ -77,6 +78,9 @@ int	execute_builtin_piped(int (*fd)[2], int i, int n, char **cmd)
 	close(fd[i][0]);
 	close(fd[i + 1][1]);
 	free_str_list(redir.cmd, strlen_list(redir.cmd));
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	exit (ret);
 }
 

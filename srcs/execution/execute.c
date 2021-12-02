@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:06 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 17:00:13 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/02 18:30:41 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,8 @@ int	nb_cmds(char ***cmd)
 int	execute(char ***command_block)
 {
 	int		status;
-	int		stdio_cpy[2];
 	t_redir	redir;
 
-	stdio_cpy[0] = dup(STDIN_FILENO);
-	stdio_cpy[1] = dup(STDOUT_FILENO);
 	status = 0;
 	redir.cmd = command_block[0];
 	if (command_block[0])

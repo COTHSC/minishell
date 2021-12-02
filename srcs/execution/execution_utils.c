@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:02:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 17:02:51 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/02 19:01:34 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ void	free_command_block(char **command_block)
 void	ft_replug(int stdio_cpy[2])
 {
 	dup2(stdio_cpy[0], STDIN_FILENO);
+//	close(stdio_cpy[0]);
 	dup2(stdio_cpy[1], STDOUT_FILENO);
+//	close(stdio_cpy[1]);
 }
 
 int	execute_binary(char **command_block)

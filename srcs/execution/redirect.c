@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:03:47 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 17:03:48 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/02 18:23:38 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ int	open_file(int *fd, int redirect_type, char *file_name)
 	int	invalid_fd;
 
 	if (redirect_type == 2)
-		*fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0777);
+		*fd = open(file_name, O_RDWR | O_CREAT | O_APPEND | O_CLOEXEC, 0777);
 	else if (redirect_type == 3)
-		*fd = open(file_name, O_RDONLY, 0777);
+		*fd = open(file_name, O_RDONLY | O_CLOEXEC, 0777);
 	else if (redirect_type == 1)
-		*fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		*fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0777);
 	else if (redirect_type == 6)
 		*fd = ft_atoi(file_name);
 	invalid_fd = check_fd(*fd, file_name);

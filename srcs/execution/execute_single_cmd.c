@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 17:01:55 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/02 19:00:24 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	execute_child_alone(char **cmd)
 {
-	int		fds[FD_SETSIZE];
 	t_redir	redir;
 	int		ret;
-
-	init_fds(fds);
+	
+	redir.es = 0;
+	init_fds(redir.fd);
 	redir.cmd = cmd;
 	cmd = ft_redirect(&redir);
 	if (redir.es)
@@ -26,21 +26,29 @@ int	execute_child_alone(char **cmd)
 	remove_quotes_list(cmd);
 	ret = check_if_file(cmd);
 	if (!ret)
+	{
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
 		execute_binary(cmd);
+	}
 	else
+	{
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
 		exit(ret);
+	}
 	return (1);
 }
 
 int	execute_builtin_alone(char **cmd)
 {
 	int		ret;
-	int		fds[FD_SETSIZE];
 	t_redir	redir;
 
 	redir.cmd = cmd;
-	redir.es = 0;
-	init_fds(fds);
+	init_fds(redir.fd);
 	redir.es = 0;
 	redir.cmd = ft_redirect(&redir);
 	remove_quotes_list(redir.cmd);
@@ -48,7 +56,7 @@ int	execute_builtin_alone(char **cmd)
 	if (redir.cmd[0] && !redir.es)
 		ret = select_builtin_test(builtin_finder(redir.cmd[0]), \
 				strlen_list(redir.cmd), redir.cmd);
-	close_fds(fds);
+	close_fds(redir.fd);
 	free_str_list(redir.cmd, strlen_list(redir.cmd));
 	return (ret);
 }
@@ -79,10 +87,9 @@ int	single_cmd(char **cmd)
 	int		stdio_cpy[2];
 	t_redir	redir;
 
-	stdio_cpy[0] = dup(STDIN_FILENO);
-	stdio_cpy[1] = dup(STDOUT_FILENO);
 	status = 0;
 	redir.cmd = cmd;
+	init_fds(redir.fd);
 	cmdcmp = get_command(str_list_dup(redir.cmd));
 	if (builtin_finder(cmdcmp[0]) == -1)
 	{
@@ -90,6 +97,8 @@ int	single_cmd(char **cmd)
 	}
 	else
 	{
+		stdio_cpy[0] = STDIN_FILENO;
+		stdio_cpy[1] = STDOUT_FILENO;
 		status = execute_builtin_alone(str_list_dup(redir.cmd));
 		ft_replug(stdio_cpy);
 	}
