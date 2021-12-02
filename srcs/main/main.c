@@ -117,7 +117,7 @@ int	parse_command_line(char *line_from_terminal, int *es, int *tmp_es)
 		command_list = prepare_command_list(commands);
 		free_str_list(commands, strlen_list(commands));
 		*tmp_es = execute(command_list);
-		if (*tmp_es != -1)
+		if (*tmp_es >= 0)
 			*es = *tmp_es;
 		free(command_list);
 		free(line_from_terminal);
@@ -143,9 +143,14 @@ int main(int argc, char **argv, char **env)
 		if (parse_command_line(line_from_terminal, &es, &tmp_es) == 1)
 			continue ;
 		if (!isatty(STDIN_FILENO))
-			tmp_es = -1;
-		if (tmp_es == -1)
 		{
+			if (tmp_es < 0)
+				es = tmp_es * -1 - 1;
+			break ;
+		}
+		if (tmp_es < 0)
+		{
+			es = tmp_es * -1 - 1;
 			free_str_list(g_env, strlen_list(g_env));
 			break ;
 		}

@@ -6,7 +6,7 @@
 /*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 11:15:31 by calle             #+#    #+#             */
-/*   Updated: 2021/12/02 11:24:07 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/02 19:07:41 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,30 +48,44 @@ static int	handle_exit_with_a_status(char *status)
 	if (out_of_range == 1)
 	{
 		perror_numeric_arg_required(status, "exit");
-		return (-(2) - OFFSET_ES);
+		exit (2);
 	}
-	return (-((int)(exit_status)) - OFFSET_ES);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+	exit(exit_status);
+	return (0);
 }
 
 int	ft_exit(int argc, char **argv)
 {
+	int status;
+
+	status = 0;
 	if (argc == 1)
 	{
-		ft_putstr_fd("exit \n", STDERR_FILENO);
-		return ((0) - OFFSET_ES);
+		if (isatty(STDIN_FILENO))
+			ft_putstr_fd("exit \n", STDERR_FILENO);
+		status = 0;
 	}
 	else if (!is_valid_status(argv[1]))
 	{
 		ft_putstr_fd("exit \n", STDERR_FILENO);
 		perror_numeric_arg_required(argv[1], "exit");
-		return (-(2) - OFFSET_ES);
+		status = 2;
 	}
 	else if (argc > 2)
 	{
 		ft_putstr_fd("exit \n", STDERR_FILENO);
 		perror_too_many_args("exit");
-		return (-(1) - OFFSET_ES);
+		status = 1;
+		return (1);
 	}
 	else
-		return (handle_exit_with_a_status(argv[1]));
+		handle_exit_with_a_status(argv[1]);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+	exit (status);
+	return (0);
 }
