@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 13:03:17 by calle             #+#    #+#             */
+/*   Updated: 2021/12/02 13:03:19 by calle            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*************************************************************************** */
 /*                                                                           */
 /*                                                       :::      ::::::::   */
@@ -10,17 +22,16 @@
 /*                                                                           */
 /*************************************************************************** */
 
-
 #include "builtins.h"
 
-void	quote_and_cpy_val(int value_start, char *value, char **q_env, int i)
+static void	quote_and_cpy_val(int value_start, char *value, char **q_env, int i)
 {
 	q_env[i][value_start] = '"';
 	ft_strlcpy(&q_env[i][value_start + 1], value, ft_strlen(value) + 1);
 	q_env[i][value_start + ft_strlen(value) + 1] = '"';
 }
 
-char	**double_quoting_env_values(char **env)
+static char	**double_quoting_env_values(char **env)
 {
 	int		i;
 	char	**q_env;
@@ -47,7 +58,17 @@ char	**double_quoting_env_values(char **env)
 	return (q_env);
 }
 
-int	display_exported_vars( void )
+static void	check_exist_and_free(char **e_vars, char **s_env, char **p_env)
+{
+	if (e_vars)
+		free_str_list(e_vars, strlen_list(e_vars));
+	if (s_env)
+		free_str_list(s_env, strlen_list(s_env));
+	if (p_env)
+		free_str_list(p_env, strlen_list(p_env));
+}
+
+static int	display_exported_vars( void )
 {
 	char	**exported_vars;
 	char	**sorted_env;
@@ -70,20 +91,15 @@ int	display_exported_vars( void )
 		return (EXIT_FAILURE);
 	}
 	print_str_list(prefixed_env, "declare -x ");
-	if (exported_vars)
-		free_str_list(exported_vars, strlen_list(exported_vars));
-	if (sorted_env)
-		free_str_list(sorted_env, strlen_list(sorted_env));
-	if (prefixed_env)
-		free_str_list(prefixed_env, strlen_list(prefixed_env));
+	check_exist_and_free(exported_vars, sorted_env, prefixed_env);
 	return (EXIT_SUCCESS);
 }
 
-int ft_export(int argc, char **argv)
+int	ft_export(int argc, char **argv)
 {
 	if (argc == 1)
 		return (display_exported_vars());
-	else if (is_option(argv[1]) && argv[1][1])	
+	else if (is_option(argv[1]) && argv[1][1])
 	{
 		perror_invalid_option("export", argv[1], NULL);
 		print_usage_export();
