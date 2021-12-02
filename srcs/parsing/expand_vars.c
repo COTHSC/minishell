@@ -5,7 +5,7 @@ char	*get_var_name(char *s, int *i)
 {
 	char	*var_name;
 
-	while (s[*i] && !isquote(s[*i]) && !ft_iswhitespace(s[*i]) && s[*i] != '$')
+	while (s[*i] && !isquote(s[*i]) && !ft_iswhitespace(s[*i]) && s[*i] != '$' && s[*i] != '=')
 		(*i)++;
 	var_name = ft_calloc(*i + 1, sizeof(char));
 	if (!var_name)
