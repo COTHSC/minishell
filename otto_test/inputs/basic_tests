@@ -44,7 +44,6 @@ echo $1 234
 echo $POEP hallo
 echo "hallo$"
 echo "\poep"
-echo $/
 echo $2$4
 echo $
 echo $?
@@ -64,8 +63,6 @@ echo hallo daar | echo hoi maran
 echo $USER""
 echo $USER_
 echo $
-echo 123$USER----
-echo 123$USER----$
 echo abc$USERdef
 echo abc$USER123
 echo abc$POEPdef
@@ -121,8 +118,6 @@ echo $USER9582309582529
 echo $
 echo $USER
 echo $USER	
-echo 123$USER----
-echo 123$USER----$		
 echo abc$USERdef
 echo abc$USER123
 echo abc$POEPdef

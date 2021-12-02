@@ -14,6 +14,10 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/execution/make_heredocs.c  \
 	   ./srcs/execution/init_minishell.c  \
 	   ./srcs/execution/pipe_utils.c  \
+	   ./srcs/execution/redirect_utils.c  \
+	   ./srcs/execution/execute_pipes.c  \
+	   ./srcs/execution/get_commands.c  \
+	   ./srcs/execution/execute_single_cmd.c  \
 	   ./srcs/execution/execution_utils.c  \
 	   ./srcs/execution/signal_handling.c  \
 	   ./srcs/execution/term_settings.c  \

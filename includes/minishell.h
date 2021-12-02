@@ -19,11 +19,16 @@ extern char **g_env;
 void	init_split(int *row, int *lead, int *quote);
 void	init_to_zero(int num, ...);
 
+char	**delete_str(char **str_list, int index);
+int	exec_dup(int redirect_type, int fd);
+int	get_redirect_and_skip(char *s, int *i);
 int	close_unused_fds(int (*fd)[2], int current, int nb_cmds);
 int	make_pipes(int (*fd)[2], int size);
 void	init_fds(int fd[100]);
 void	close_fds(int fd[100]);
 int	select_builtin_test(int index, int argc, char **argv);
+int	single_cmd(char **cmd);
+int	ft_multipipes2(char ***cmd);
 void	*free_strs_lists(int num, ...);
 
 int	wait_and_get_status(void);
