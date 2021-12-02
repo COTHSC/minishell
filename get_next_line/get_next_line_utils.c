@@ -6,11 +6,33 @@
 /*   By: jean <jescully@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 18:34:14 by jean              #+#    #+#             */
-/*   Updated: 2021/11/29 16:22:36 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/02 14:20:53 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#define BUFFER_SIZE 100
+
+int	not_a_ternary(int bytes, char *available_string)
+{
+	if (bytes + ft_strlen(available_string) == 0)
+		return (0);
+	else
+		return (1);
+}
+
+int	get_str(char *bufstr, char **s, int fd, int *bytes)
+{
+	*bytes = read(fd, bufstr, BUFFER_SIZE);
+	if (*bytes == -1)
+	{
+		free(bufstr);
+		return (-1);
+	}
+	bufstr[*bytes] = '\0';
+	*s = ft_strjoin2(*s, bufstr);
+	return (0);
+}
 
 char	*ft_strjoin2(char *s1, char *s2)
 {
@@ -26,7 +48,8 @@ char	*ft_strjoin2(char *s1, char *s2)
 	size = ft_strlen(s1) + ft_strlen(s2);
 	if (size == 0)
 		return (NULL);
-	if (!(retstr = (char*)malloc(sizeof(char) * (size + 1))))
+	retstr = (char *)malloc(sizeof(char) * (size + 1));
+	if (!retstr)
 		return (NULL);
 	while (s1[i])
 	{

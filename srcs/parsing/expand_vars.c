@@ -1,116 +1,96 @@
- #include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_vars.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 16:50:14 by jescully          #+#    #+#             */
+/*   Updated: 2021/12/02 16:50:22 by jescully         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int isquote(char c);
+#include "../../includes/minishell.h"
 
-char    *get_var_name(char *s, int *i)
+char	*exp_rep(char *s, char *var_value, int offset, int i)
 {
-    char *var_name;
+	int					d;
+	char				*newstr;
 
-    while (!ft_iswhitespace(s[*i]) && s[*i] && s[*i] != '$' && !isquote(s[*i]))
-        (*i)++;
-    var_name = ft_calloc(*i + 1, sizeof(char));
-    if (!var_name)
-        return (0);
-    ft_strlcpy(var_name, s, *i + 1);
-    return (var_name);
+	d = 0;
+	if (offset < 0)
+	{
+		newstr = ft_strdup(&s[-offset]);
+		while (d < (int)ft_strlen(var_value))
+		{
+			newstr[d] = var_value[d];
+			d++;
+		}
+	}
+	else
+	{
+		newstr = ft_calloc(ft_strlen(s) + offset + 1, sizeof(char));
+		while (d <= (int)ft_strlen(var_value))
+		{
+			newstr[d] = var_value[d];
+			d++;
+		}
+		ft_strlcpy(&newstr[ft_strlen(var_value)], &s[i], ft_strlen(s) - i + 1);
+	}
+	return (newstr);
 }
 
-char    *get_var_value(char *var_name, int *offset, int status)
+char	*expand_vars(char *s, int status, int quote, int *index)
 {
-    char *var_value;
+	int		i;
+	char	*var_name;
+	char	*var_value;
+	int		offset;
+	char	*newstr;
 
-    if (ft_getenv(var_name, 'd') != NULL)
-    {
-        var_value = ft_strdup(ft_getenv(var_name, 'd')); 
-        *offset = ft_strlen(var_value) - ft_strlen(var_name);
-    }
-    else if (!ft_strncmp(var_name, "?", 2))
-    {
-        var_value = ft_itoa(status);
-        *offset = ft_strlen(var_value) - ft_strlen(var_name);
-    }
-    else
-    {
-        var_value = NULL;
-        *offset = ft_strlen(var_name) * -1;
-    }
-    return (var_value);
+	i = 0;
+	var_name = get_var_name(s, &i);
+	if (!var_name[0])
+	{
+		free(var_name);
+		if (is_done(s) || quote)
+			return (ft_strjoin("$", s));
+		else
+			return (ft_strjoin("", s));
+	}
+	var_value = get_var_value(var_name, &offset, status);
+	newstr = exp_rep(s, var_value, offset, i);
+	if (var_value)
+		free(var_value);
+	free(var_name);
+	if (newstr[0] == '$')
+		*index = *index - 1;
+	return (newstr);
 }
 
-char     *expand_and_replace(char *s, char *var_value, char *var_name, int offset, int i)
+char	*find_dollars(char *s, int status)
 {
-    unsigned long int d;
-    char *newstr;
+	int		i;
+	char	*newend;
+	char	*news;
+	int		quote;
 
-    d = 0;
-    if (offset < 0)
-    {
-        newstr = ft_strdup(&s[-offset]);
-        while (d < ft_strlen(var_name) + offset)
-        {
-            newstr[d] = var_value[d];
-            d++;
-        }
-    }
-    else
-    {
-        newstr = ft_calloc(ft_strlen(s) + offset + 1, sizeof(char));
-        while (d <= offset + ft_strlen(var_name))
-        {
-            newstr[d] = var_value[d];
-            d++;
-        }
-        ft_strlcpy(&newstr[ft_strlen(var_value)], &s[i], ft_strlen(s) - i + 1);
-    }
-    return (newstr);
-}
-
-char *expand_vars(char *s, int status)
-{
-    int i;
-    char *var_name;
-    char *var_value;
-    int offset;
-    char *newstr;
-
-    i = 0;
-    var_name = get_var_name(s, &i);
-    var_value = get_var_value(var_name, &offset, status);
-    newstr = expand_and_replace(s, var_value, var_name, offset, i); 
-    if (var_value)
-        free(var_value);
-    free(var_name);
-    return (newstr);
-}
-
-char *find_dollars(char *s, int status)
-{
-    int i;
-    char *newend;
-    char *news;
-    int d;
-
-    i = -1;
-    while (s && s[++i])
-    {
-        if (isquote(s[i]) == 1)
-        {
-            i++;
-            while (isquote(s[i]) != 1)
-                i++;
-        }
-        if (s[i] == '$')
-        {
-            newend = expand_vars(&s[i + 1], status);
-            s[i] = 0;
-            news = ft_strjoin(s, newend);
-            free(newend);
-            d = ft_strlen(s);
-            free(s);
-            s = news;
-            if (i >= d)
-                return (find_dollars(s, status));
-        }
-    }
-    return (s);
+	i = -1;
+	quote = 0;
+	while (s && s[++i])
+	{
+		if (deal_with_quotes(s, &quote, &i) == -1)
+			return (s);
+		if (s[i] == '$')
+		{
+			newend = expand_vars(&s[i + 1], status, quote, &i);
+			s[i] = 0;
+			news = ft_strjoin(s, newend);
+			free_strs_return_null(2, newend, s);
+			s = news;
+			if (!s[i])
+				return (s);
+		}
+	}
+	return (s);
 }

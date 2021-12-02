@@ -1,5 +1,16 @@
 #include "../../includes/minishell.h"
 
+int	find_index_of_char(char *s, char c)
+{
+	char	*char_pos_ptr;
+
+	char_pos_ptr = ft_strchr(s, c);
+	if (char_pos_ptr)
+		return (char_pos_ptr - s);
+	else
+		return (-1);
+}
+
 int	var_name_is_matching(char *var_to_compare, char *var_to_match)
 {
 	int		c_pos;
@@ -14,7 +25,8 @@ int	var_name_is_matching(char *var_to_compare, char *var_to_match)
 		return (1);
 	c_pos = c_addr - var_to_compare;
 	if (c_pos == (long)ft_strlen(var_to_match)
-		&& (ft_strnstr(var_to_compare, var_to_match, c_pos) - var_to_compare == 0))
+		&& (ft_strnstr(var_to_compare, var_to_match, c_pos) - \
+			var_to_compare == 0))
 		return (1);
 	return (0);
 }

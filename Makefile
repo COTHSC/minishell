@@ -5,12 +5,27 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/parsing/expand_vars.c  \
 	   ./srcs/parsing/ft_pipe_split.c  \
 	   ./srcs/parsing/remove_quotes.c  \
+	   ./srcs/parsing/syntax_handlers.c  \
 	   ./srcs/parsing/parse_syntax.c  \
+	   ./srcs/parsing/expand_utils.c  \
 	   ./srcs/parsing/parse_declarations.c  \
 	   ./srcs/execution/execute.c  \
 	   ./srcs/execution/redirect.c  \
 	   ./srcs/execution/pathfinders.c  \
 	   ./srcs/execution/make_heredocs.c  \
+	   ./srcs/execution/init_minishell.c  \
+	   ./srcs/execution/pipe_utils.c  \
+	   ./srcs/execution/redirect_utils.c  \
+	   ./srcs/execution/execute_pipes.c  \
+	   ./srcs/execution/get_commands.c  \
+	   ./srcs/execution/execute_single_cmd.c  \
+	   ./srcs/execution/heredoc_utils.c  \
+	   ./srcs/execution/heredoc_parsing.c  \
+	   ./srcs/execution/execution_utils.c  \
+	   ./srcs/execution/signal_handling.c  \
+	   ./srcs/execution/term_settings.c  \
+	   ./srcs/execution/term_reset.c  \
+	   ./srcs/execution/term_setchers.c  \
 	   ./srcs/builtins/builtin_selector.c  \
 	   ./srcs/builtins/pwd.c  \
 	   ./srcs/builtins/cd.c  \
@@ -25,6 +40,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/utils/env_checkers.c \
 	   ./srcs/utils/env_modifiers.c \
 	   ./srcs/utils/match_env_var.c \
+	   ./srcs/utils/var_args_func.c \
 	   ./srcs/utils/split_var_by_name_value_pair.c \
 	   ./srcs/utils/env_selector.c \
 	   ./srcs/utils/command_options_checkers.c \

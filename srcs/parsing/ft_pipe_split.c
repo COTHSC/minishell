@@ -1,4 +1,16 @@
 /* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pipe_split.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 16:50:50 by jescully          #+#    #+#             */
+/*   Updated: 2021/12/02 16:50:51 by jescully         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
 /*																			  */
 /*														  :::	   ::::::::   */
 /*	 ft_better_split.c									:+:		 :+:	:+:   */
@@ -11,7 +23,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 static int	ft_countthewords_pipes(char const *s)
 {
@@ -56,24 +67,31 @@ static int	ftwtw(int len, char **strs, int row, const char *s)
 	return (row);
 }
 
-int fill_word_pipes(char const *s, int lead)
+int	fill_word_pipes(char const *s, int lead)
 {
+	int	quote;
+
 	while (s[lead] != '|' && s[lead])
 	{
-		int quote = 0;
+		quote = 0;
+		lead++;
+		if (isquote(s[lead]))
+			quote = isquote(s[lead]);
+		while (quote)
 		{
 			lead++;
-			if (isquote(s[lead]))
-				quote = isquote(s[lead]);
-			while (quote)
-			{
-				lead++;
-				if (isquote(s[lead]) == quote)
-					quote = 0;
-			}
+			if (isquote(s[lead]) == quote)
+				quote = 0;
 		}
 	}
 	return (lead);
+}
+
+void	init_split(int *row, int *lead, int *quote)
+{
+	*row = 0;
+	*lead = 0;
+	*quote = 0;
 }
 
 char	**ft_pipe_split(char const *s)
@@ -84,9 +102,7 @@ char	**ft_pipe_split(char const *s)
 	int		row;
 	int		quote;
 
-	row = 0;
-	lead = 0;
-	quote = 0;
+	init_split(&row, &lead, &quote);
 	strs = (char **)ft_calloc((ft_countthewords_pipes(s) + 1), sizeof(char *));
 	if (!strs)
 		return (NULL);

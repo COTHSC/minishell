@@ -40,47 +40,29 @@ echo ';;'
 echo ";;;"
 echo /$"123$USER"
 echo | cd .. | pwd
-echo DOET HET NIET > test1 | cat test1
-echo hallo >x1 >x2 >x3 | echo hoi
 echo $1 234
 echo $POEP hallo
 echo "hallo$"
 echo "\poep"
-echo $/
 echo $2$4
 echo $
-echo "123\"456"
 echo $?
 echo $?
 echo $?
 echo \"test\"
-echo"
 echo
 echo $TEST
 echo 'how are you'
 echo '$PWD'
-echo > "hardesttest.txt"
-echo adding stuff >> working.txt
-echo more stuff >> working.txt
-echo > working.txt
-echo dit > test1 gaat > test2 goed > test3
-echo dit > test1 gaat > test2 goed > test3 > test4
 echo hallo daar | echo hoi maran
 echo
 echo hallo daar
 "echo" hallo daar
 echo "hallo daar"
 echo hallo daar | echo hoi maran
-echo hallo >file1 >file2
-echo hallo >file1 >file2 maran
-echo hallo >file1 >file2 >>file3 maran siemons
-echo hallo <file1 >file2
 echo $USER""
-echo $USER"
 echo $USER_
 echo $
-echo 123$USER----
-echo 123$USER----$
 echo abc$USERdef
 echo abc$USER123
 echo abc$POEPdef
@@ -90,66 +72,44 @@ echo $POEP $MEERPOEP
 echo hallo $POEP
 echo $POEP hallo
 echojhdfjhjdkh
-echo | poep
- echo | cd .. | pwd
- echo
+echo | cd .. | pwd
+echo
 echo
 echo hoi
 echo hallo 'ma\"ran' siemons
-echo hallo 'ma\'ran' siemons
-echo hallo 'ma\'ran'' siemons
-echo 'ma\'									Hij ziet de \ niet als escape, print gewoon \
 echo 'hallo$USER'
-echo 'hallo\$USER'
 echo '\$?'
 echo '$USER'
 echo '\$USER'
 echo '"\$USER"'
-echo "hallo"maran"
 echo "\poep"
 echo \poep
-echo "poep\""
-echo "poep\'"
-echo "poep\"
-echo "hallo\"\poep"
 echo hallo""
 echo "hoi$USERmaran"
 echo "$USER"
 cat working.txt | grep stuff | echo tim
 ls filedoesnotexist | grep notme | echo "TEST"
-echo "'\$USER'"
-echo "\$USER"							
-echo "123\"456"
+echo "'$USER'"
 echo "\poep"
-echo "123\'456"
 echo "hallo$"
-echo \"
 echo \$?
 echo '$USER'$USER
-echo '$USER'$USER\$USER/"$USER"
 echo hallo"1234"maran"$USER"'/$USER'"/$USER"'poep''poep2'"maran"'ellende'END
 echo "$USER"'/$USER'
 echo 'poep''poep2'"maran"'ellende'END
 echo 'poep2'"maran"'ellende'
 echo 123"hallo$"456
-echo $1234
 echo $_1234
 echo hallo
 echo hallo | echo hoi
-echo hallo | echo poep >x1 >x2						
 echo hallo | echo hoi | cat
-echo hallo | echo hoi > y1 >y2 | cat -e
 echo $USERhallo
 echo $2$*
 echo $hallo"poep"
 echo /$"123$USER"
-echo $222
-echo hallo$USER***$USER$2$
 echo $a5aap
 echo $_poep
-echo "$####jgklj"
 echo hallo$\abc
-echo hallo$\\abc
 echo hallo$"USER"
 echo hallo$"POEP"
 echo hallo$'USER'
@@ -157,20 +117,12 @@ echo $halllo###
 echo $USER9582309582529
 echo $
 echo $USER
-echo $USER'	
-echo 123$USER----
-echo 123$USER----$		
+echo $USER	
 echo abc$USERdef
 echo abc$USER123
 echo abc$POEPdef
-echo $%%%%jlkjtwejt				
 echo %%$
-echo $####jgklj$USER
-echo $@@@lkgj
 echo $"USERhallo"
-echo "$2$*"
-echo "$222"
-echo "hallo$USER***$USER$2$"
 echo "$_poep"
 echo "$a5aap"
 echo "$halllo###"
@@ -180,58 +132,35 @@ echo hallo"$"abc
 echo hallo"$POEP"abc
 echo hallo"$USER"abc
 echo "$USER"
-echo "$USER'"	
 echo "$USER_"
 echo "abc$USERdef"
 echo "abc$USER123"
 echo "abc$POEPdef"
 echo "$%%%%jlkjtwejt"
 echo "%%$"
-echo "$@@@lkgj"
 echo $"hallo"
 echo $hallo
 echo $hallo"poep"	
-echo "hallo\"\poep"			
 echo $"etet"
-echo "$53535"
-echo “$\hallo”
-echo $"\hallo"
-echo "\\hallo"
-echo "hallo\\hoi"
-echo "\\$USER"
-echo "123\"456"
-echo "123\$456"
-echo "123\`456"
-echo "123\\456"
-echo "123\!456"
 echo "1234"
 echo "12\34"
-echo "1234\"
-echo \"1234"
 echo "1\a234"
-echo \1
 echo "\1234"
-echo "1234\\"
-echo '1234\\'
 echo '1234'
 echo '12\34'
 echo '1234\'
 echo '1\a234'
 echo '\1234'
-echo '1234\\'
-echo '1234\\'
 echo  a
 echo  b
 echo  c
 echo  d
 echo  e
 echo  !
-echo  "
 echo  #
 echo  $
 echo  %
 echo  &
-echo  '
 echo  (
 echo  )
 echo  *
@@ -251,9 +180,7 @@ echo  7
 echo  8
 echo  9
 echo  :
-echo  <
 echo  =
-echo  >
 echo  ?
 echo  @
 echo  A
@@ -315,13 +242,10 @@ echo  x
 echo  y
 echo  z
 echo  {
-echo  |
 echo  }
 echo  ~
 echo "\!"
-echo "\""
 echo "\#"
-echo "\$"
 echo "\%"
 echo "\&"
 echo "\'"
@@ -377,11 +301,9 @@ echo "\X"
 echo "\Y"
 echo "\Z"
 echo "\["
-echo "\\"
 echo "\]"
 echo "\^"
 echo "\_"
-echo "\`"
 echo "\a"
 echo "\b"
 echo "\c"
@@ -418,7 +340,6 @@ echo '\#'
 echo '\$'
 echo '\%'
 echo '\&'
-echo '\''
 echo '\('
 echo '\)'
 echo '\*'
@@ -507,3 +428,15 @@ echo '\|'
 echo '\}'
 echo '\~'
 echo -nn -nnnnnnn -n -nnnn -nnnh
+__42=lol
+echo test tout
+echo test      tout
+echo -n test tout
+echo -n -n -n test tout
+cd .. 
+pwd
+cd /Users 
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e
+cat /dev/random | head -c 100 | wc -c
+ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls
+ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls

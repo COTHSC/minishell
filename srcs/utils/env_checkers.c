@@ -35,19 +35,21 @@ int	var_already_exist(char **var_list, char *var)
 		return (0);
 }
 
-int	has_valid_identifier(char *var_name)
+int	has_valid_var_name(char *var)
 {
-	int	i;
+	int		i;
+	int		check_ret;
+	char	**name_value_pair;
 
+	name_value_pair = split_to_name_value_pair(var);
 	i = 0;
-	while (var_name[i] && var_name[i] != '=')	
-	{
-		if (!ft_isanywordchar(var_name[i]))
-			return (0);
-		i++;
-	}
-	if ((i == 0) && (var_name[i] == '='))
+	check_ret = 1;
+	if (!name_value_pair[0][0])
 		return (0);
-	else
-		return (1);
+	if (!ft_test_through_str(name_value_pair[0], &ft_isanywordchar))
+		check_ret = 0;
+	if (ft_isdigit(name_value_pair[0][0]))
+		check_ret = 0;
+	free_str_list(name_value_pair, strlen_list(name_value_pair));
+	return (check_ret);
 }
