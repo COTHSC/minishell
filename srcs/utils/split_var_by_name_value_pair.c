@@ -28,6 +28,7 @@ static char	**split_till_char(char *s, char c)
 		return (tmp);
 	}
 }
+
 char	**split_to_name_value_pair(char *var)
 {
 	return (split_till_char(var, '='));

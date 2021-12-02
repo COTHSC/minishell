@@ -1,11 +1,4 @@
-# include <stdio.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <sys/wait.h>
-# include <fcntl.h>
-# include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	*try_paths(char **paths, char *command)
 {
@@ -36,15 +29,23 @@ char	*try_paths(char **paths, char *command)
 	return (NULL);
 }
 
-int builtin_finder(char *name)
+int	builtin_finder(char *name)
 {
-	int i;
-	static char *builtin_lookup[7] = {"cd", "pwd", "exit", "export", "env", "unset", "echo"};
+	static char	*builtin_lookup[7];
+	int			i;
 
+	builtin_lookup[0] = "cd";
+	builtin_lookup[1] = "pwd";
+	builtin_lookup[2] = "exit";
+	builtin_lookup[3] = "export";
+	builtin_lookup[4] = "env";
+	builtin_lookup[5] = "unset";
+	builtin_lookup[6] = "echo";
 	i = 0;
 	while (i < 7)
 	{
-		if (ft_strncmp(name, builtin_lookup[i], ft_strlen(name)) == 0 && ft_strlen(name) == ft_strlen(builtin_lookup[i]))
+		if (ft_strncmp(name, builtin_lookup[i], ft_strlen(name)) == 0 \
+				&& ft_strlen(name) == ft_strlen(builtin_lookup[i]))
 			return (i);
 		i++;
 	}
@@ -54,7 +55,7 @@ int builtin_finder(char *name)
 char	*get_path(char **command_block)
 {
 	char	**paths;
-	int	 d;
+	int		d;
 	char	*path;
 
 	d = 0;

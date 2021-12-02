@@ -26,7 +26,7 @@ int	alter_env_var(char **clean_env, char *name, char *var_to_add, char *flag)
 		if (!g_env)
 			return (EXIT_FAILURE);
 	}
-	else 
+	else
 	{
 		free(g_env[i]);
 		g_env[i] = flagged_var_to_add;

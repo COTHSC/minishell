@@ -37,19 +37,19 @@ int	var_already_exist(char **var_list, char *var)
 
 int	has_valid_var_name(char *var)
 {
-	int     i;
-    int     check_ret;
-	char    **name_value_pair;
+	int		i;
+	int		check_ret;
+	char	**name_value_pair;
 
 	name_value_pair = split_to_name_value_pair(var);
 	i = 0;
-    check_ret = 1;
+	check_ret = 1;
 	if (!name_value_pair[0][0])
 		return (0);
-    if (!ft_test_through_str(name_value_pair[0], &ft_isanywordchar))
-            check_ret = 0;
-    if (ft_isdigit(name_value_pair[0][0]))
-            check_ret = 0;
-	free_str_list(name_value_pair, strlen_list(name_value_pair));	
+	if (!ft_test_through_str(name_value_pair[0], &ft_isanywordchar))
+		check_ret = 0;
+	if (ft_isdigit(name_value_pair[0][0]))
+		check_ret = 0;
+	free_str_list(name_value_pair, strlen_list(name_value_pair));
 	return (check_ret);
 }
