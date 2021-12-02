@@ -1,50 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_vars.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 16:50:14 by jescully          #+#    #+#             */
+/*   Updated: 2021/12/02 16:50:22 by jescully         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-char	*get_var_name(char *s, int *i)
+char	*exp_rep(char *s, char *var_value, int offset, int i)
 {
-	char	*var_name;
-
-	while (s[*i] && !isquote(s[*i]) && !ft_iswhitespace(s[*i]) && ft_isanywordchar(s[*i]))//s[*i] != '$' && s[*i] != '=')
-		(*i)++;
-	var_name = ft_calloc(*i + 1, sizeof(char));
-	if (!var_name)
-		return (0);
-	ft_strlcpy(var_name, s, *i + 1);
-	return (var_name);
-}
-
-char	*get_var_value(char *var_name, int *offset, int status)
-{
-	char	*var_value;
-
-	if (ft_getenv(var_name, 'd') != NULL)
-	{
-		var_value = ft_strdup(ft_getenv(var_name, 'd'));
-		*offset = ft_strlen(var_value) - ft_strlen(var_name);
-	}
-	else if (!ft_strncmp(var_name, "?", 2))
-	{
-		var_value = ft_itoa(status);
-		*offset = ft_strlen(var_value) - ft_strlen(var_name);
-	}
-	else
-	{
-		var_value = NULL;
-		*offset = ft_strlen(var_name) * -1;
-	}
-	return (var_value);
-}
-
-char	*exp_rep(char *s, char *var_value, char *var_name, int offset, int i)
-{
-	unsigned long int	d;
+	int					d;
 	char				*newstr;
 
 	d = 0;
 	if (offset < 0)
 	{
 		newstr = ft_strdup(&s[-offset]);
-		while (d < ft_strlen(var_name) + offset)
+		while (d < (int)ft_strlen(var_value))
 		{
 			newstr[d] = var_value[d];
 			d++;
@@ -53,7 +30,7 @@ char	*exp_rep(char *s, char *var_value, char *var_name, int offset, int i)
 	else
 	{
 		newstr = ft_calloc(ft_strlen(s) + offset + 1, sizeof(char));
-		while (d <= offset + ft_strlen(var_name))
+		while (d <= (int)ft_strlen(var_value))
 		{
 			newstr[d] = var_value[d];
 			d++;
@@ -61,20 +38,6 @@ char	*exp_rep(char *s, char *var_value, char *var_name, int offset, int i)
 		ft_strlcpy(&newstr[ft_strlen(var_value)], &s[i], ft_strlen(s) - i + 1);
 	}
 	return (newstr);
-}
-
-int	is_done(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (!isquote(s[i]) && s[i] != '/' && s[i] != '%')
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 char	*expand_vars(char *s, int status, int quote, int *index)
@@ -96,7 +59,7 @@ char	*expand_vars(char *s, int status, int quote, int *index)
 			return (ft_strjoin("", s));
 	}
 	var_value = get_var_value(var_name, &offset, status);
-	newstr = exp_rep(s, var_value, var_name, offset, i);
+	newstr = exp_rep(s, var_value, offset, i);
 	if (var_value)
 		free(var_value);
 	free(var_name);
@@ -105,32 +68,11 @@ char	*expand_vars(char *s, int status, int quote, int *index)
 	return (newstr);
 }
 
-int	deal_with_quotes(char *s, int *quote, int *i)
-{
-	if (isquote(s[*i]) == 2)
-	{
-		if (!(*quote))
-			*quote = 2;
-		else
-			*quote = 0;
-	}
-	if (isquote(s[*i]) == 1 && !(*quote))
-	{
-		*i += 1;
-		while (s[*i] && isquote(s[*i]) != 1)
-			*i += 1;
-		if (!s[*i])
-			return (-1);
-	}
-	return (0);
-}
-
 char	*find_dollars(char *s, int status)
 {
 	int		i;
 	char	*newend;
 	char	*news;
-	int		d;
 	int		quote;
 
 	i = -1;
@@ -144,9 +86,7 @@ char	*find_dollars(char *s, int status)
 			newend = expand_vars(&s[i + 1], status, quote, &i);
 			s[i] = 0;
 			news = ft_strjoin(s, newend);
-			free(newend);
-			d = ft_strlen(s);
-			free(s);
+			free_strs_return_null(2, newend, s);
 			s = news;
 			if (!s[i])
 				return (s);

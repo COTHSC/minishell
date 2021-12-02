@@ -19,6 +19,10 @@ extern char **g_env;
 void	init_split(int *row, int *lead, int *quote);
 void	init_to_zero(int num, ...);
 
+int	is_done(char *s);
+char	*get_var_name(char *s, int *i);
+char	*get_var_value(char *var_name, int *offset, int status);
+int	deal_with_quotes(char *s, int *quote, int *i);
 int		end_is_heredoc(char *s);
 char	*replace_del(char *s, char *delimiter, int fd);
 char	*ft_strndup(const char *s, int n);
