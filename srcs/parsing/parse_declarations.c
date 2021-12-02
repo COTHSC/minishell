@@ -1,16 +1,5 @@
 #include "../../includes/minishell.h"
 
-int	find_index_of_char(char *s, char c)
-{
-	char	*char_pos_ptr;
-
-	char_pos_ptr = ft_strchr(s, c);
-	if (char_pos_ptr)
-		return (char_pos_ptr - s);
-	else
-		return (-1);
-}
-
 int	switch_declaration_on(char **args)
 {
 	int		i;
