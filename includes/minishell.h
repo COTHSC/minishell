@@ -24,6 +24,7 @@ int	make_pipes(int (*fd)[2], int size);
 void	init_fds(int fd[100]);
 void	close_fds(int fd[100]);
 int	select_builtin_test(int index, int argc, char **argv);
+void	*free_strs_lists(int num, ...);
 
 int	wait_and_get_status(void);
 void	free_command_block(char **command_block);

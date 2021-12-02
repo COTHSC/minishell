@@ -24,3 +24,20 @@ void	*free_strs_return_null(int num, ...)
 	va_end(arguments);
 	return (0);
 }
+
+void	*free_strs_lists(int num, ...)
+{
+	va_list	arguments;
+	int		x;
+	char	**temp;
+
+	x = 0;
+	va_start(arguments, num);
+	while (x++ < num)
+	{
+		temp = (va_arg(arguments, char **));
+		free_str_list(temp, strlen_list(temp));
+	}
+	va_end(arguments);
+	return (0);
+}
