@@ -143,6 +143,7 @@ int		index_matching_var_name(char **var_list, char *var_to_match);
 int	alter_env_var(char **clean_env, char *name, char *var_to_add, char *flag);
 int	check_and_alter_env(char **args, char *flag);
 int	has_valid_var_name(char *var);
+int	find_index_of_char(char *s, char c);
 /*
 ** ------------------ TERM AUXILIARIES ------------------
 */
