@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 10:51:41 by calle             #+#    #+#             */
+/*   Updated: 2021/12/02 11:16:12 by calle            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 
-int	print_multiple_arguments(char **args, int start, int end)
+static int	print_multiple_arguments(char **args, int start, int end)
 {
 	int	i;
 
 	i = start;
-	while(i < end)
+	while (i < end)
 	{
 		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (i != end - 1)
@@ -15,7 +27,7 @@ int	print_multiple_arguments(char **args, int start, int end)
 	return (EXIT_SUCCESS);
 }
 
-int	is_only_char(char *str, char c)
+static int	is_only_char(char *str, char c)
 {
 	int	i;
 
@@ -29,7 +41,7 @@ int	is_only_char(char *str, char c)
 	return (1);
 }
 
-int	valid_n_option(char *option)
+static int	valid_n_option(char *option)
 {
 	if (ft_strnstr(option, "-n", max_strlen(option, "-n")) - option == 0)
 	{
@@ -42,7 +54,7 @@ int	valid_n_option(char *option)
 		return (0);
 }
 
-int	count_valid_successive_options(char **args)
+static int	count_valid_successive_options(char **args)
 {
 	int	i;
 	int	counter;
@@ -52,14 +64,14 @@ int	count_valid_successive_options(char **args)
 	while (args[i])
 	{
 		if (!valid_n_option(args[i]))
-			break;	
+			break ;
 		counter++;
 		i++;
 	}
 	return (counter);
 }
 
-int ft_echo(int argc, char **argv)
+int	ft_echo(int argc, char **argv)
 {
 	int	num_options;
 
