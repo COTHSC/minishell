@@ -109,7 +109,7 @@ void    free_command_block(char **command_block);
 /*
 ** ------------------ SHELL INIT ------------------
 */
-int     init_minishell(void);
+int     init_minishell(char **env);
 /*
 ** ------------------ PARSING ------------------
 */

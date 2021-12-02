@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-int	replace_value(char *tmp, int i)
+static int	replace_value(char *tmp, int i)
 {
 	int	exists;
 
@@ -11,7 +11,7 @@ int	replace_value(char *tmp, int i)
 	return (exists);
 }
 
-void	set_env_value(char *var_name, char *var_value)
+static void	set_env_value(char *var_name, char *var_value)
 {
 	int		i;
 	char	*tmp;
@@ -40,7 +40,7 @@ void	set_env_value(char *var_name, char *var_value)
 	}
 }
 
-char	*increment_shlvl(void)
+static char	*increment_shlvl(void)
 {
 	int	i;
 
