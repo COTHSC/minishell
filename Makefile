@@ -19,6 +19,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/execution/get_commands.c  \
 	   ./srcs/execution/execute_single_cmd.c  \
 	   ./srcs/execution/heredoc_utils.c  \
+	   ./srcs/execution/heredoc_parsing.c  \
 	   ./srcs/execution/execution_utils.c  \
 	   ./srcs/execution/signal_handling.c  \
 	   ./srcs/execution/term_settings.c  \
