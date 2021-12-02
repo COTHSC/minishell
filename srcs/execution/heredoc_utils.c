@@ -1,0 +1,61 @@
+#include "../../includes/minishell.h"
+
+int	end_is_heredoc(char *s)
+{
+	int	str_len;
+
+	str_len = ft_strlen(s);
+	if (!s)
+		return (0);
+	else if (str_len < 2)
+		return (0);
+	else if (s[str_len - 1] == '<' && s[str_len - 2] == '<')
+		return (1);
+	else
+		return (0);
+}
+
+char	*replace_del(char *s, char *delimiter, int fd)
+{
+	char	*fd_str;
+	char	*temp;
+	char	*news;
+
+	fd_str = ft_itoa(fd);
+	temp = ft_strdup(&s[ft_strlen(delimiter)]);
+	news = ft_strjoin(fd_str, temp);
+	free(temp);
+	free(s);
+	s = news;
+	free(fd_str);
+	return (s);
+}
+
+char	*ft_strndup(const char *s, int n)
+{
+	int		i;
+	char	*str;
+
+	i = 0;
+	str = (char *)malloc(sizeof(char) * n + 1);
+	if (str == NULL)
+		return (NULL);
+	while (s[i] && i < n)
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+char	*get_sep(char *sep_str)
+{
+	char	**seps;
+	char	*sep;
+
+	seps = ft_split(sep_str, '<');
+	sep = ft_strdup(seps[0]);
+	free_str_list(seps, strlen_list(seps));
+	return (sep);
+}
