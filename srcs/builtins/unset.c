@@ -6,7 +6,7 @@
 /*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:47:24 by calle             #+#    #+#             */
-/*   Updated: 2021/12/02 16:13:12 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/02 17:44:55 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ int	check_and_delete_from_env(char **vars_to_unset)
 
 int	ft_unset(int argc, char **argv)
 {
-	printf("var: %s\n", argv[1]);
 	if (argc == 1)
 		return (EXIT_SUCCESS);
 	else if (is_option(argv[1]) && argv[1][1])
