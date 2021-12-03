@@ -6,7 +6,7 @@
 /*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 11:15:31 by calle             #+#    #+#             */
-/*   Updated: 2021/12/02 19:07:41 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/03 09:48:30 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static int	handle_exit_with_a_status(char *status)
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);
 	exit(exit_status);
-	return (0);
 }
 
 int	ft_exit(int argc, char **argv)
@@ -87,5 +86,4 @@ int	ft_exit(int argc, char **argv)
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);
 	exit (status);
-	return (0);
 }

@@ -23,7 +23,7 @@ int	check_env_wrapper(char *arg, char *flag, char **clean_env)
 	else
 		ret_value = alter_env_var(clean_env, name_value_pair[0], arg, "x");
 	free_str_list(name_value_pair, strlen_list(name_value_pair));
-	return (0);
+	return (ret_value);
 }
 
 int	check_and_alter_env(char **args, char *flag)
