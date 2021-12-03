@@ -1,118 +1,8 @@
 #!/bin/bash
-
-RESET="\033[0m"
-BLACK="\033[30m"
-RED="\033[31m"
-GREEN="\033[32m"
-YELLOW="\033[33m"
-BLUE="\033[34m"
-MAGENTA="\033[35m"
-CYAN="\033[36m"
-WHITE="\033[37m"
-
-BOLDBLACK="\033[1m\033[30m"
-BOLDRED="\033[1m\033[31m"
-BOLDGREEN="\033[1m\033[32m"
-BOLDYELLOW="\033[1m\033[33m"
-BOLDBLUE="\033[1m\033[34m"
-BOLDMAGENTA="\033[1m\033[35m"
-BOLDCYAN="\033[1m\033[36m"
-BOLDWHITE="\033[1m\033[37m"
-
-del_files_and_dirs()
-{
-	for file in "$@"
-	do
-		rm -rf $file
-	done
-}
-
-del_empty_file()
-{
-	if ! [ -s  $1 ]
-	then
-		rm -rf $1
-	fi
-}
-
-del_empty_dirs()
-{
-	for dir in "$@"
-	do
-		if [ -z "$(ls -A $dir)" ]
-		then
-			rm -rf $dir
-		fi
-	done
-}
-
-print_welcome()
-{
-	OTTO_WELCOME="./assets/otto_welcome"
-	if [ $QUIET_SWITCH -eq 0 ]
-	then
-		cat "${OTTO_WELCOME}"
-		echo -e "${BOLDBLUE}\nWELCOME TO OTTO!! AN AUTOMATED TEST SUITE FOR MINISHELL$RESET"
-		sleep 2
-		echo
-	fi
-}
-
-print_success()
-{
-	if [ $QUIET_SWITCH -eq 0 ]
-	then
-		echo -e " ${BOLDGREEN}✔${RESET} ${GREEN}test $1${RESET}"
-	fi
-}
-
-print_failure()
-{
-	if [ $QUIET_SWITCH -eq 0 ]
-	then
-		echo -e " ${BOLDRED}✖${RESET} ${RED}test $1${RESET}"
-	fi
-	echo "$2" >> "failed_tests"
-}
-
-print_crash()
-{
-	if [ $QUIET_SWITCH -eq 0 ]
-	then
-		echo -e "${BOLDRED}💣${RESET} ${RED}test $1${RESET}"
-	fi
-	echo "$2" >> "crash_tests"
-}
-
-print_test_name()
-{
-	if [ $QUIET_SWITCH -eq 0 ]
-	then
-		echo -e "\n${BOLDBLUE}CURRENT TEST: $1${RESET}"
-	fi
-}
-
-print_score()
-{
-	MR_POTATO="./assets/mr_potato"
-	SKELETON="./assets/skeleton"
-	if [ $1 -eq $2 ]
-	then
-		if [ $QUIET_SWITCH -eq 0 ]
-		then
-			cat	"$MR_POTATO"
-		fi
-		echo -e "${BOLDGREEN}>> SCORE: $1 / $2 ${RESET}"
-		echo -e "What are you looking at you hockey puck??"
-	else
-		if [ $QUIET_SWITCH -eq 0 ]
-		then
-			cat	"$SKELETON"
-		fi
-		echo -e "${BOLDRED}>> SCORE: $1 / $2 ${RESET}"
-		echo -e "GET BACK TO WORK YOU PUNK!"
-	fi
-}
+source sub_scripts/cleaning.sh
+source sub_scripts/colors.sh
+source sub_scripts/print_msg.sh
+source sub_scripts/smart_diff.sh
 
 execute_basic_tests()
 {
@@ -149,23 +39,6 @@ execute_basic_tests()
 		TEST_NO=$((TEST_NO + 1))
 	done
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
-}
-
-check_diff()
-{
-	DIFF=$1
-	NB_LINES=$(sed -n "s/> //p;s/< //p" $DIFF | wc -l)
-	NB_LINES=$((NB_LINES / 2))
-	for (( c=1; c <= $NB_LINES; c++ ))
-	do
-		LEFT=$(sed -n "s/> //p" $DIFF | sed -n "${i}p")
-		RIGHT=$(sed -n "s/< //p" $DIFF | sed -n "${i}p")
-		if [ LEFT != RIGHT ]
-		then
-			return 1;
-		fi
-	done
-	return 0;
 }
 
 execute_redirections_tests()
@@ -209,27 +82,6 @@ execute_redirections_tests()
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
 }
 
-check_error()
-{
-	BASH_ERR=$(sed -n 's/bash\: line *[0-9]\: //p' $1)
-	MINISHELL_ERR=$(sed -n 's/minishell\: //p' $2)
-    BASH_ERR=$(echo "$BASH_ERR" | head -1)
-    #BASH_ERR=$(sed -n 1p $BASH_ERR)
-	CHECK_DIFF_ERR=$(diff <(echo "$BASH_ERR") <(echo "$MINISHELL_ERR"))
-    #echo "DIFF: $CHECK_DIFF_ERR"
-	BASH_STATUS=$(cat $3)
-	MINISHELL_STATUS=$(cat $4)
-	CHECK_DIFF_STATUS=$(diff <(echo "$BASH_STATUS") <(echo "$MINISHELL_STATUS"))
-	#echo "CHECK_DIFF_ERR: $CHECK_DIFF_ERR"
-	#echo "CHECK_DIFF_STATUS: $CHECK_DIFF_STATUS"
-	if [ -z "$CHECK_DIFF_ERR" ] && [ -z "$CHECK_DIFF_STATUS" ]
-	then
-		return 0
-	else
-		return 1
-	fi
-}
-
 execute_errors_and_exit_status_tests()
 {
 	MINISHELL="../../$MINISHELL_PATH"
@@ -265,12 +117,17 @@ execute_errors_and_exit_status_tests()
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
 }
 
+check_quiet()
+{
+	CHECK_QUIET=$(diff <(echo "$1") <(echo "-q"))
+	if [ -z "$CHECK_QUIET" ]
+	then
+		QUIET_SWITCH=1
+	fi
+}
+
 QUIET_SWITCH=0
-CHECK_QUIET=$(diff <(echo "$1") <(echo "-q"))
-if [ -z "$CHECK_QUIET" ]
-then
-	QUIET_SWITCH=1
-fi
+check_options $1
 MINISHELL_PATH="../minishell"
 TESTS_TOTAL=0
 SUCCESSFUL_TESTS=0
@@ -282,9 +139,12 @@ del_files_and_dirs "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 mkdir "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 print_welcome
 chmod 755 ./inputs/*tests*
+mkdir ./inputs/cannot_access_dir ; chmod 000 ./inputs/cannot_access_dir
+touch ./inputs/cannot_access_file ; chmod 000 ./inputs/cannot_access_file
 execute_basic_tests "basic_tests"
 execute_redirections_tests "redirections_tests"
 execute_errors_and_exit_status_tests "errors_tests"
 print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL"
 #del_files_and_dirs "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
+del_files_and_dirs "./inputs/cannot_access_dir" "./inputs/cannot_access_file"
 del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"
