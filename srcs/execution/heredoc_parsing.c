@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:17:32 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 15:17:34 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/06 18:04:27 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	**parse_block(char **cmd_block)
 	int		fd[2];
 
 	i = 0;
-	if (!cmd_block[0] || !cmd_block[0][0])
+	if (!cmd_block)
 		return (cmd_block);
 	while (cmd_block[i])
 	{

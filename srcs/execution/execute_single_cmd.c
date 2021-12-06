@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 19:00:24 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/03 17:07:32 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ int	execute_child_alone(char **cmd)
 	ret = check_if_file(cmd);
 	if (!ret)
 	{
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		close(STDERR_FILENO);
+	//	close(STDIN_FILENO);
+	//	close(STDOUT_FILENO);
+	//	close(STDERR_FILENO);
 		execute_binary(cmd);
 	}
 	else
 	{
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		close(STDERR_FILENO);
+	//	close(STDIN_FILENO);
+	//	close(STDOUT_FILENO);
+	//	close(STDERR_FILENO);
 		exit(ret);
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:55 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 16:50:57 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/06 18:00:25 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ char	**parse_declaration(char **command_blocks)
 	else
 	{
 		check_and_alter_env(command_blocks, "d");
-		cleaned_blocks = calloc_str_list(2);
-		cleaned_blocks[0] = ft_strdup("");
+		cleaned_blocks = NULL;
 		free_str_list(command_blocks, strlen_list(command_blocks));
 		return (cleaned_blocks);
 	}

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 19:17:31 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/03 17:46:51 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	execute_builtin_piped(int (*fd)[2], int i, int n, char **cmd)
 	dup2(fd[i][0], STDIN_FILENO);
 	if (i != n - 1)
 		dup2(fd[i + 1][1], STDOUT_FILENO);
-	redir.es = 0;
 	redir.cmd = ft_redirect(&redir);
 	remove_quotes_list(redir.cmd);
 	ret = 1;
