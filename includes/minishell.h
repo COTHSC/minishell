@@ -19,6 +19,11 @@ extern char **g_env;
 void	init_split(int *row, int *lead, int *quote);
 void	init_to_zero(int num, ...);
 
+/*
+ ** ------------------ PARSING MODULES ------------------
+ */
+int		parse_command_line(char *line_from_terminal, int *es, int *tmp_es);
+
 int	is_done(char *s);
 char	*get_var_name(char *s, int *i);
 char	*get_var_value(char *var_name, int *offset, int status);
@@ -80,7 +85,7 @@ int is_path(char *s);
 int check_syntax(char *s);
 int isquote(char c);
 
-int check_redirect_type(int redirect_type);
+//int check_redirect_type(int redirect_type);
 char *find_dollars(char *s, int status);
 
 int go_through_quote(char const *s, int lead, int *quote);

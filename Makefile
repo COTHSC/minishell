@@ -2,6 +2,7 @@ NAME = minishell
 
 SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/main/main.c  \
+	   ./srcs/main/parse_commandline.c  \
 	   ./srcs/parsing/expand_vars.c  \
 	   ./srcs/parsing/ft_pipe_split.c  \
 	   ./srcs/parsing/remove_quotes.c  \
@@ -22,6 +23,7 @@ SRCS = ./srcs/parsing/ft_better_split.c  \
 	   ./srcs/execution/heredoc_utils.c  \
 	   ./srcs/execution/heredoc_parsing.c  \
 	   ./srcs/execution/execution_utils.c  \
+	   ./srcs/execution/execution_utils2.c  \
 	   ./srcs/execution/signal_handling.c  \
 	   ./srcs/execution/term_settings.c  \
 	   ./srcs/execution/term_reset.c  \
