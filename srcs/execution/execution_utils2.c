@@ -13,4 +13,3 @@ void	remove_quotes_list(char **command_block)
 		i++;
 	}
 }
-

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/03 17:07:32 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/06 19:01:19 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	execute_child_alone(char **cmd)
 {
 	t_redir	redir;
 	int		ret;
-	
+
 	redir.es = 0;
 	init_fds(redir.fd);
 	redir.cmd = cmd;
