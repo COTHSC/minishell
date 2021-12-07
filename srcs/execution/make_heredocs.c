@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:17:03 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/07 15:03:01 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/07 16:03:12 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,12 @@ int	exec_heredoc(char *del, int fds[2])
 		close(fds[0]);
 		while (1)
 		{
-			ft_putstr_fd("> ", STDOUT_FILENO);
-			if (!(get_next_line(STDIN_FILENO, &s)) && (s[0] == 0))
-				handle_eof_sig(del, pipe_buffer, fds, size);
+			/* ft_putstr_fd("> ", STDOUT_FILENO); */
+			s = readline(">  ");
+			/* if (!(get_next_line(STDIN_FILENO, &s)) && (s[0] == 0)) */
+			if (!s && (s[0] == 0))
+				printf("hi Constant from exit\n");
+				/* handle_eof_sig(del, pipe_buffer, fds, size); */
 			if (ft_strncmp(s, del, ft_strlen(del) + 1) || ft_strlen(s) == 0)
 				size = add_line(s, pipe_buffer, fds, size);
 			else
