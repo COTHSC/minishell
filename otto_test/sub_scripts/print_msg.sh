@@ -26,7 +26,10 @@ print_failure()
 	then
 		echo -e " ${BOLDRED}✖${RESET} ${RED}test $1${RESET}"
 	fi
-	echo "$2" >> "failed_tests"
+	if [ "$2" ]
+	then
+		echo "$2" >> "failed_tests"
+	fi
 }
 
 print_crash()

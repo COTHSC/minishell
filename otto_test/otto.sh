@@ -127,6 +127,23 @@ execute_errors_and_exit_status_tests()
 	TESTS_TOTAL=$((TESTS_TOTAL + TEST_NO - 1))
 }
 
+check_tty_keybinds()
+{
+	print_test_name "CHECK TERM KEYBINDS"
+	END_TERM_KEYBINDS=$(stty -a | grep intr | tr -d '[:space:]')
+	#echo "OG: $OG_TERM_KEYBINDS -- ETK: $END_TERM_KEYBINDS"
+	DIFF_KEYBINDS=$(diff <(echo "$OG_TERM_KEYBINDS") <(echo "$END_TERM_KEYBINDS"))
+	if [ -z "$DIFF_KEYBINDS" ]
+	then
+		print_success "1"
+		SUCCESSFUL_TESTS=$((SUCCESSFUL_TESTS + 1))
+	else
+		print_failure "1"
+		echo "$DIFF_KEYBINDS" > "diff/diff_keybinds"
+	fi
+	TESTS_TOTAL=$((TESTS_TOTAL + 1))
+}
+
 check_quiet()
 {
 	CHECK_QUIET=$(diff <(echo "$1") <(echo "-q"))
@@ -139,6 +156,8 @@ check_quiet()
 QUIET_SWITCH=0
 check_quiet $1
 MINISHELL_PATH="../minishell"
+stty sane
+OG_TERM_KEYBINDS=$(stty -a | grep intr | tr -d '[:space:]')
 TESTS_TOTAL=0
 SUCCESSFUL_TESTS=0
 BASH_OUT_DIR="bash_output"
@@ -146,7 +165,7 @@ MINISHELL_OUT_DIR="minishell_output"
 DIFF_DIR="diff"
 ERROR_DIR="errors"
 del_files_and_dirs "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR" "failed_tests" "crash_tests"
-mkdir "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
+mkdir -p "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 print_welcome
 chmod 755 ./inputs/*tests*
 mkdir ./inputs/cannot_access_dir ; chmod 000 ./inputs/cannot_access_dir
@@ -154,6 +173,7 @@ touch ./inputs/cannot_access_file ; chmod 000 ./inputs/cannot_access_file
 execute_basic_tests "basic_tests"
 execute_redirections_tests "redirections_tests"
 execute_errors_and_exit_status_tests "errors_tests"
+check_tty_keybinds
 print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL"
 #del_files_and_dirs "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
 del_files_and_dirs "./inputs/cannot_access_dir" "./inputs/cannot_access_file"

@@ -30,7 +30,8 @@ check_diff()
 	do
 		LEFT=$(sed -n "s/> //p" $DIFF | sed -n "${i}p")
 		RIGHT=$(sed -n "s/< //p" $DIFF | sed -n "${i}p")
-		if [ LEFT != RIGHT ]
+		#echo "R: "$RIGHT" -- L: "$LEFT""
+		if [ "$LEFT" != "$RIGHT" ]
 		then
 			return 1;
 		fi
