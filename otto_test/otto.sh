@@ -24,17 +24,17 @@ execute_basic_tests()
 		mkdir $BASH_OUTPUT $MINISHELL_OUTPUT
 		$($CMD_TO_TEST | bash > ${BASH_OUTPUT}/out 2> /dev/null ; echo $? > ${BASH_OUTPUT}/status)
 		$($CMD_TO_TEST | $MINISHELL > ${MINISHELL_OUTPUT}/out 2> "$ERR_FILE" ; echo $? > ${MINISHELL_OUTPUT}/status)
-		if [ -s $ERR_FILE ]
+		if [ -s "$ERR_FILE" ]
 		then
 			CHECK_CRASH=$(cat $ERR_FILE | grep "ERROR:" | sed 's/.*ERROR://')
-			if [ ! -z ${CHECK_CRASH} ]
+			if [ ! -z "${CHECK_CRASH}" ]
 			then
 				print_crash "$TEST_NO" "$CMD_TO_TEST"
 			fi
 		fi
 		del_empty_file $ERR_FILE
 		diff -r $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
-		if [ -s $DIFF_FILE ]
+		if [ -s "$DIFF_FILE" ]
 		then
 			print_failure "$TEST_NO" "$CMD_TO_TEST"
 		else
@@ -71,14 +71,14 @@ execute_redirections_tests()
 		DIFF_IS_SCRAMBLED=0
 		check_diff "$DIFF_FILE"
 		DIFF_IS_SCRAMBLED=$?
-		if [ -s $ERR_FILE ]
+		if [ -s "$ERR_FILE" ]
 		then
 			CHECK_CRASH=$(cat $ERR_FILE | grep "ERROR:" | sed 's/.*ERROR://')
-			if [ ! -z ${CHECK_CRASH} ]
+			if [ ! -z "${CHECK_CRASH}" ]
 			then
 				print_crash "$TEST_NO" "$CMD_TO_TEST"
 			fi
-		elif [ -s $DIFF_FILE ] && [ $DIFF_IS_SCRAMBLED -eq 0 ]
+		elif [ -s "$DIFF_FILE" ] && [ "$DIFF_IS_SCRAMBLED" -eq 0 ]
 		then
 			print_failure "$TEST_NO" "$CMD_TO_TEST"
 		else
@@ -114,7 +114,7 @@ execute_errors_and_exit_status_tests()
 		diff -r $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
 		check_error "${BASH_OUTPUT}err" "${MINISHELL_OUTPUT}err" "${BASH_OUTPUT}status" "${MINISHELL_OUTPUT}status"
 		CONFIRMED_ERROR=$?
-		if [ -s $DIFF_FILE ] && [ $CONFIRMED_ERROR -eq 1 ]
+		if [ -s "$DIFF_FILE" ] && [ $CONFIRMED_ERROR -eq 1 ]
 		then
 			print_failure "$TEST_NO" "$CMD_TO_TEST"
 		else
