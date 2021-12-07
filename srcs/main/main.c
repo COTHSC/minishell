@@ -17,6 +17,8 @@ static void	pick_a_prompt(char **line_from_terminal)
 static int	reset_og_term_and_return(int es)
 {
 	reset_og_tio_settings();
+	if (isatty(STDIN_FILENO))
+		rl_clear_history();
 	return (es);
 }
 

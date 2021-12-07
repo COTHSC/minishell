@@ -5,6 +5,8 @@ static int	handle_fds_overflow(char **commands, char *line_from_terminal)
 	if (strlen_list(commands) >= FD_SETSIZE / 2)
 	{
 		free(line_from_terminal);
+		if (isatty(STDIN_FILENO))
+			rl_clear_history();
 		free_str_list(commands, strlen_list(commands));
 		return (EXIT_FAILURE);
 	}
@@ -58,7 +60,10 @@ int	parse_command_line(char *line_from_terminal, int *es, int *tmp_es)
 	char	***command_list;
 	int		err;
 
-	if (check_syntax(line_from_terminal))
+	err = 0;
+	if (!line_from_terminal || !*line_from_terminal)
+		return (EXIT_SUCCESS);
+	else if (check_syntax(line_from_terminal))
 		*es = handle_synthax_error(line_from_terminal);
 	else
 	{
@@ -66,7 +71,11 @@ int	parse_command_line(char *line_from_terminal, int *es, int *tmp_es)
 		commands = ft_pipe_split(line_from_terminal);
 		err = handle_fds_overflow(commands, line_from_terminal);
 		if (err == 1)
-			return (err);
+		{
+			*tmp_es = 1;
+			*es = *tmp_es;
+			return (1);
+		}
 		command_list = prepare_command_list(commands);
 		free_str_list(commands, strlen_list(commands));
 		if (!*command_list)
