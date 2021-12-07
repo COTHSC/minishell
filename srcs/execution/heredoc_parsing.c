@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:17:32 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/06 18:04:27 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/07 15:18:36 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ char	*get_heredoc(char *s, int i)
 	char	*test;
 	char	*temp;
 
-	if (!s[i + 1])
+	if (!s[i + 2])
 		return (s);
 	command = ft_strndup(s, i);
-	temp = make_heredocs(&s[i - 1], fd);
+	temp = make_heredocs(&s[i], fd);
 	test = ft_strjoin(command, temp);
 	free_strs_return_null(3, command, temp, s);
 	s = test;
@@ -38,7 +38,7 @@ char	*parse_line(char *s)
 	while (s[i])
 	{
 		if (s[i - 1] == '<' && s[i] == '<')
-			return (get_heredoc(s, i));
+			return (get_heredoc(s, i - 1));
 		quote = isquote(s[i - 1]);
 		if (quote)
 		{
