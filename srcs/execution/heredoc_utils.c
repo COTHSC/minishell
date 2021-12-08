@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:03:07 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/08 10:44:13 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/08 12:51:11 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ or alive : ", STDOUT_FILENO);
 	ft_putstr_fd(del, STDOUT_FILENO);
 	ft_putstr_fd(")", STDOUT_FILENO);
 	ft_putstr_fd("\n", STDOUT_FILENO);
-	/* exit(0); */
+	exit(0);
 }
 
 int	end_is_heredoc(char *s)
