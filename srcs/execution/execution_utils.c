@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:02:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/06 18:03:19 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/08 14:06:05 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ void	free_command_block(char **command_block)
 void	ft_replug(int stdio_cpy[2])
 {
 	dup2(stdio_cpy[0], STDIN_FILENO);
-//	close(stdio_cpy[0]);
 	dup2(stdio_cpy[1], STDOUT_FILENO);
-//	close(stdio_cpy[1]);
 }
 
 int	execute_binary(char **command_block)
@@ -60,6 +58,7 @@ int	execute_binary(char **command_block)
 		free(path);
 		exit(EXIT_FAILURE);
 	}
+	printf("I am here\n");
 	exit (0);
 }
 

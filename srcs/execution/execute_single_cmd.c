@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/06 19:01:19 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/08 15:41:28 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,9 @@ int	execute_child_alone(char **cmd)
 	remove_quotes_list(cmd);
 	ret = check_if_file(cmd);
 	if (!ret)
-	{
-	//	close(STDIN_FILENO);
-	//	close(STDOUT_FILENO);
-	//	close(STDERR_FILENO);
 		execute_binary(cmd);
-	}
 	else
-	{
-	//	close(STDIN_FILENO);
-	//	close(STDOUT_FILENO);
-	//	close(STDERR_FILENO);
 		exit(ret);
-	}
 	return (1);
 }
 
@@ -63,10 +53,10 @@ int	execute_builtin_alone(char **cmd)
 
 int	fork_and_exec(t_redir redir)
 {
-	int	status;
 	int	pid;
+	int	status;
 
-	status = 0;
+	/* status = 42; */
 	pid = fork();
 	if (pid == 0)
 	{
@@ -77,6 +67,8 @@ int	fork_and_exec(t_redir redir)
 	reset_parent_tio_settings();
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		status = WTERMSIG(status) + 128;
 	return (status);
 }
 
@@ -92,9 +84,7 @@ int	single_cmd(char **cmd)
 	init_fds(redir.fd);
 	cmdcmp = get_command(str_list_dup(redir.cmd));
 	if (builtin_finder(cmdcmp[0]) == -1)
-	{
 		status = fork_and_exec(redir);
-	}
 	else
 	{
 		stdio_cpy[0] = STDIN_FILENO;
