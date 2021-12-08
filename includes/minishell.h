@@ -23,6 +23,8 @@ void	init_to_zero(int num, ...);
  ** ------------------ PARSING MODULES ------------------
  */
 int		parse_command_line(char *line_from_terminal, int *es, int *tmp_es);
+int setcher(int newvalue);
+void	pick_a_prompt(char **line_from_terminal);
 
 int	is_done(char *s);
 char	*get_var_name(char *s, int *i);

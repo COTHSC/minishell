@@ -2,7 +2,16 @@
 
 char	**g_env;
 
-static void	pick_a_prompt(char **line_from_terminal)
+int setcher(int newvalue)
+{
+	static int ret = 0;
+
+	if (newvalue >= 0)
+		ret = newvalue;
+	return (ret);
+}
+
+void	pick_a_prompt(char **line_from_terminal)
 {
 	if (isatty(STDIN_FILENO))
 	{
@@ -22,11 +31,11 @@ static int	reset_og_term_and_return(int es)
 	return (es);
 }
 
-static void	set_exit_status(int tmp_es, int *es)
-{
-	if (tmp_es < 0)
-		*es = tmp_es * -1 - 1;
-}
+/* static void	set_exit_status(int tmp_es, int *es) */
+/* { */
+/* 	/1* if (tmp_es < 0) *1/ */
+/* 	*es = tmp_es * -1 - 1; */
+/* } */
 
 int	main(int argc, char **argv, char **env)
 {
@@ -45,14 +54,15 @@ int	main(int argc, char **argv, char **env)
 		pick_a_prompt(&line_from_terminal);
 		if (parse_command_line(line_from_terminal, &es, &tmp_es) == 1)
 			continue ;
-		set_exit_status(tmp_es, &es);
+		/* set_exit_status(tmp_es, &es); */
+		es = setcher(-1);
 		if (!isatty(STDIN_FILENO))
 		{
 			free_str_list(g_env, strlen_list(g_env));
 			break ;
 		}
-		if (tmp_es < 0)
-			break ;
+		/* if (tmp_es < 0) */
+			/* break ; */
 	}
 	return (reset_og_term_and_return(es));
 }
