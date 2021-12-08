@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:06 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 18:30:41 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/07 20:09:50 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	execute(char ***command_block)
 	if (command_block[0])
 	{
 		if (nb_cmds(command_block) > 1)
-			return (ft_multipipes2(command_block));
+			return (setcher(ft_multipipes2(command_block)));
 		else
-			return (single_cmd(command_block[0]));
+			return (setcher(single_cmd(command_block[0])));
 	}
 	return (status);
 }

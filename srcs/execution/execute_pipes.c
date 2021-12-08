@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/03 17:46:51 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/08 10:16:09 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,9 @@ int	ft_multipipes2(char ***cmd)
 		return (1);
 	i = -1;
 	while (++i < n)
+	{
 		status = fork_and_sort(cmd[i], i, n, fd);
+	}
 	close_unused_fds(fd, n + 1, n);
 	status = wait_and_get_status();
 	reset_parent_tio_settings();
