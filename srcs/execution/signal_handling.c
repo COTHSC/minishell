@@ -11,7 +11,7 @@ static void	handle_no_children(int sig, siginfo_t *info)
 	if (info->si_pid == 0 && sig == SIGINT)
 	{
 		write(1, "^C", 2);
-		exit(0);
+		exit(130);
 	}
 	else if (info->si_pid != 0 && sig == SIGINT)
 	{
@@ -38,7 +38,7 @@ static void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 	int	ret;
 
 	(void)ucontext;
-	ret = wait(NULL);
+	ret = waitpid(-1, NULL, WNOHANG);
 	if (ret == -1)
 		handle_no_children(sig, info);
 	else if (sig == SIGINT)
