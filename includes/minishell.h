@@ -174,5 +174,5 @@ int		terminal_settings(void);
 /*
  ** ------------------ SIGNAL HANDLING ------------------
  */
-void	signal_handler_settings(struct sigaction *sa);
+void	signal_handler_settings(void);
 #endif
