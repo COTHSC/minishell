@@ -51,7 +51,7 @@ static char	***prepare_command_list(char **commands)
 static int	handle_synthax_error(char *line_from_terminal)
 {
 	free(line_from_terminal);
-	return (2);
+	return (setcher(2));
 }
 
 int	parse_command_line(char *line_from_terminal, int *es, int *tmp_es)

@@ -45,16 +45,14 @@ int	exec_heredoc(char *del, int fds[2])
 	size = 0;
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		reset_hd_tio_settings();
 		close(fds[0]);
 		while (1)
 		{
-			/* ft_putstr_fd("> ", STDOUT_FILENO); */
 			s = readline(">  ");
-			/* if (!(get_next_line(STDIN_FILENO, &s)) && (s[0] == 0)) */
-			if (!s && (s[0] == 0))
-				printf("hi Constant from exit\n");
-				/* handle_eof_sig(del, pipe_buffer, fds, size); */
+			if (!s)
+				handle_eof_sig(del, pipe_buffer, fds, size);
 			if (ft_strncmp(s, del, ft_strlen(del) + 1) || ft_strlen(s) == 0)
 				size = add_line(s, pipe_buffer, fds, size);
 			else
