@@ -19,6 +19,7 @@ static void	handle_no_children(int sig, siginfo_t *info)
 		put_newline();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		setcher(130);
 	}
 	else if (info->si_pid != 0 && sig == SIGQUIT)
 	{
