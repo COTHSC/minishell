@@ -72,26 +72,38 @@ INCLUDES= -I includes/
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(MAKE) -C ./libs/libft+/
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) ./libs/libft+/libft+.a -lreadline
+	@echo "make: compiling sources and libs..."
+	@$(MAKE) --quiet -C ./libs/libft+/
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) ./libs/libft+/libft+.a -lreadline
+	@echo "✔ Done"
 
 %.o: %.c
-	$(CC) -o $@ -c $^ $(CFLAGS) $(INCLUDES)
+	@$(CC) -o $@ -c $^ $(CFLAGS) $(INCLUDES)
 
 debug :
-	$(MAKE) -C ./libs/libft+/ debug
-	$(CC) $(CFLAGS) $(GFLAG) -o $(NAME) $(SRCS) ./libs/libft+/libft+.a -lreadline
+	@echo "make: compiling sources and libs with fsanitize flag..."
+	@$(MAKE) --quiet -C ./libs/libft+/ debug
+	@$(CC) $(CFLAGS) $(GFLAG) -o $(NAME) $(SRCS) ./libs/libft+/libft+.a -lreadline
+	@echo "✔ Done"
 
 debug_lldb :
-	$(MAKE) -C ./libs/libft+/ debug_lldb
-	$(CC) $(CFLAGS) -g -o $(NAME) $(SRCS) ./libs/libft+/libft+.a -lreadline
+	@echo "make: compiling sources and libs with debug flag..."
+	@$(MAKE) --quiet -C ./libs/libft+/ debug_lldb
+	@$(CC) $(CFLAGS) -g -o $(NAME) $(SRCS) ./libs/libft+/libft+.a -lreadline
+	@echo "✔ Done"
 
 clean :
-	rm -f $(OBJS)
-	$(MAKE) -C ./libs/libft+/ clean
+	@echo "make: cleaning object files..."
+	@rm -f $(OBJS)
+	@$(MAKE) --quiet -C ./libs/libft+/ clean
+	@echo "✔ Done"
 
 fclean:	clean
+	@echo "make: cleaning executable..."
 	rm -f $(NAME)
-	$(MAKE) -C ./libs/libft+/ fclean
+	@$(MAKE) --quiet -C ./libs/libft+/ fclean
+	@echo "✔ Done"
 
 re: fclean all
+
+.PHONY: all debug debug_lldb clean fclean re
