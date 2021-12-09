@@ -38,19 +38,17 @@ static int	reset_og_term_and_return(int es)
 int	main(int argc, char **argv, char **env)
 {
 	char	*line_from_terminal;
-	int		tmp_es;
 	int		es;
 
 	(void)argc;
 	(void)argv;
 	init_minishell(env);
 	es = 0;
-	tmp_es = 0;
 	line_from_terminal = NULL;
 	while (1)
 	{
 		pick_a_prompt(&line_from_terminal);
-		if (parse_command_line(line_from_terminal, &es, &tmp_es) == 1)
+		if (parse_command_line(line_from_terminal, &es) == 1)
 			continue ;
 		es = setcher(-1);
 		if (!isatty(STDIN_FILENO))

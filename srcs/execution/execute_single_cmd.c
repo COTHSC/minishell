@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 09:47:43 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 13:49:30 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ int	execute_child_alone(char **cmd)
 	if (!ret)
 		execute_binary(cmd);
 	else
-	{
-		write(1, "here\n", 5);
 		exit(ret);
-	}
 	return (1);
 }
 

@@ -41,10 +41,10 @@ static char	***prepare_command_list(char **commands)
 		if (!is_empty(commands[i]))
 		{
 			command_list[i] = ft_better_split(commands[i]);
-			command_list[i] = parse_declaration(command_list[i]);
 			command_list[i] = parse_block(command_list[i]);
 			if (setcher(-1))
-				break ; 
+				return (command_list);
+			command_list[i] = parse_declaration(command_list[i]);
 		}
 		i++;
 	}
@@ -57,7 +57,17 @@ static int	handle_synthax_error(char *line_from_terminal)
 	return (setcher(2));
 }
 
-int	parse_command_line(char *line_from_terminal, int *es, int *tmp_es)
+void	free_str_list_ception(char ***trpptrstr)
+{
+	int i;
+
+	i = -1;
+	while (trpptrstr[++i])
+		free_str_list(trpptrstr[i], strlen_list(trpptrstr[i]));
+	free(trpptrstr);
+}
+
+int	parse_command_line(char *line_from_terminal, int *es)
 {
 	char	**commands;
 	char	***command_list;
@@ -74,21 +84,16 @@ int	parse_command_line(char *line_from_terminal, int *es, int *tmp_es)
 		commands = ft_pipe_split(line_from_terminal);
 		err = handle_fds_overflow(commands, line_from_terminal);
 		if (err == 1)
-		{
-			*tmp_es = 1;
-			*es = *tmp_es;
 			return (1);
-		}
 		command_list = prepare_command_list(commands);
-		if (setcher(-1))
-			return (EXIT_FAILURE);
 		free_str_list(commands, strlen_list(commands));
-		if (!*command_list)
-			*tmp_es = 0;
-		else
-			*tmp_es = execute(command_list);
-		if (*tmp_es >= 0)
-			*es = *tmp_es;
+		if (setcher(-1))
+		{
+			free(line_from_terminal);
+			free_str_list_ception(command_list);
+			return (EXIT_FAILURE);
+		}
+		*es = execute(command_list);
 		free(command_list);
 		free(line_from_terminal);
 	}

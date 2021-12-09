@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:30:17 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 14:31:49 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 11:34:52 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,7 @@ static char	*cleaned_up_line(char *line)
 
 	i = 0;
 	if (!line || ft_strlen(line) == 0)
-	{
-		clean_line = (char *)malloc(1);
-		clean_line[0] = '\0';
-		return (clean_line);
-	}
+		return (NULL);
 	while (line[i] && line[i] != '\n')
 		i++;
 	clean_line = (char *)(malloc(sizeof(char) * (i + 1)));

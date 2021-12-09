@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:03:35 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 17:03:36 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 13:43:13 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,21 @@ int	builtin_finder(char *name)
 
 char	*get_path(char **command_block)
 {
-	char	**paths;
+	char	**paths = NULL;
 	int		d;
-	char	*path;
+	char	*path = NULL;
+	char	*check_ret;
 
 	d = 0;
-	paths = ft_split(getenv("PATH"), ':');
-	path = try_paths(paths, command_block[0]);
-	if (!path)
+	check_ret = getenv("PATH");
+	if (check_ret)
 	{
+		paths = ft_split(check_ret, ':');
+		path = try_paths(paths, command_block[0]);
+	}
+	if (!path)
 		if (access(command_block[0], F_OK) == 0)
 			return (command_block[0]);
-	}
 	if (!path)
 	{
 		d = 0;

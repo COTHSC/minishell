@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:17:03 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 12:42:49 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 13:48:31 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,7 @@ char	*make_heredocs(char *seps, int fd[2])
 			{
 				separator = get_sep(&seps[i]);
 				if (exec_heredoc(separator, fd))
-				{
-					printf("here\n");
 					return (NULL);
-				}
 				free(separator);
 				return (make_heredocs(&seps[i + 2], fd));
 			}

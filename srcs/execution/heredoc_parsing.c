@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:17:32 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/08 19:13:08 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 14:36:35 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,24 @@ char	**parse_block(char **cmd_block)
 	int		i;
 	char	*sep;
 	int		fd[2];
+	char	**newblock;
 
 	i = 0;
 	if (!cmd_block)
 		return (cmd_block);
-	while (cmd_block[i])
+	newblock = str_list_dup(cmd_block);
+	free_str_list(cmd_block, strlen_list(cmd_block));
+	while (newblock[i])
 	{
-		cmd_block[i] = parse_line(cmd_block[i]);
-		if (end_is_heredoc(cmd_block[i]))
+		newblock[i] = parse_line(newblock[i]);
+		if (end_is_heredoc(newblock[i]))
 		{
-			sep = get_sep(cmd_block[i + 1]);
+			sep = get_sep(newblock[i + 1]);
 			exec_heredoc(sep, fd);
-			cmd_block[i + 1] = replace_del(cmd_block[i + 1], sep, fd[0]);
+			newblock[i + 1] = replace_del(newblock[i + 1], sep, fd[0]);
 			free(sep);
 		}
 		i++;
 	}
-	return (cmd_block);
+	return (newblock);
 }

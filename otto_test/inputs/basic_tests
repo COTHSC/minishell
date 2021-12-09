@@ -87,7 +87,6 @@ echo $_poep
 echo hallo$"USER"
 echo hallo$"POEP"
 echo hallo$'USER'
-echo $halllo###
 echo $USER9582309582529
 echo $
 echo $USER
@@ -99,7 +98,6 @@ echo %%$
 echo $"USERhallo"
 echo "$_poep"
 echo "$a5aap"
-echo "$halllo###"
 echo "$USER9582309582529"
 echo "$"						
 echo hallo"$"abc				
@@ -110,7 +108,6 @@ echo "$USER_"
 echo "abc$USERdef"
 echo "abc$USER123"
 echo "abc$POEPdef"
-echo "$%%%%jlkjtwejt"
 echo "%%$"
 echo $"hallo"
 echo $hallo
