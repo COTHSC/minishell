@@ -8,8 +8,9 @@ execute_basic_tests()
 {
 	MINISHELL="$MINISHELL_PATH"
 	TEST_NAME=$1
-	BASIC_TEST_DIRNAME="/${TEST_NAME}"
-	mkdir "$DIFF_DIR$BASIC_TEST_DIRNAME"
+	BASIC_TEST_DIR="/""$TEST_NAME"
+	DIFF_TEST_DIR="$DIFF_DIR""$BASIC_TEST_DIR"
+	mkdir -p "$DIFF_TEST_DIR"
 	TEST_FILE="./inputs/$TEST_NAME"
 	TEST_NO=1
 	NUMBER_OF_TEST=$(cat "$TEST_FILE" | wc -l)
@@ -17,16 +18,16 @@ execute_basic_tests()
 	while [ $TEST_NO -le $NUMBER_OF_TEST ]
 	do
 		CMD_TO_TEST="echo $(sed -n "${TEST_NO}p" $TEST_FILE)"
-		ERR_FILE=${ERROR_DIR}/${TEST_NAME}_$TEST_NO
-		DIFF_FILE=${DIFF_DIR}${BASIC_TEST_DIRENAME}/${BASIC_TEST_DIRNAME}_${TEST_NO}
-		BASH_OUTPUT=${BASH_OUT_DIR}${BASIC_TEST_DIRNAME}_$TEST_NO
-		MINISHELL_OUTPUT=${MINISHELL_OUT_DIR}${BASIC_TEST_DIRNAME}_$TEST_NO
+		ERR_FILE="$ERROR_DIR"/"$TEST_NAME"_"$TEST_NO"
+		DIFF_FILE=$DIFF_TEST_DIR/${TEST_NAME}_$TEST_NO
+		BASH_OUTPUT="$BASH_OUT_DIR""$BASIC_TEST_DIR"_"$TEST_NO"
+		MINISHELL_OUTPUT=${MINISHELL_OUT_DIR}${BASIC_TEST_DIR}_$TEST_NO
 		mkdir $BASH_OUTPUT $MINISHELL_OUTPUT
 		$($CMD_TO_TEST | bash > ${BASH_OUTPUT}/out 2> /dev/null ; echo $? > ${BASH_OUTPUT}/status)
 		$($CMD_TO_TEST | $MINISHELL > ${MINISHELL_OUTPUT}/out 2> "$ERR_FILE" ; echo $? > ${MINISHELL_OUTPUT}/status)
 		if [ -s "$ERR_FILE" ]
 		then
-			CHECK_CRASH=$(cat $ERR_FILE | grep "ERROR:" | sed 's/.*ERROR://')
+			CHECK_CRASH=$(cat $ERR_FILE | grep "ERROR:")
 			if [ ! -z "${CHECK_CRASH}" ]
 			then
 				print_crash "$TEST_NO" "$CMD_TO_TEST"
@@ -114,6 +115,14 @@ execute_errors_and_exit_status_tests()
 		diff -r $BASH_OUTPUT $MINISHELL_OUTPUT >> "$DIFF_FILE"
 		check_error "${BASH_OUTPUT}err" "${MINISHELL_OUTPUT}err" "${BASH_OUTPUT}status" "${MINISHELL_OUTPUT}status"
 		CONFIRMED_ERROR=$?
+		if [ -s "$ERR_FILE" ]
+		then
+			CHECK_CRASH=$(cat $ERR_FILE | grep "ERROR:" | sed 's/.*ERROR://')
+			if [ ! -z "${CHECK_CRASH}" ]
+			then
+				print_crash "$TEST_NO" "$CMD_TO_TEST"
+			fi
+		fi
 		if [ -s "$DIFF_FILE" ] && [ $CONFIRMED_ERROR -eq 1 ]
 		then
 			print_failure "$TEST_NO" "$CMD_TO_TEST"
