@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/02 15:17:03 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 13:48:31 by jescully         ###   ########.fr       */
+/*   Created: 2021/12/09 16:30:14 by jescully          #+#    #+#             */
+/*   Updated: 2021/12/09 16:48:32 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	handle_del(char *line, char buffer[PIPE_BUF], int fds[2], int size)
 
 int	wait_and_return(int fds[2])
 {
-	int status;
+	int	status;
 
 	status = wait_and_get_status();
 	setcher(status);
@@ -52,7 +52,6 @@ static void	handle_sig_hd(int sig, siginfo_t *info, void *ucontext)
 {
 	(void)ucontext;
 	(void)info;
-
 	if (sig == SIGINT)
 	{
 		write(1, "^C", 2);
