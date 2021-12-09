@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:30:14 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 18:26:43 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 18:53:18 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,41 +36,6 @@ void	handle_del(char *line, char buffer[PIPE_BUF], int fds[2], int size)
 	exit(0);
 }
 
-int	wait_and_return(int fds[2])
-{
-	int	status;
-
-	status = wait_and_get_status();
-	setcher(status);
-	close(fds[1]);
-	reset_parent_tio_settings();
-	signal_handler_settings();
-	return (status);
-}
-
-static void	handle_sig_hd(int sig, siginfo_t *info, void *ucontext)
-{
-	(void)ucontext;
-	(void)info;
-	if (sig == SIGINT)
-	{
-		write(1, "^C", 2);
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		exit(130);
-	}
-}
-
-void	set_signal_handler_heredoc(void)
-{
-	static struct sigaction	sa_hd;
-
-	sa_hd.sa_sigaction = &handle_sig_hd;
-	sa_hd.sa_flags = SA_RESTART | SA_SIGINFO;
-	sigaction(SIGINT, &sa_hd, NULL);
-}
-
 int	exec_heredoc(char *del, int fds[2])
 {
 	char	*s;
@@ -85,7 +50,6 @@ int	exec_heredoc(char *del, int fds[2])
 	if (pid == 0)
 	{
 		set_signal_handler_heredoc();
-		reset_hd_tio_settings();
 		close(fds[0]);
 		while (1)
 		{
@@ -98,15 +62,26 @@ int	exec_heredoc(char *del, int fds[2])
 				handle_del(s, pipe_buffer, fds, size);
 		}
 	}
-	else
-		signal(SIGINT, SIG_IGN);
 	return (wait_and_return(fds));
+}
+
+int	get_sep_and_exec(char *seps, int fd[2])
+{
+	char	*separator;
+
+	separator = get_sep(seps);
+	if (exec_heredoc(separator, fd))
+	{
+		free(separator);
+		return (0);
+	}
+	free(separator);
+	return (1);
 }
 
 char	*make_heredocs(char *seps, int fd[2])
 {
 	int		i;
-	char	*separator;
 	char	*final_redir;
 	char	*str_fd;
 
@@ -119,13 +94,8 @@ char	*make_heredocs(char *seps, int fd[2])
 				return (seps);
 			else
 			{
-				separator = get_sep(&seps[i]);
-				if (exec_heredoc(separator, fd))
-				{
-					free(separator);
+				if (!get_sep_and_exec(&seps[i], fd))
 					return (NULL);
-				}
-				free(separator);
 				return (make_heredocs(&seps[i + 2], fd));
 			}
 		}

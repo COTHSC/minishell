@@ -59,5 +59,6 @@ char	*ft_getenv(char *name, char c)
 			return ((ft_strchr(g_env[i], '=')) + 1);
 		}
 	}
-	return (free_strs_return_null(1, x_check));
+	free(x_check);
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 18:00:30 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 19:00:58 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ int	fork_and_sort(char **cmd, int i, int n, int fd[FD_SETSIZE / 2][2])
 		else
 			status = execute_builtin_piped(fd, i, n, cmd);
 	}
-	free_strs_lists(2, cmdcmp, cmd);
+	free_str_list(cmdcmp, strlen_list(cmdcmp));
+	free_str_list(cmd, strlen_list(cmd));
 	return (status);
 }
 

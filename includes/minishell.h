@@ -17,11 +17,14 @@
 
 extern char **g_env;
 void	init_split(int *row, int *lead, int *quote);
-void	init_to_zero(int num, ...);
+/* void	init_to_zero(int num, ...); */
 
 /*
  ** ------------------ PARSING MODULES ------------------
  */
+int	wait_and_return(int fds[2]);
+void	handle_sig_hd(int sig, siginfo_t *info, void *ucontext);
+void	set_signal_handler_heredoc(void);
 int		parse_command_line(char *line_from_terminal, int *es);
 int setcher(int newvalue);
 void	pick_a_prompt(char **line_from_terminal);
@@ -51,7 +54,7 @@ void	close_fds(int fd[100]);
 int	select_builtin_test(int index, int argc, char **argv);
 int	single_cmd(char **cmd);
 int	ft_multipipes2(char ***cmd);
-void	*free_strs_lists(int num, ...);
+/* void	*free_strs_lists(int num, ...); */
 
 int	wait_and_get_status(void);
 void	free_command_block(char **command_block);
@@ -65,7 +68,7 @@ int	handle_pipes(char *s, int i);
 int	handle_quotes(char *s, int *i);
 
 void	print_file_error(int error, char *filename);
-void	*free_strs_return_null(int num, ...);
+/* void	*free_strs_return_null(int num, ...); */
 
 int	get_redirect_type(char *s);
 int	check_quotes(char *s);

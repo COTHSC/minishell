@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:03:47 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/07 12:27:20 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 18:59:26 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ int	filename_to_fd(char *filenames, int redirect_type, t_redir *redir)
 	int			fd;
 	static int	index_fd;
 
-	init_to_zero(2, &fd, &i);
+	fd = 0;
+	i = 0;
 	if (redir->fd[0] == -1)
 		index_fd = 0;
 	while (filenames[i] && !is_redirect(filenames[i]))

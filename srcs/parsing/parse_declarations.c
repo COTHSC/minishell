@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:55 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/06 18:00:25 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/09 18:58:53 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ char	**remove_valid_declaration(char **command_blocks)
 	int		i;
 	int		j;
 
-	init_to_zero(2, &i, &j);
+	i = 0;
+	j = 0;
 	cleaned_cmds = str_list_dup(command_blocks);
 	while (command_blocks[i])
 	{
