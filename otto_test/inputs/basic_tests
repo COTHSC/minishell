@@ -31,6 +31,13 @@ exit
 exit | ls
 ls
 /bin/ls
+/usr/bin/ls
+/usr/bin/sleep 0.1
+/usr/bin/ls | /usr/bin/ls | /usr/bin/ls
+/usr/bin/whoami | cat -e
+/usr/bin/who | cut -d " " -f1
+/usr/bin/who | cut -d " " -f1 | /usr/bin/cha1sum  otto.sh | cut -d " " -f1
+/bin/logname | /bin/logname | logname
 ls | cat
 cat | ls
 cat | cat | cat | ls
