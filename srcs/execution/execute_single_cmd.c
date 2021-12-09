@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/08 15:41:28 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 09:47:43 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int	execute_child_alone(char **cmd)
 	if (!ret)
 		execute_binary(cmd);
 	else
+	{
+		write(1, "here\n", 5);
 		exit(ret);
+	}
 	return (1);
 }
 
@@ -56,19 +59,14 @@ int	fork_and_exec(t_redir redir)
 	int	pid;
 	int	status;
 
-	/* status = 42; */
 	pid = fork();
 	if (pid == 0)
 	{
 		reset_og_tio_settings();
 		execute_child_alone(redir.cmd);
 	}
-	wait(&status);
+	status = wait_and_get_status();
 	reset_parent_tio_settings();
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-		status = WTERMSIG(status) + 128;
 	return (status);
 }
 

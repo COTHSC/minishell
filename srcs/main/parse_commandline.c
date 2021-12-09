@@ -34,6 +34,7 @@ static char	***prepare_command_list(char **commands)
 	char	***command_list;
 
 	i = 0;
+	setcher(0);
 	command_list = ft_calloc(sizeof(char ***), FD_SETSIZE / 2);
 	while (commands[i])
 	{
@@ -42,6 +43,8 @@ static char	***prepare_command_list(char **commands)
 			command_list[i] = ft_better_split(commands[i]);
 			command_list[i] = parse_declaration(command_list[i]);
 			command_list[i] = parse_block(command_list[i]);
+			if (setcher(-1))
+				break ; 
 		}
 		i++;
 	}
@@ -77,6 +80,8 @@ int	parse_command_line(char *line_from_terminal, int *es, int *tmp_es)
 			return (1);
 		}
 		command_list = prepare_command_list(commands);
+		if (setcher(-1))
+			return (EXIT_FAILURE);
 		free_str_list(commands, strlen_list(commands));
 		if (!*command_list)
 			*tmp_es = 0;

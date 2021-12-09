@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:17:03 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/08 15:46:26 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/08 19:16:37 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ void	handle_del(char *line, char buffer[PIPE_BUF], int fds[2], int size)
 
 int	wait_and_return(int fds[2])
 {
-	wait(NULL);
+	int status;
+
+	status = wait_and_get_status();
+	setcher(status);
 	close(fds[1]);
 	reset_parent_tio_settings();
-	return (0);
+	return (status);
 }
 
 int	exec_heredoc(char *del, int fds[2])
@@ -91,7 +94,11 @@ char	*make_heredocs(char *seps, int fd[2])
 			else
 			{
 				separator = get_sep(&seps[i]);
-				exec_heredoc(separator, fd);
+				if (exec_heredoc(separator, fd))
+				{
+					printf("here\n");
+					return (NULL);
+				}
 				free(separator);
 				return (make_heredocs(&seps[i + 2], fd));
 			}

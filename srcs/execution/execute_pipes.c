@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/08 10:16:09 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 12:38:34 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int	fork_and_sort(char **cmd, int i, int n, int fd[FD_SETSIZE / 2][2])
 	pids[i] = fork();
 	if (pids[i] == 0)
 	{
-		reset_og_tio_settings();
 		if (builtin_finder(cmdcmp[0]) == -1)
 			execute_child_piped(fd, i, n, cmd);
 		else
@@ -116,6 +115,7 @@ int	ft_multipipes2(char ***cmd)
 	if (n == -1)
 		return (1);
 	i = -1;
+	reset_og_tio_settings();
 	while (++i < n)
 	{
 		status = fork_and_sort(cmd[i], i, n, fd);

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:33 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 17:06:26 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 12:13:47 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ char	*get_var_name(char *s, int *i)
 {
 	char	*var_name;
 
-	while (s[*i] && !isquote(s[*i]) && !ft_iswhitespace(s[*i]) \
-			&& (ft_isanywordchar(s[*i]) || s[*i] == '?'))
+	while (s[*i] && !isquote(s[*i]) && !ft_iswhitespace(s[*i]) && s[*i] != '$')
 		(*i)++;
 	var_name = ft_calloc(*i + 1, sizeof(char));
 	if (!var_name)
@@ -51,7 +50,8 @@ char	*get_var_value(char *var_name, int *offset, int status)
 	}
 	else if (!ft_strncmp(var_name, "?", 2))
 	{
-		var_value = ft_itoa(status);
+		var_value = ft_itoa(setcher(-1));
+		(void)status;
 		*offset = ft_strlen(var_value) - ft_strlen(var_name);
 	}
 	else
