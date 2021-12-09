@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   our_get_env.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 20:42:59 by calle             #+#    #+#             */
+/*   Updated: 2021/12/09 20:48:04 by calle            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	go_through_quote(char const *s, int lead, int *quote)
@@ -33,6 +45,12 @@ int	var_name_match_in_env(char *env_var, char *name)
 		return (0);
 }
 
+static char	*wrapper_get_env(char *x_check, char *env_var, char c)
+{
+	free(x_check);
+	return ((ft_strchr(env_var, c)) + 1);
+}
+
 char	*ft_getenv(char *name, char c)
 {
 	int		i;
@@ -48,16 +66,10 @@ char	*ft_getenv(char *name, char c)
 		if (c == 'x')
 		{
 			if (var_name_match_in_env(g_env[i], x_check))
-			{
-				free(x_check);
-				return ((ft_strchr(g_env[i], '=')) + 1);
-			}
+				return (wrapper_get_env(x_check, g_env[i], '='));
 		}
 		else if (var_name_match_in_env(&g_env[i][1], name))
-		{
-			free(x_check);
-			return ((ft_strchr(g_env[i], '=')) + 1);
-		}
+			return (wrapper_get_env(x_check, g_env[i], '='));
 	}
 	free(x_check);
 	return (NULL);

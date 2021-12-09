@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_and_alter_env.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 20:42:15 by calle             #+#    #+#             */
+/*   Updated: 2021/12/09 20:42:35 by calle            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-int	check_env_wrapper(char *arg, char *flag, char **clean_env)
+static int	check_env_wrapper(char *arg, char *flag, char **clean_env)
 {
 	int		iie;
 	char	**name_value_pair;
