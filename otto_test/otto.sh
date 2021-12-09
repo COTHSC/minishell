@@ -82,6 +82,7 @@ execute_redirections_tests()
 		elif [ -s "$DIFF_FILE" ] && [ "$DIFF_IS_SCRAMBLED" -eq 0 ]
 		then
 			print_mild_failure "$TEST_NO" "$CMD_TO_TEST"
+			MILD_FAILURE=$((MILD_FAILURE + 1))
 		else
 			print_success "$TEST_NO"
 			del_empty_file "$DIFF_FILE"
@@ -168,6 +169,7 @@ MINISHELL_PATH="../minishell"
 stty sane
 OG_TERM_KEYBINDS=$(stty -a | grep intr | tr -d '[:space:]')
 TESTS_TOTAL=0
+MILD_FAILURE=0 #Count failure for redirection + pipe tests, as the output depends on execution speed on piped cmds
 SUCCESSFUL_TESTS=0
 BASH_OUT_DIR="bash_output"
 MINISHELL_OUT_DIR="minishell_output"
@@ -183,7 +185,7 @@ execute_basic_tests "basic_tests"
 execute_redirections_tests "redirections_tests"
 execute_errors_and_exit_status_tests "errors_tests"
 check_tty_keybinds
-print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL"
+print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL" "$MILD_FAILURE"
 #del_files_and_dirs "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
 del_files_and_dirs "./inputs/cannot_access_dir" "./inputs/cannot_access_file"
 del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"

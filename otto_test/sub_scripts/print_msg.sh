@@ -65,21 +65,26 @@ print_score()
 {
 	MR_POTATO="./assets/mr_potato"
 	SKELETON="./assets/skeleton"
-	if [ $1 -eq $2 ]
+	SCORE=$(expr $1 + $3)
+	if [ "$SCORE" -eq $2 ]
 	then
 		if [ $QUIET_SWITCH -eq 0 ]
 		then
 			cat	"$MR_POTATO"
+			echo -e "What are you looking at you hockey puck??"
 		fi
-		echo -e "${BOLDGREEN}>> SCORE: $1 / $2 ${RESET}"
-		echo -e "What are you looking at you hockey puck??"
+		echo -e "${BOLDGREEN}>> SCORE: $SCORE / $2 ${RESET}"
+		if [ $3 -ne 0 ]
+		then
+			echo -e "${BOLDYELLOW}>> WARNING: $3 POSSIBLE FAILURE DETECTED (Check redirect tests)${RESET}"
+		fi
 	else
 		if [ $QUIET_SWITCH -eq 0 ]
 		then
 			cat	"$SKELETON"
+			echo -e "GET BACK TO WORK YOU PUNK!"
 		fi
 		echo -e "${BOLDRED}>> SCORE: $1 / $2 ${RESET}"
-		echo -e "GET BACK TO WORK YOU PUNK!"
 	fi
 }
 
