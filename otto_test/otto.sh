@@ -81,7 +81,7 @@ execute_redirections_tests()
 			fi
 		elif [ -s "$DIFF_FILE" ] && [ "$DIFF_IS_SCRAMBLED" -eq 0 ]
 		then
-			print_failure "$TEST_NO" "$CMD_TO_TEST"
+			print_mild_failure "$TEST_NO" "$CMD_TO_TEST"
 		else
 			print_success "$TEST_NO"
 			del_empty_file "$DIFF_FILE"

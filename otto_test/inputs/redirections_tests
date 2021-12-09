@@ -6,6 +6,17 @@ echo hello >> test1
 echo hello >>test1
 echo hello>> test1
 echo hello>>test1
+>test1 echo hello 
+> test1 echo hello 
+>>test1 echo hello 
+>> test1 echo hello 
+<../../inputs/basic_tests cat > test1
+<"../../inputs/basic_tests" cat > test1
+<'../../inputs/basic_tests' cat > test1
+cat <../../inputs/basic_tests > test1
+cat<../../inputs/basic_tests > test1
+cat < ../../inputs/basic_tests > test1
+cat< ../../inputs/basic_tests > test1
 echo pwd > test1
 echo pwd >> test1
 env | grep $USER > test1
@@ -16,9 +27,9 @@ echo hello >echo " world"> test1
 echo hello > echo ' world' > cat echo
 echo hello > echo ' world' > cat echo > test1
 > test1 echo hello > echo ' world'
-echo hello >> test1 | echo world >> test1
-echo hello >>test1 | echo world>> test1
-echo hello>>test1 | echo world>> test1
+echo hello >> test1 | echo hello >> test1
+echo hello >>test1 | echo hello>> test1
+echo hello>>test1 | echo hello>> test1
 echo hello >> test1 | echo world > test1
 echo $USER >> test1 | echo $MAIL >> test1
 >> test1 echo hello >> echo ' world' | echo foo >> test1

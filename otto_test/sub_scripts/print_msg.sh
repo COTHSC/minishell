@@ -32,6 +32,18 @@ print_failure()
 	fi
 }
 
+print_mild_failure()
+{
+	if [ $QUIET_SWITCH -eq 0 ]
+	then
+		echo -e " ${BOLDYELLOW}~${RESET} ${YELLOW}test $1${RESET}"
+	fi
+	if [ "$2" ]
+	then
+		echo "$2" >> "failed_tests"
+	fi
+}
+
 print_crash()
 {
 	if [ $QUIET_SWITCH -eq 0 ]
