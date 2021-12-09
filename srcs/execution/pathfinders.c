@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:03:35 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 13:43:13 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 16:16:15 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*get_path(char **command_block)
 	char	*check_ret;
 
 	d = 0;
-	check_ret = getenv("PATH");
+	check_ret = ft_getenv("PATH", 'd');
 	if (check_ret)
 	{
 		paths = ft_split(check_ret, ':');

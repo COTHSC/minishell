@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 13:49:30 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 16:19:11 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int	fork_and_exec(t_redir redir)
 		reset_og_tio_settings();
 		execute_child_alone(redir.cmd);
 	}
-	status = wait_and_get_status();
 	reset_parent_tio_settings();
+	status = wait_and_get_status();
 	return (status);
 }
 
