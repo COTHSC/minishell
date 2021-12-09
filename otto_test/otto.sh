@@ -163,9 +163,21 @@ check_quiet()
 	fi
 }
 
+compile_minishell()
+{
+	clear
+	make -C ${MINISHELL_ROOT} fclean --silent
+	make -C ${MINISHELL_ROOT} debug --silent
+	make -C ${MINISHELL_ROOT} clean --silent
+	clear
+}
+
+MINISHELL_ROOT="../"
+
 QUIET_SWITCH=0
 check_quiet $1
-MINISHELL_PATH="../minishell"
+MINISHELL_PATH="${MINISHELL_ROOT}minishell"
+compile_minishell
 stty sane
 OG_TERM_KEYBINDS=$(stty -a | grep intr | tr -d '[:space:]')
 TESTS_TOTAL=0
@@ -178,6 +190,7 @@ ERROR_DIR="errors"
 del_files_and_dirs "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR" "failed_tests" "crash_tests"
 mkdir -p "$ERROR_DIR" "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR" "$DIFF_DIR"
 print_welcome
+chmod 755 ./sub_scripts/*
 chmod 755 ./inputs/*tests*
 mkdir ./inputs/cannot_access_dir ; chmod 000 ./inputs/cannot_access_dir
 touch ./inputs/cannot_access_file ; chmod 000 ./inputs/cannot_access_file
@@ -186,6 +199,6 @@ execute_redirections_tests "redirections_tests"
 execute_errors_and_exit_status_tests "errors_tests"
 check_tty_keybinds
 print_score "$SUCCESSFUL_TESTS" "$TESTS_TOTAL" "$MILD_FAILURE"
-#del_files_and_dirs "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
+del_files_and_dirs "$BASH_OUT_DIR" "$MINISHELL_OUT_DIR"
 del_files_and_dirs "./inputs/cannot_access_dir" "./inputs/cannot_access_file"
 del_empty_dirs "$ERROR_DIR" "$DIFF_DIR"
