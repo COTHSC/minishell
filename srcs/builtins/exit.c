@@ -6,7 +6,7 @@
 /*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 11:15:31 by calle             #+#    #+#             */
-/*   Updated: 2021/12/03 10:00:39 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/09 17:54:22 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,36 +57,37 @@ static int	handle_exit_with_a_status(char *status)
 	exit(exit_status);
 }
 
-int	ft_exit(int argc, char **argv)
+void	actually_exit(int argc, char **argv)
 {
-	int status;
-
-	status = 0;
+	free_str_list(g_env, strlen_list(g_env));
 	if (argc == 1)
 	{
 		if (isatty(STDIN_FILENO))
 			ft_putstr_fd("exit \n", STDERR_FILENO);
-		status = 0;
+		exit(0);
 	}
 	else if (!is_valid_status(argv[1]))
 	{
 		if (isatty(STDIN_FILENO))
 			ft_putstr_fd("exit \n", STDERR_FILENO);
 		perror_numeric_arg_required(argv[1], "exit");
-		status = 2;
+		exit(2);
 	}
-	else if (argc > 2)
+	else
+		handle_exit_with_a_status(argv[1]);
+	exit(0);
+}
+
+int	ft_exit(int argc, char **argv)
+{
+	if (argc > 2 && is_valid_status(argv[1]))
 	{
 		if (isatty(STDIN_FILENO))
 			ft_putstr_fd("exit \n", STDERR_FILENO);
 		perror_too_many_args("exit");
-		status = 1;
 		return (1);
 	}
 	else
-		handle_exit_with_a_status(argv[1]);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
-	exit(status);
+		actually_exit(argc, argv);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:17:32 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 14:36:35 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 19:03:31 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,15 @@ char	*get_heredoc(char *s, int i)
 		return (s);
 	command = ft_strndup(s, i);
 	temp = make_heredocs(&s[i], fd);
+	if (!temp)
+	{
+		free(command);
+		return (s);
+	}
 	test = ft_strjoin(command, temp);
-	free_strs_return_null(3, command, temp, s);
+	free(command);
+	free(temp);
+	free(s);
 	s = test;
 	return (s);
 }

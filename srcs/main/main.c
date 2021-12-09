@@ -2,9 +2,9 @@
 
 char	**g_env;
 
-int setcher(int newvalue)
+int	setcher(int newvalue)
 {
-	static int ret = 0;
+	static int	ret = 0;
 
 	if (newvalue >= 0)
 		ret = newvalue;

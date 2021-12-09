@@ -59,7 +59,7 @@ static int	handle_synthax_error(char *line_from_terminal)
 
 void	free_str_list_ception(char ***trpptrstr)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (trpptrstr[++i])
@@ -67,23 +67,33 @@ void	free_str_list_ception(char ***trpptrstr)
 	free(trpptrstr);
 }
 
+int	basic_checks(char *line_from_terminal, int *es)
+{
+	if (!line_from_terminal || !*line_from_terminal)
+	{
+		free(line_from_terminal);
+		return (1);
+	}
+	else if (check_syntax(line_from_terminal))
+	{
+		*es = handle_synthax_error(line_from_terminal);
+		return (1);
+	}
+	return (0);
+}
+
 int	parse_command_line(char *line_from_terminal, int *es)
 {
 	char	**commands;
 	char	***command_list;
-	int		err;
 
-	err = 0;
-	if (!line_from_terminal || !*line_from_terminal)
-		return (EXIT_SUCCESS);
-	else if (check_syntax(line_from_terminal))
-		*es = handle_synthax_error(line_from_terminal);
+	if (basic_checks(line_from_terminal, es))
+		return (0);
 	else
 	{
 		line_from_terminal = find_dollars(line_from_terminal, *es);
 		commands = ft_pipe_split(line_from_terminal);
-		err = handle_fds_overflow(commands, line_from_terminal);
-		if (err == 1)
+		if (handle_fds_overflow(commands, line_from_terminal))
 			return (1);
 		command_list = prepare_command_list(commands);
 		free_str_list(commands, strlen_list(commands));

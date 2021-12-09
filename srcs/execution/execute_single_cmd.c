@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 13:49:30 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 20:00:41 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,12 @@ int	single_cmd(char **cmd)
 		status = fork_and_exec(redir);
 	else
 	{
-		stdio_cpy[0] = STDIN_FILENO;
-		stdio_cpy[1] = STDOUT_FILENO;
+		stdio_cpy[0] = dup(STDIN_FILENO);
+		stdio_cpy[1] = dup(STDOUT_FILENO);
 		status = execute_builtin_alone(str_list_dup(redir.cmd));
 		ft_replug(stdio_cpy);
 	}
-	free_strs_lists(2, cmdcmp, redir.cmd);
+	free_str_list(cmdcmp, strlen_list(cmdcmp));
+	free_str_list(redir.cmd, strlen_list(redir.cmd));
 	return (status);
 }
