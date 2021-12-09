@@ -29,14 +29,13 @@ static char	**create_basic(void)
 int	init_minishell(char **env)
 {
 	int						check_ret;
-	static struct sigaction	sa;
 
 	check_ret = terminal_settings();
 	if (check_ret != EXIT_SUCCESS)
 	{
 		exit(EXIT_FAILURE);
 	}
-	signal_handler_settings(&sa);
+	signal_handler_settings();
 	if (!env[0])
 		g_env = create_basic();
 	else

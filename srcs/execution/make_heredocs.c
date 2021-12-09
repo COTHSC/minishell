@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:17:03 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/08 19:16:37 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 12:42:49 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,32 @@ int	wait_and_return(int fds[2])
 	setcher(status);
 	close(fds[1]);
 	reset_parent_tio_settings();
+	signal_handler_settings();
 	return (status);
+}
+
+static void	handle_sig_hd(int sig, siginfo_t *info, void *ucontext)
+{
+	(void)ucontext;
+	(void)info;
+
+	if (sig == SIGINT)
+	{
+		write(1, "^C", 2);
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		exit(130);
+	}
+}
+
+void	set_signal_handler_heredoc(void)
+{
+	static struct sigaction	sa_hd;
+
+	sa_hd.sa_sigaction = &handle_sig_hd;
+	sa_hd.sa_flags = SA_RESTART | SA_SIGINFO;
+	sigaction(SIGINT, &sa_hd, NULL);
 }
 
 int	exec_heredoc(char *del, int fds[2])
@@ -60,7 +85,7 @@ int	exec_heredoc(char *del, int fds[2])
 	size = 0;
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
+		set_signal_handler_heredoc();
 		reset_hd_tio_settings();
 		close(fds[0]);
 		while (1)
@@ -74,6 +99,8 @@ int	exec_heredoc(char *del, int fds[2])
 				handle_del(s, pipe_buffer, fds, size);
 		}
 	}
+	else
+		signal(SIGINT, SIG_IGN);
 	return (wait_and_return(fds));
 }
 

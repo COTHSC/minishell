@@ -39,8 +39,6 @@ static void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 
 	(void)ucontext;
 	ret = waitpid(-1, NULL, WNOHANG);
-	/* if (sig == SIGTTOU) */
-	/* 	write(1, "hello from the background process is the sentence we put here\n", 64); */
 	if (ret == -1)
 		handle_no_children(sig, info);
 	else if (sig == SIGINT)
@@ -52,11 +50,12 @@ static void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 	}
 }
 
-void	signal_handler_settings(struct sigaction *sa)
+void	signal_handler_settings(void)
 {
-	sa->sa_sigaction = &handle_sig;
-	sa->sa_flags = SA_RESTART | SA_SIGINFO;
-	sigaction(SIGINT, sa, NULL);
-	sigaction(SIGTTOU, sa, NULL);
-	sigaction(SIGQUIT, sa, NULL);
+	static struct sigaction sa;
+
+	sa.sa_sigaction = &handle_sig;
+	sa.sa_flags = SA_RESTART | SA_SIGINFO;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
