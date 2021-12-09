@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 20:58:04 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 21:10:22 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 21:20:26 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ char			**ft_pipe_split(char const *s);
 char			**parse_block(char **command_block);
 int				check_fd(int fd, char *filename);
 int				is_path(char *s);
+int				basic_checks(char *line_from_terminal, int *es);
+char			***prepare_command_list(char **commands);
+int				handle_synthax_error(char *line_from_terminal);
 /*
  ** ------------------ EXPANSION ------------------
  */
