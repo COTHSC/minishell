@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:03:35 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 16:16:15 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 17:07:26 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ int	builtin_finder(char *name)
 
 char	*get_path(char **command_block)
 {
-	char	**paths = NULL;
+	char	**paths;
 	int		d;
-	char	*path = NULL;
+	char	*path;
 	char	*check_ret;
 
-	d = 0;
+	path = NULL;
 	check_ret = ft_getenv("PATH", 'd');
 	if (check_ret)
 	{
@@ -84,12 +84,10 @@ char	*get_path(char **command_block)
 	if (!path)
 	{
 		d = 0;
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(command_block[0], 2);
+		print_cmd_error(command_block[0]);
 		while (command_block[d])
 			free(command_block[d++]);
 		free(command_block);
-		ft_putstr_fd(": command not found\n", 2);
 		exit(127);
 	}
 	return (path);

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:30:14 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 16:48:32 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 18:26:43 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,10 @@ char	*make_heredocs(char *seps, int fd[2])
 			{
 				separator = get_sep(&seps[i]);
 				if (exec_heredoc(separator, fd))
+				{
+					free(separator);
 					return (NULL);
+				}
 				free(separator);
 				return (make_heredocs(&seps[i + 2], fd));
 			}

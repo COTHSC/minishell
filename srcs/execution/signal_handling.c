@@ -52,7 +52,7 @@ static void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 
 void	signal_handler_settings(void)
 {
-	static struct sigaction sa;
+	static struct sigaction	sa;
 
 	sa.sa_sigaction = &handle_sig;
 	sa.sa_flags = SA_RESTART | SA_SIGINFO;

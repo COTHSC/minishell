@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 12:38:34 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 18:00:30 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	count_and_check(char ***cmd, int fd[FD_SETSIZE / 2][2])
 	return (n);
 }
 
-int	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
+void	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
 {
 	int		fds[FD_SETSIZE];
 	t_redir	redir;
@@ -51,7 +51,6 @@ int	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
 		close(fd[i + 1][1]);
 		exit(ret);
 	}
-	return (0);
 }
 
 int	execute_builtin_piped(int (*fd)[2], int i, int n, char **cmd)

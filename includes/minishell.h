@@ -27,6 +27,7 @@ int setcher(int newvalue);
 void	pick_a_prompt(char **line_from_terminal);
 
 int	is_done(char *s);
+void	print_cmd_error(char *cmd);
 char	*get_var_name(char *s, int *i);
 char	*get_var_value(char *var_name, int *offset, int status);
 int	deal_with_quotes(char *s, int *quote, int *i);
