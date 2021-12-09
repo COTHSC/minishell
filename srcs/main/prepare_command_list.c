@@ -6,7 +6,7 @@
 /*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 20:54:42 by calle             #+#    #+#             */
-/*   Updated: 2021/12/09 21:19:57 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/09 23:19:26 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ char	***prepare_command_list(char **commands)
 		if (!is_empty(commands[i]))
 		{
 			command_list[i] = ft_better_split(commands[i]);
+			command_list[i] = parse_declaration(command_list[i]);
 			command_list[i] = parse_block(command_list[i]);
 			if (setcher(-1))
 				return (command_list);
-			command_list[i] = parse_declaration(command_list[i]);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/09 19:00:58 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 23:40:23 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,11 @@ int	count_and_check(char ***cmd, int fd[FD_SETSIZE / 2][2])
 
 void	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
 {
-	int		fds[FD_SETSIZE];
 	t_redir	redir;
 	int		ret;
 
 	redir.es = 0;
-	init_fds(fds);
+	init_fds(redir.fd);
 	redir.cmd = cmd;
 	close_unused_fds(fd, i, n);
 	dup2(fd[i][0], STDIN_FILENO);
@@ -46,7 +45,7 @@ void	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
 		execute_binary(cmd);
 	else
 	{
-		close_fds(fds);
+		close_fds(redir.fd);
 		close(fd[i][0]);
 		close(fd[i + 1][1]);
 		exit(ret);
@@ -56,12 +55,11 @@ void	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
 int	execute_builtin_piped(int (*fd)[2], int i, int n, char **cmd)
 {
 	int		ret;
-	int		fds[FD_SETSIZE];
 	t_redir	redir;
 
 	redir.cmd = cmd;
 	redir.es = 0;
-	init_fds(fds);
+	init_fds(redir.fd);
 	close_unused_fds(fd, i, n);
 	dup2(fd[i][0], STDIN_FILENO);
 	if (i != n - 1)
@@ -72,7 +70,7 @@ int	execute_builtin_piped(int (*fd)[2], int i, int n, char **cmd)
 	if (redir.cmd[0] && !redir.es)
 		ret = select_builtin_test(builtin_finder(redir.cmd[0]), \
 				strlen_list(redir.cmd), redir.cmd);
-	close_fds(fds);
+	close_fds(redir.fd);
 	close(fd[i][0]);
 	close(fd[i + 1][1]);
 	free_str_list(redir.cmd, strlen_list(redir.cmd));

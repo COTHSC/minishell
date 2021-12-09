@@ -6,7 +6,7 @@
 /*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 20:59:47 by calle             #+#    #+#             */
-/*   Updated: 2021/12/09 21:00:00 by calle            ###   ########.fr       */
+/*   Updated: 2021/12/09 23:04:57 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,6 @@ char	**ft_exported_vars(char select)
 			c++;
 		}
 	}
-	clean_g_env[(count_exported_vars(g_env) - 1)] = NULL;
+	clean_g_env[(count_exported_vars(g_env))] = NULL;
 	return (clean_g_env);
 }

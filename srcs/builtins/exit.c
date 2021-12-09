@@ -6,7 +6,7 @@
 /*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 11:15:31 by calle             #+#    #+#             */
-/*   Updated: 2021/12/09 17:54:22 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 22:36:35 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ static int	handle_exit_with_a_status(char *status)
 	exit(exit_status);
 }
 
-void	actually_exit(int argc, char **argv)
+static void	actually_exit(int argc, char **argv)
 {
 	free_str_list(g_env, strlen_list(g_env));
+	reset_og_tio_settings();
 	if (argc == 1)
 	{
 		if (isatty(STDIN_FILENO))
