@@ -99,7 +99,7 @@ clean :
 
 fclean:	clean
 	@echo "make: cleaning executable..."
-	rm -f $(NAME)
+	@rm -f $(NAME)
 	@$(MAKE) --quiet -C ./libs/libft+/ fclean
 	@echo "✔ Done"
 

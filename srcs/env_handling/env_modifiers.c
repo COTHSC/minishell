@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_modifiers.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: calle <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 20:37:23 by calle             #+#    #+#             */
+/*   Updated: 2021/12/09 20:41:03 by calle            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	change_flag(char **var, char flag)
@@ -23,8 +35,6 @@ int	alter_env_var(char **clean_env, char *name, char *var_to_add, char *flag)
 			return (EXIT_FAILURE);
 		free_str_list(g_env, strlen_list(g_env));
 		g_env = tmp_env;
-		if (!g_env)
-			return (EXIT_FAILURE);
 	}
 	else
 	{
