@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:14 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 16:50:22 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 18:57:46 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,11 @@ char	*find_dollars(char *s, int status)
 			return (s);
 		if (s[i] == '$')
 		{
-			newend = expand_vars(&s[i + 1], status, quote, &i);
 			s[i] = 0;
+			newend = expand_vars(&s[i + 1], status, quote, &i);
 			news = ft_strjoin(s, newend);
-			free_strs_return_null(2, newend, s);
+			free(newend);
+			free(s);
 			s = news;
 			if (!s[i])
 				return (s);

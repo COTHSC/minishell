@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:01:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 19:00:24 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 20:00:41 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	execute_child_alone(char **cmd)
 {
 	t_redir	redir;
 	int		ret;
-	
+
 	redir.es = 0;
 	init_fds(redir.fd);
 	redir.cmd = cmd;
@@ -26,19 +26,9 @@ int	execute_child_alone(char **cmd)
 	remove_quotes_list(cmd);
 	ret = check_if_file(cmd);
 	if (!ret)
-	{
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		close(STDERR_FILENO);
 		execute_binary(cmd);
-	}
 	else
-	{
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		close(STDERR_FILENO);
 		exit(ret);
-	}
 	return (1);
 }
 
@@ -63,20 +53,17 @@ int	execute_builtin_alone(char **cmd)
 
 int	fork_and_exec(t_redir redir)
 {
-	int	status;
 	int	pid;
+	int	status;
 
-	status = 0;
 	pid = fork();
 	if (pid == 0)
 	{
 		reset_og_tio_settings();
 		execute_child_alone(redir.cmd);
 	}
-	wait(&status);
+	status = wait_and_get_status();
 	reset_parent_tio_settings();
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
 	return (status);
 }
 
@@ -92,16 +79,15 @@ int	single_cmd(char **cmd)
 	init_fds(redir.fd);
 	cmdcmp = get_command(str_list_dup(redir.cmd));
 	if (builtin_finder(cmdcmp[0]) == -1)
-	{
 		status = fork_and_exec(redir);
-	}
 	else
 	{
-		stdio_cpy[0] = STDIN_FILENO;
-		stdio_cpy[1] = STDOUT_FILENO;
+		stdio_cpy[0] = dup(STDIN_FILENO);
+		stdio_cpy[1] = dup(STDOUT_FILENO);
 		status = execute_builtin_alone(str_list_dup(redir.cmd));
 		ft_replug(stdio_cpy);
 	}
-	free_strs_lists(2, cmdcmp, redir.cmd);
+	free_str_list(cmdcmp, strlen_list(cmdcmp));
+	free_str_list(redir.cmd, strlen_list(redir.cmd));
 	return (status);
 }

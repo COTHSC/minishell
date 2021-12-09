@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:00:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 19:17:31 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 19:00:58 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	count_and_check(char ***cmd, int fd[FD_SETSIZE / 2][2])
 	return (n);
 }
 
-int	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
+void	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
 {
 	int		fds[FD_SETSIZE];
 	t_redir	redir;
@@ -51,7 +51,6 @@ int	execute_child_piped(int (*fd)[2], int i, int n, char **cmd)
 		close(fd[i + 1][1]);
 		exit(ret);
 	}
-	return (0);
 }
 
 int	execute_builtin_piped(int (*fd)[2], int i, int n, char **cmd)
@@ -67,7 +66,6 @@ int	execute_builtin_piped(int (*fd)[2], int i, int n, char **cmd)
 	dup2(fd[i][0], STDIN_FILENO);
 	if (i != n - 1)
 		dup2(fd[i + 1][1], STDOUT_FILENO);
-	redir.es = 0;
 	redir.cmd = ft_redirect(&redir);
 	remove_quotes_list(redir.cmd);
 	ret = 1;
@@ -96,13 +94,13 @@ int	fork_and_sort(char **cmd, int i, int n, int fd[FD_SETSIZE / 2][2])
 	pids[i] = fork();
 	if (pids[i] == 0)
 	{
-		reset_og_tio_settings();
 		if (builtin_finder(cmdcmp[0]) == -1)
 			execute_child_piped(fd, i, n, cmd);
 		else
 			status = execute_builtin_piped(fd, i, n, cmd);
 	}
-	free_strs_lists(2, cmdcmp, cmd);
+	free_str_list(cmdcmp, strlen_list(cmdcmp));
+	free_str_list(cmd, strlen_list(cmd));
 	return (status);
 }
 
@@ -117,8 +115,11 @@ int	ft_multipipes2(char ***cmd)
 	if (n == -1)
 		return (1);
 	i = -1;
+	reset_og_tio_settings();
 	while (++i < n)
+	{
 		status = fork_and_sort(cmd[i], i, n, fd);
+	}
 	close_unused_fds(fd, n + 1, n);
 	status = wait_and_get_status();
 	reset_parent_tio_settings();

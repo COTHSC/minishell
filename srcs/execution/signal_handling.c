@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal_handling.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 20:42:46 by jescully          #+#    #+#             */
+/*   Updated: 2021/12/09 20:42:48 by jescully         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	put_newline(void)
@@ -11,7 +23,7 @@ static void	handle_no_children(int sig, siginfo_t *info)
 	if (info->si_pid == 0 && sig == SIGINT)
 	{
 		write(1, "^C", 2);
-		exit(0);
+		exit(130);
 	}
 	else if (info->si_pid != 0 && sig == SIGINT)
 	{
@@ -19,6 +31,7 @@ static void	handle_no_children(int sig, siginfo_t *info)
 		put_newline();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		setcher(130);
 	}
 	else if (info->si_pid != 0 && sig == SIGQUIT)
 	{
@@ -37,7 +50,7 @@ static void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 	int	ret;
 
 	(void)ucontext;
-	ret = wait(NULL);
+	ret = waitpid(-1, NULL, WNOHANG);
 	if (ret == -1)
 		handle_no_children(sig, info);
 	else if (sig == SIGINT)
@@ -49,10 +62,12 @@ static void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 	}
 }
 
-void	signal_handler_settings(struct sigaction *sa)
+void	signal_handler_settings(void)
 {
-	sa->sa_sigaction = &handle_sig;
-	sa->sa_flags = SA_RESTART | SA_SIGINFO;
-	sigaction(SIGINT, sa, NULL);
-	sigaction(SIGQUIT, sa, NULL);
+	static struct sigaction	sa;
+
+	sa.sa_sigaction = &handle_sig;
+	sa.sa_flags = SA_RESTART | SA_SIGINFO;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }

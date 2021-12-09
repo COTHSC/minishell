@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:02:55 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 17:02:57 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/07 14:24:36 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	**get_filenames_no_redirect(char **command_block, int index, int d)
 	i = index;
 	while ((command_block[d][i]) && is_redirect(command_block[d][i++]))
 		command_block[d][index] = '\0';
-	if (command_block[d][i])
+	if (command_block[d][i - 1])
 		return (cmd);
 	else
 	{

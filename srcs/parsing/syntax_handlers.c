@@ -6,11 +6,17 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:51:22 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 16:51:30 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/06 18:38:02 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	check_redirect_type(int redirect_type)
+{
+	return (redirect_type == 1 || redirect_type == 2
+		|| redirect_type == 3 || redirect_type == 6);
+}
 
 int	handle_semicolons(char *s, int i)
 {

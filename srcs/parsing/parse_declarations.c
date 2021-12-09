@@ -6,13 +6,13 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:55 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 16:50:57 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 20:31:05 by calle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	switch_declaration_on(char **args)
+static int	switch_declaration_on(char **args)
 {
 	int		i;
 	int		declaration_switch;
@@ -57,6 +57,12 @@ char	**delete_block(char **command_blocks, int index_block_to_del)
 	return (tmp);
 }
 
+static int	test_valid_declaraction(char *command_block)
+{
+	return ((find_index_of_char(command_block, '=') >= 1)
+		&& has_valid_var_name(command_block));
+}
+
 char	**remove_valid_declaration(char **command_blocks)
 {
 	char	**cleaned_cmds;
@@ -64,12 +70,12 @@ char	**remove_valid_declaration(char **command_blocks)
 	int		i;
 	int		j;
 
-	init_to_zero(2, &i, &j);
+	i = 0;
+	j = 0;
 	cleaned_cmds = str_list_dup(command_blocks);
 	while (command_blocks[i])
 	{
-		if ((find_index_of_char(command_blocks[i], '=') >= 1)
-			&& has_valid_var_name(command_blocks[i]))
+		if (test_valid_declaraction(command_blocks[i]))
 		{
 			tmp = str_list_dup(cleaned_cmds);
 			free_str_list(cleaned_cmds, strlen_list(cleaned_cmds));
@@ -101,8 +107,7 @@ char	**parse_declaration(char **command_blocks)
 	else
 	{
 		check_and_alter_env(command_blocks, "d");
-		cleaned_blocks = calloc_str_list(2);
-		cleaned_blocks[0] = ft_strdup("");
+		cleaned_blocks = NULL;
 		free_str_list(command_blocks, strlen_list(command_blocks));
 		return (cleaned_blocks);
 	}

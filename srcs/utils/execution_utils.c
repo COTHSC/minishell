@@ -6,7 +6,7 @@
 /*   By: jescully <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 17:02:50 by jescully          #+#    #+#             */
-/*   Updated: 2021/12/02 19:01:34 by jescully         ###   ########.fr       */
+/*   Updated: 2021/12/09 11:20:39 by jescully         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	wait_and_get_status(void)
 	}
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
-	(void)i;
+	else if (WTERMSIG(status) == 13)
+		status = 0;
+	else if (WIFSIGNALED(status))
+		status = WTERMSIG(status) + 128;
 	return (status);
 }
 
@@ -43,9 +46,7 @@ void	free_command_block(char **command_block)
 void	ft_replug(int stdio_cpy[2])
 {
 	dup2(stdio_cpy[0], STDIN_FILENO);
-//	close(stdio_cpy[0]);
 	dup2(stdio_cpy[1], STDOUT_FILENO);
-//	close(stdio_cpy[1]);
 }
 
 int	execute_binary(char **command_block)
