@@ -1,8 +1,0 @@
-Var Environnement
-
-Needs:
-1> printing exported vars only
-2> printing both exported vars and declared vars 
-3> matching a particular var name in the env so this var can be altered  (change/add var_value)
-4> altering a particular var value in the env
-
